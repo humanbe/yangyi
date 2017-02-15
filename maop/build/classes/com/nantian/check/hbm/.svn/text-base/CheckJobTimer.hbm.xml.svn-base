@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.check.vo">
+	<class name="CheckJobTimerVo" table="CHECK_JOB_TIMER" dynamic-update="true"
+		dynamic-insert="true">
+		<id name="timer_code" column="TIMER_CODE" type="java.lang.Integer">
+		  	<generator class="sequence">
+		  		<param name="sequence">check_job_schedule_seq</param>
+		  	</generator>
+		</id>
+		
+		<property name="appsys_code" type="java.lang.String">
+			<column name="APPSYS_CODE"></column>
+		</property>
+		<property name="job_code" type="java.lang.Integer">
+			<column name="JOB_CODE"></column>
+		</property>
+		<property name="exec_freq_type" type="java.lang.String">
+			<column name="EXEC_FREQUENCY_TYPE"></column>
+		</property>
+		<property name="exec_start_date" type="java.lang.String">
+			<column name="EXEC_START_DATE"></column>
+		</property>
+		<property name="exec_start_time" type="java.lang.String">
+			<column name="EXEC_START_TIME"></column>
+		</property>
+		<property name="week1_flag" type="java.lang.String">
+			<column name="WEEK1_FLAG"></column>
+		</property>
+		<property name="week2_flag" type="java.lang.String">
+			<column name="WEEK2_FLAG"></column>
+		</property>
+		<property name="week3_flag" type="java.lang.String">
+			<column name="WEEK3_FLAG"></column>
+		</property>
+		<property name="week4_flag" type="java.lang.String">
+			<column name="WEEK4_FLAG"></column>
+		</property>
+		<property name="week5_flag" type="java.lang.String">
+			<column name="WEEK5_FLAG"></column>
+		</property>
+		<property name="week6_flag" type="java.lang.String">
+			<column name="WEEK6_FLAG"></column>
+		</property>
+		<property name="week7_flag" type="java.lang.String">
+			<column name="WEEK7_FLAG"></column>
+		</property>
+		<property name="interval_weeks" type="java.lang.Integer">
+			<column name="INTERVAL_WEEKS"></column>
+		</property>
+		<property name="month_day" type="java.lang.Integer">
+			<column name="MONTH_DAYS"></column>
+		</property>
+		<property name="interval_days" type="java.lang.Integer">
+			<column name="INTERVAL_DAYS"></column>
+		</property>
+		<property name="interval_hours" type="java.lang.Integer">
+			<column name="INTERVAL_HOURS"></column>
+		</property>
+		<property name="interval_minutes" type="java.lang.Integer">
+			<column name="INTERVAL_MINUTES"></column>
+		</property>
+		<property name="exec_priority" type="java.lang.String">
+			<column name="EXEC_PRIORITY"></column>
+		</property>
+		<property name="exec_notice_mail_list" type="java.lang.String">
+			<column name="EXEC_NOTICE_MAIL_LIST"></column>
+		</property>
+		<property name="mail_success_flag" type="java.lang.String">
+			<column name="MAIL_SUCCESS_FLAG"></column>
+		</property>
+		<property name="mail_failure_flag" type="java.lang.String">
+			<column name="MAIL_FAILURE_FLAG"></column>
+		</property>
+		<property name="mail_cancel_flag" type="java.lang.String">
+			<column name="MAIL_CANCEL_FLAG"></column>
+		</property>
+		<property name="exec_notice_snmp_list" type="java.lang.String">
+			<column name="EXEC_NOTICE_SNMP_LIST"></column>
+		</property>
+		<property name="snmp_status_value" type="java.lang.Integer">
+			<column name="SNMP_STATUS_VALUE"></column>
+		</property>
+		
+	</class>
+</hibernate-mapping>
+
+

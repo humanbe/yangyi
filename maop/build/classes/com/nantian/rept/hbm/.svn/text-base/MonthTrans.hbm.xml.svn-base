@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.rept.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="MonthTransVo" table="MONTH_TRAN">
+  <composite-id>
+   <key-property name="aplCode" type="java.lang.String">
+    <column name="APL_CODE" not-null="true">
+    	<comment>应用系统编号</comment>
+    </column>
+   </key-property>
+    <key-property name="countMonth" type="java.lang.String">
+    <column name="COUNT_MONTH" not-null="true">
+    	<comment>统计月份</comment>
+    </column>
+   </key-property>
+  </composite-id>
+  <property name="dayAvgTrans" generated="never" not-null="false" type="java.lang.String">
+   <column name="DAY_AVG_TRANS">
+       	<comment>日均交易量</comment>
+   </column>
+  </property>
+  <property name="workdayAvgTrans" generated="never" not-null="false" type="java.lang.String">
+   <column name="WORKDAY_AVG_TRANS">
+       	<comment>工作日日均交易量</comment>
+   </column>
+  </property>
+  <property name="holidayAvgTrans" generated="never" not-null="false" type="java.lang.String">
+   <column name="HOLIDAY_AVG_TRANS">
+       	<comment>休息日日均交易量</comment>
+   </column>
+  </property>
+  <property name="monthPeakTrans" generated="never" not-null="false" type="java.lang.String">
+   <column name="MONTH_PEAK_TRANS">
+       	<comment>月峰值交易量</comment>
+   </column>
+  </property>
+  <property name="monthTotalTrans" generated="never" not-null="false" type="java.lang.String">
+   <column name="MONTH_TOTAL_TRANS">
+       	<comment>月总交易量</comment>
+   </column>
+  </property>
+  </class>
+</hibernate-mapping>

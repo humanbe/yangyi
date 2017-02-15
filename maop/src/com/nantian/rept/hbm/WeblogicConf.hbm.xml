@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.rept.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="WeblogicConfVo" table="WEBLOGIC_CONF">
+   <composite-id>
+	   <key-property name="aplCode" type="java.lang.String">
+	    <column name="APL_CODE" not-null="true">
+	    	<comment>应用系统编号</comment>
+	    </column>
+	   </key-property>
+	   <key-property name="ipAddress" type="java.lang.String">
+	    <column name="IP_ADDRESS" not-null="true">
+	    	<comment>IP地址</comment>
+	    </column>
+	   </key-property>
+	   <key-property name="serverName" type="java.lang.String">
+	    <column name="SERVER_NAME" not-null="true">
+	    	<comment>weblogic服务名称</comment>
+	    </column>
+	   </key-property>
+	   <key-property name="weblogicPort" type="java.lang.String">
+	    <column name="WEBLOGIC_PORT" not-null="true">
+	    	<comment>端口号</comment>
+	    </column>
+	   </key-property>
+   </composite-id>
+   <property name="serverJdbcName" generated="never" not-null="false" type="java.lang.String">
+   	<column name="SERVER_JDBC_NAME" not-null="false">
+   		<comment>服务JDBC名</comment>
+   	</column>
+   </property>
+   <property name="clusterServer" generated="never" not-null="false" type="java.lang.String">
+   	<column name="CLUSTER_SERVER" not-null="false">
+   		<comment>集群服务名称</comment>
+   	</column>
+   </property>
+   <property name="weblogicFlg" generated="never" not-null="false" type="java.lang.String">
+   	<column name="WEBLOGIC_FLG" not-null="false">
+   		<comment>导出数据标识: 0为导出, 1为不导出</comment>
+   	</column>
+   </property>
+  </class>
+</hibernate-mapping>

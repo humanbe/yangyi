@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.common.system.vo">
+	<class name="MemberVo" table="CMN_MEMBER" dynamic-update="true"
+		dynamic-insert="true">
+		<comment>人员基本信息</comment>
+		<id name="userId" type="java.lang.String">
+			<column name="USERID">
+				<comment>用户ID</comment>
+			</column>
+		</id>
+		<property name="userName" type="java.lang.String">
+			<column name="USERNAME">
+				<comment>用户名称</comment>
+			</column>
+		</property>
+		<property name="sex" type="java.lang.String">
+			<column name="XINGBIE">
+				<comment>性别</comment>
+			</column>
+		</property>
+		<property name="mobile" type="java.lang.String">
+			<column name="MOBILE">
+				<comment>移动电话</comment>
+			</column>
+		</property>
+		<property name="phone" type="java.lang.String">
+			<column name="PHONE">
+				<comment>座机</comment>
+			</column>
+		</property>
+		<property name="otherContact" type="java.lang.String">
+			<column name="OTHER">
+				<comment>其他联系方式</comment>
+			</column>
+		</property>
+		<property name="email" type="java.lang.String">
+			<column name="EMAIL">
+				<comment>邮件</comment>
+			</column>
+		</property>
+		<property name="serilNo" type="java.lang.String">
+			<column name="SERILNO">
+				<comment>员工号</comment>
+			</column>
+		</property>
+		<property name="groupName" type="java.lang.String">
+			<column name="GROUPNAME">
+				<comment>团队组别</comment>
+			</column>
+		</property>
+		<property name="teamName" type="java.lang.String">
+			<column name="TEAMNAME">
+				<comment>所属团队</comment>
+			</column>
+		</property>
+		<property name="outSourcingFlag" type="java.lang.String">
+			<column name="FLAG">
+				<comment>是否外包(1:不是;2:是)</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>
+
+

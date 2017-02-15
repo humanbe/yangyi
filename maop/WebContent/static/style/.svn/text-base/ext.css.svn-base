@@ -1,0 +1,405 @@
+@CHARSET "UTF-8";
+
+/* 添加按钮*/
+.button-add {
+	background-image: url(images/button/add.png) !important;
+	background-repeat: no-repeat;
+}
+
+/* 编辑按钮*/
+.button-edit {
+	background-image: url(images/button/edit.png) !important;
+	background-repeat: no-repeat;
+}
+
+/* 编辑按钮*/
+.button-edit2 {
+	background-image: url(images/button/edit2.png) !important;
+	background-repeat: no-repeat;
+}
+
+/* 删除按钮*/
+.button-delete {
+	background-image: url(images/button/delete.png) !important;
+	background-repeat: no-repeat;
+}
+
+/* 刷新按钮*/
+.button-refresh {
+	background-image: url(images/button/refresh.png) !important;
+	background-repeat: no-repeat;
+}
+
+/* 查看按钮*/
+.button-view {
+	background-image: url(images/button/view.png) !important;
+	background-repeat: no-repeat;
+}
+
+/* 确定按钮*/
+.button-ok {
+	background-image: url(images/button/ok.png) !important;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+/* 重置按钮*/
+.button-reset {
+	background-image: url(images/button/reset.png) !important;
+	background-repeat: no-repeat;
+}
+
+/* 取消按钮*/
+.button-cancel {
+	background-image: url(images/button/cancel.png) !important;
+	background-repeat: no-repeat;
+}
+
+/* 保存按钮*/
+.button-save {
+	background-image: url(images/button/save.png) !important;
+	background-repeat: no-repeat;
+}
+
+/* 关闭按钮*/
+.button-close {
+	background-image: url(images/button/close.png) !important;
+	background-repeat: no-repeat;
+}
+
+/* 上传按钮*/
+.button-upload {
+	background-image: url(images/button/upload.png) !important;
+	background-repeat: no-repeat;
+}
+
+/* 上传模板按钮*/
+.button-upload-excel {
+	background-image: url(images/button/upload_excel.png) !important;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+/* 下载模板按钮*/
+.button-download-excel {
+	background-image: url(images/button/download_excel.png) !important;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+/* excel按钮*/
+.button-excel {
+	background-image: url(images/button/excel.png) !important;
+	background-repeat: no-repeat;
+}
+/* pdf按钮*/
+.button-pdf {
+	background-image: url(images/button/pdf.png) !important;
+	background-repeat: no-repeat;
+}
+/* word按钮*/
+.button-word {
+	background-image: url(images/button/word.png) !important;
+	background-repeat: no-repeat;
+}
+
+/* 导入按钮*/
+.button-import {
+	background-image: url(images/button/import.png) !important;
+	background-repeat: no-repeat;
+}
+
+/* 导出按钮*/
+.button-export {
+	background-image: url(images/button/export.png) !important;
+	background-repeat: no-repeat;
+}
+
+/* 展现批量关系视图按钮*/
+.button-viewBatchRel {
+	background-image: url(images/button/workflow.png) !important;
+	background-repeat: no-repeat;
+}
+
+/* 重置密码按钮*/
+.button-reset-password {
+	background-image: url(images/button/reset_password.png) !important;
+	background-repeat: no-repeat;
+}
+
+/* 启用按钮*/
+.button-enabled {
+	background-image: url(images/button/play.png) !important;
+	background-repeat: no-repeat;
+}
+
+/* 停用按钮*/
+.button-disabled {
+	background-image: url(images/button/stop.png) !important;
+	background-repeat: no-repeat;
+}
+
+/* 投影按钮*/
+.button-projection {
+	background-image: url(images/button/projection-screen.png) !important;
+	background-repeat: no-repeat;
+}
+
+/*查看网络拓扑图*/
+.button-view-topology{
+	background-image: url(images/button/topology.png) !important;
+	background-repeat: no-repeat;
+}
+
+/*启动按钮*/
+.button-start{
+	background-image: url(images/button/start.png) !important;
+	background-repeat: no-repeat;
+}
+
+/*停止按钮*/
+.button-stop{
+	background-image: url(images/button/shutdown.png) !important;
+	background-repeat: no-repeat;
+}
+
+/* 新增行按钮*/
+.row-add {
+	background-image: url(images/button/row-add.png) !important;
+	background-repeat: no-repeat;
+}
+
+/* 插入行按钮*/
+.row-insert {
+	background-image: url(images/button/row-insert.png) !important;
+	background-repeat: no-repeat;
+}
+
+/* 删除行按钮*/
+.row-delete {
+	background-image: url(images/button/row-delete.png) !important;
+	background-repeat: no-repeat;
+}
+
+/* 删除全部行按钮*/
+.row-delete-all {
+	background-image: url(images/button/delete-all.png) !important;
+	background-repeat: no-repeat;
+}
+
+/* 用户名输入域*/
+.input-username {
+	background-image: url(images/sec/username.png) !important;
+	background-repeat: no-repeat;
+	background-position: right;
+}
+
+/* 密码输入域*/
+.input-password {
+	background-image: url(images/sec/key.png) !important;
+	background-repeat: no-repeat;
+	background-position: right;
+}
+
+/* 配置链接*/
+.link-config {
+	padding-left: 18px;
+	background: transparent url(images/link/config.png) no-repeat center
+		left;
+}
+
+/* 下载链接*/
+.link-download {
+	padding-left: 18px;
+	background: transparent url(images/link/download.png) no-repeat center
+		left;
+}
+
+/* 根节点*/
+.node-root {
+	background-image: url(images/tree/root.png) !important;
+	background-repeat: no-repeat;
+}
+
+/* 用户节点*/
+.node-user {
+	background-image: url(images/tree/user.png) !important;
+	background-repeat: no-repeat;
+}
+
+/*菜单节点*/
+.node-menu {
+	background-image: url(images/tree/menu.png) !important;
+	background-repeat: no-repeat;
+}
+
+/*模块节点*/
+.node-module {
+	background-image: url(images/tree/module.png) !important;
+	background-repeat: no-repeat;
+}
+
+/*功能节点*/
+.node-function {
+	background-image: url(images/tree/function.png) !important;
+	background-repeat: no-repeat;
+}
+
+/*非叶子节点*/
+.node-treenode {
+	background-image: url(images/tree/treenode.png) !important;
+	background-repeat: no-repeat;
+}
+
+/*叶子节点*/
+.node-leaf {
+	background-image: url(images/tree/leaf.png) !important;
+	background-repeat: no-repeat;
+}
+
+/* chart bar 图标*/
+.chart-bar {
+	background-image: url(images/button/chart_bar.png) !important;
+	background-repeat: no-repeat;
+}
+/* chart line 图标*/
+.chart-line {
+	background-image: url(images/button/chart_line.png) !important;
+	background-repeat: no-repeat;
+}
+/* chart pie 图标*/
+.chart-pie {
+	background-image: url(images/button/chart_pie.png) !important;
+	background-repeat: no-repeat;
+}
+
+/* chart 启动 图标*/
+.chart-play {
+	background-image: url(images/button/chart_play.png) !important;
+	background-repeat: no-repeat;
+}
+/* chart 停止 图标*/
+.chart-stop {
+	background-image: url(images/button/chart_stop.png) !important;
+	background-repeat: no-repeat;
+}
+/* chart 重新加载 图标*/
+.chart-reload {
+	background-image: url(images/button/chart_reload.png) !important;
+	background-repeat: no-repeat;
+}
+/*系统GridPanel偶行背景颜色*/         
+.x-gridSys-row-alt{ 
+        background-color: #E3ECF9  !important;
+}
+/*服务GridPanel偶行背景颜色DDEEAA*/
+.x-gridServe-row-alt{ 
+        background-color: #F2F2F2  !important;
+}
+/*交易GridPanel偶行背景颜色*/
+.x-gridTran-row-alt{ 
+        background-color: #FAF0E6  !important;
+}
+/*设备GridPanel偶行背景颜色*/
+.x-gridDevice-row-alt{
+        background-color: #FAFAD2  !important;
+}
+/*重要度为1的交易背景色*/
+.x-grid-back-SandyBrown{
+	background-color:#F4A460 !important;
+}
+/*重要度为1的交易背景色*/
+.x-grid-back-DarkGray{
+	background-color:#A9A9A9 !important;
+}
+/*重要度为1的交易背景色*/
+.x-grid-back-red{
+	background-color:#FF0000 !important;
+}
+/*重要度为1的交易背景色*/
+.x-grid-back-lightgreen{
+	background-color:#90EE90 !important;
+}
+/*重要度为1的交易背景色*/
+.x-grid-back-yellow{
+	background-color:#FFFF00 !important;
+}
+/*日期为节假日的背景色*/
+.x-gridHoliday-Orange{
+	background-color:#FFA500 !important;
+}
+/*合计值、平均值、最大值等计算值的背景色*/
+.x-gridStatistical-lightskyblue td{
+	background-color:#3CB371 !important;
+	font-size:14px !important;
+	font-weight: 900 !important;
+	color: black  !important;
+}
+/* 检测*/
+.button-agent {
+	background-image: url(images/button/reset.png) !important;
+	background-repeat: no-repeat;
+}
+/* 排期*/
+.button-plan {
+	background-image: url(images/button/plan.png) !important;
+	background-repeat: no-repeat;
+}
+/* 确认*/
+.button-confirm {
+	background-image: url(images/button/confirm.png) !important;
+	background-repeat: no-repeat;
+}
+
+/* 同步*/
+.button-sync {
+	background-image: url(images/button/refresh.png) !important;
+	background-repeat: no-repeat;
+}
+
+/* 上线*/
+.button-online {
+	background-image: url(images/button/online.png) !important;
+	background-repeat: no-repeat;
+}
+/* 权限申请*/
+.button-authapply {
+	background-image: url(images/button/database_key.png) !important;
+	background-repeat: no-repeat;
+}
+/* 检测*/
+.button-detect {
+	background-image: url(images/button/detect.png) !important;
+	background-repeat: no-repeat;
+}
+
+/* 发布*/
+.button-deploy {
+	background-image: url(images/button/deploy.png) !important;
+	background-repeat: no-repeat;
+}
+/* 上一步按钮*/
+.button-previous {
+	background-image: url(images/button/previous.png) !important;
+	background-repeat: no-repeat;
+}
+/* 下一步按钮*/
+.button-next {
+	background-image: url(images/button/next.png) !important;
+	background-repeat: no-repeat;
+}
+/* 上传按钮*/
+.button-upload {
+	background-image: url(images/button/upload.png) !important;
+	background-repeat: no-repeat;
+}
+/* 重开按钮*/
+.button-reopen {
+	background-image: url(images/button/upload.png) !important;
+	background-repeat: no-repeat;
+}
+/* 查询按钮*/
+.button-search {
+	background-image: url(images/menu/search.png) !important;
+	background-repeat: no-repeat;
+}

@@ -1,0 +1,164 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.check.vo">
+	<class name="CheckComplianceResultInfoVo" table="CHECK_COMPLIANCE_RESULT_INFO" 
+	dynamic-update="true" dynamic-insert="true">
+		<composite-id>
+		<key-property name="appsysCode" type="java.lang.String">
+			<column name="APPSYS_CODE">
+				<comment>系统代码</comment>
+			</column>
+		</key-property>
+		<key-property name="JobCodeJeda" type="java.lang.Integer">
+			<column name="JOB_CODE_JEDA">
+				<comment>JEDA作业编号</comment>
+			</column>
+		</key-property>
+		<key-property name="JobId" type="java.lang.Integer">
+			<column name="JOB_ID">
+				<comment>BSA作业ID</comment>
+			</column>
+		</key-property>
+		<key-property name="JobNameBsa" type="java.lang.String">
+			<column name="JOB_NAME_BSA">
+				<comment>BSA作业名称</comment>
+			</column>
+		</key-property>
+		<key-property name="JobPath" type="java.lang.String">
+			<column name="JOB_PATH">
+				<comment>BSA作业路径</comment>
+			</column>
+		</key-property>
+		<key-property name="TemplateId" type="java.lang.Integer">
+			<column name="TEMPLATE_ID">
+				<comment>模板ID</comment>
+			</column>
+		</key-property>
+		<key-property name="TemplateName" type="java.lang.String">
+			<column name="TEMPLATE_NAME">
+				<comment>模板名称</comment>
+			</column>
+		</key-property>
+		<key-property name="TemplatePath" type="java.lang.String">
+			<column name="TEMPLATE_PATH">
+				<comment>模板路径</comment>
+			</column>
+		</key-property>
+		<key-property name="RuleName" type="java.lang.String">
+			<column name="RULE_NAME">
+				<comment>B合规规则名称</comment>
+			</column>
+		</key-property>
+		<key-property name="RuleString" type="java.lang.String">
+			<column name="RULE_STRING">
+				<comment>合规内容</comment>
+			</column>
+		</key-property>
+		<key-property name="ServerName" type="java.lang.String">
+			<column name="SERVER_NAME">
+				<comment>服务器名称</comment>
+			</column>
+		</key-property>
+		<key-property name="ServerIp" type="java.lang.String">
+			<column name="SERVER_IP">
+				<comment>服务器IP</comment>
+			</column>
+		</key-property>
+		<key-property name="ResultId" type="java.lang.Integer">
+			<column name="RESULT_ID">
+				<comment>作业执行结果ID</comment>
+			</column>
+		</key-property>
+	</composite-id>
+		<property name="OsName" type="java.lang.String">
+				<column name="OS_NAME">
+					<comment>服务器类型</comment>
+				</column>
+		</property>
+		<property name="IsConsistent" type="java.lang.Integer">
+			<column name="IS_CONSISTENT">
+				<comment>合规</comment>
+			</column>
+		</property>
+		<property name="IsInconsistent" type="java.lang.Integer">
+			<column name="IS_INCONSISTENT">
+				<comment>不合规</comment>
+			</column>
+		</property>
+		<property name="RuleResultString" type="java.lang.String">
+				<column name="RULE_RESULT_STRING">
+					<comment>合规结果</comment>
+				</column>
+		</property>
+		<property name="RuleDate" type="java.sql.Timestamp">
+			<column name="RULE_DATE">
+				<comment>合规日期</comment>
+			</column>
+		</property>
+		<property name="StartDatetime" type="java.sql.Timestamp">
+			<column name="START_DATETIME">
+				<comment>作业运行开始时间</comment>
+			</column>
+		</property>
+		<property name="EndDatetime" type="java.sql.Timestamp">
+				<column name="END_DATETIME">
+					<comment>作业运行结束时间</comment>
+				</column>
+		</property>
+		<property name="JobIsErrors" type="java.lang.Integer">
+			<column name="JOB_IS_ERRORS">
+				<comment>作业运行是否异常</comment>
+			</column>
+		</property>
+		<property name="JobErrorsMessage" type="java.lang.String">
+			<column name="JOB_ERRORS_MESSAGE">
+				<comment>作业运行异常信息</comment>
+			</column>
+		</property>
+		<property name="InconsistentHandleDesc" type="java.lang.String">
+			<column name="INCONSISTENT_HANDLE_DESC">
+				<comment>巡检故障描述</comment>
+			</column>
+		</property>
+		<property name="InconsistentHandleStatus" type="java.lang.Integer">
+			<column name="INCONSISTENT_HANDLE_STATUS">
+				<comment>巡检故障处理状态</comment>
+			</column>
+		</property>
+		<property name="InconsistentHandleResult" type="java.lang.String">
+				<column name="INCONSISTENT_HANDLE_RESULT">
+					<comment>巡检故障处理结果</comment>
+				</column>
+		</property>
+		<property name="InconsistentHandleDate" type="java.sql.Timestamp">
+			<column name="INCONSISTENT_HANDLE_DATE">
+				<comment>巡检故障处理日期</comment>
+			</column>
+		</property>
+		<property name="InconsistentHandleUser" type="java.lang.String">
+			<column name="INCONSISTENT_HANDLE_USER">
+				<comment>巡检故障处理人</comment>
+			</column>
+		</property>
+			<property name="DateCreated" type="java.sql.Timestamp">
+			<column name="DATE_CREATED">
+				<comment>创建时间</comment>
+			</column>
+		</property>
+		<property name="ExtendObject" type="java.lang.String">
+			<column name="EXTEND_OBJECT">
+				<comment>扩展对象</comment>
+			</column>
+		</property>
+		
+		<property name="SubItemDetail" type="java.lang.String">
+			<column name="SUB_ITEM_DETAIL">
+				<comment>巡检子项详情</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>
+
+

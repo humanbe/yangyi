@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.rept.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="RptItemConfVo" table="RPT_ITEM_CONF">
+  <composite-id>
+   <key-property name="aplCode" type="java.lang.String">
+    <column name="APL_CODE" not-null="true">
+    	<comment>应用系统编号</comment>
+    </column>
+   </key-property>
+    <key-property name="reportType" type="java.lang.String">
+    <column name="REPORT_TYPE" not-null="true">
+    	<comment>报表类型</comment>
+    </column>
+   </key-property>
+   <key-property name="sheetName" type="java.lang.String">
+    <column name="SHEET_NAME" not-null="true">
+    	<comment>日报SHEET名</comment>
+    </column>
+   </key-property>
+   <key-property name="itemCd" type="java.lang.String">
+    <column name="ITEM_CD" not-null="true">
+    	<comment>科目名</comment>
+    </column>
+   </key-property>   
+  </composite-id>
+  <property name="sheetSeq" generated="never" not-null="false" type="java.lang.Integer">
+   <column name="SHEET_SEQ">
+       	<comment>日报SHEET顺序号</comment>
+   </column>
+  </property>
+  <property name="itemSeq" generated="never" not-null="false" type="java.lang.Integer">
+   <column name="ITEM_SEQ">
+       	<comment>科目顺序号</comment>
+   </column>
+  </property>
+  <property name="groupParent" generated="never" not-null="false" type="java.lang.String">
+   <column name="GROUP_PARENT">
+       	<comment>分组标题名</comment>
+   </column>
+  </property>
+  <property name="expression" generated="never" lazy="false" not-null="false" type="java.lang.String">
+   <column name="EXPRESSION">
+       	<comment>计算公式</comment>
+   </column>
+  </property>
+  <property name="expressionUnit" generated="never" lazy="false" not-null="false" type="java.lang.String">
+   <column name="EXPRESSION_UNIT">
+       	<comment>计算公式单位</comment>
+   </column>
+  </property>
+  </class>
+</hibernate-mapping>

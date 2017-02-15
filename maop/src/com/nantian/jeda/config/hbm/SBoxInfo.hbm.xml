@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.jeda.config.vo">
+	<class dynamic-insert="true" dynamic-update="true" name="sboxInfoVo"
+		table="SUGGESTION_BOX">
+
+		<id name="sbox_id" column="SBOX_ID" type="java.lang.Integer">
+		  	<generator class="sequence">
+		  		<param name="sequence">SBOX_SEQUENCE</param>
+		  	</generator>
+		</id>
+		<property generated="never" lazy="false" not-null="true" name="sbox_initiator"
+			 type="java.lang.String">
+			<column name="SBOX_INITIATOR">
+			</column>
+		</property>
+		<property generated="never" lazy="false"  name="sbox_value"
+			not-null="true" type="java.lang.String">
+			<column name="SBOX_VALUE">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="sbox_time" not-null="true"
+			 type="java.sql.Timestamp">
+			<column name="SBOX_TIME">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="sbox_statenum" not-null="false"
+			 type="java.lang.String">
+			<column name="SBOX_STATENUM">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="sbox_confirm_user"
+			 type="java.lang.String">
+			<column name="SBOX_CONFIRM_USER">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="sbox_confirm_time"
+			 type="java.sql.Timestamp">
+			<column name="SBOX_CONFIRM_TIME">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="sbox_reject_time"
+			 type="java.sql.Timestamp">
+			<column name="SBOX_REJECT_TIME">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="sbox_reject_user"
+			type="java.lang.String">
+			<column name="SBOX_REJECT_USER">
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>
+

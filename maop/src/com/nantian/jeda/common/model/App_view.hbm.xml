@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.nantian.jeda.common.model">
+	<class name="App_view" table="APP_VIEW" dynamic-update="true"
+		dynamic-insert="true">
+		<comment>功能查看</comment>
+		<id name="aview_rel_id" length="50" type="java.lang.String">
+			<column name="AVIEW_REL_ID" >
+				<comment>主键</comment>
+			</column>
+		</id>
+		<property generated="never" lazy="false" name="aview_name" type="java.lang.String">
+			<column name="AVIEW_NAME">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="aview_desc" type="java.lang.String">
+			<column name="AVIEW_DESC">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="aview_oper" type="java.lang.String">
+			<column name="AVIEW_OPER">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="aview_time" type="java.lang.String">
+			<column name="AVIEW_TIME">
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

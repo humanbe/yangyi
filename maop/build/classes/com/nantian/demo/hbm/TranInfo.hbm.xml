@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.demo.vo">
+	<class name="TranInfoVo" table="T_TRAN_INFO" dynamic-update="true"
+		dynamic-insert="true">
+		<comment>table</comment>
+		<id name="tranid" unsaved-value="null" type="java.lang.String">
+			<column name="TRANID">
+				<comment>tranid</comment>
+			</column>
+			<generator class="uuid" />
+		</id>
+		<property name="appsystemid" type="java.lang.String">
+			<column name="APPSYSTEMID">
+				<comment>appsystemid</comment>
+			</column>
+		</property>
+		<property name="chnlno" type="java.lang.String">
+			<column name="CHNLNO">
+				<comment>chnlno</comment>
+			</column>
+		</property>
+		<property name="outtrancode" type="java.lang.String">
+			<column name="OUTTRANCODE">
+				<comment>outtrancode</comment>
+			</column>
+		</property>
+		<property name="trancode" type="java.lang.String">
+			<column name="TRANCODE">
+				<comment>trancode</comment>
+			</column>
+		</property>
+		<property name="tranname" type="java.lang.String">
+			<column name="TRANNAME">
+				<comment>tranname</comment>
+			</column>
+		</property>
+		<property name="trantime" type="java.lang.String">
+			<column name="TRANTIME">
+				<comment>trantime</comment>
+			</column>
+		</property>
+		<property name="serviceid" type="java.lang.String">
+			<column name="SERVICEID">
+				<comment>serviceid</comment>
+			</column>
+		</property>
+		<property name="busimoduelname" type="java.lang.String">
+			<column name="BUSIMODUELNAME">
+				<comment>busimoduelname</comment>
+			</column>
+		</property>
+		<property name="busimoduelcode" type="java.lang.String">
+			<column name="BUSIMODUELCODE">
+				<comment>busimoduelcode</comment>
+			</column>
+		</property>
+		<property name="higouttrancode" type="java.lang.String">
+			<column name="HIGOUTTRANCODE">
+				<comment>higouttrancode</comment>
+			</column>
+		</property>
+		<property name="callway" type="java.lang.String">
+			<column name="CALLWAY">
+				<comment>callway</comment>
+			</column>
+		</property>
+		<property name="callnum" type="integer">
+			<column name="CALLNUM">
+				<comment>callnum</comment>
+			</column>
+		</property>
+		<property name="condition" type="java.lang.String">
+			<column name="CONDITION">
+				<comment>condition</comment>
+			</column>
+		</property>
+		<property name="reserve" type="java.lang.String">
+			<column name="RESERVE">
+				<comment>reserve</comment>
+			</column>
+		</property>
+		<property name="reserve1" type="java.lang.String">
+			<column name="RESERVE1">
+				<comment>reserve1</comment>
+			</column>
+		</property>
+		<property name="reserve2" type="java.lang.String">
+			<column name="RESERVE2">
+				<comment>reserve2</comment>
+			</column>
+		</property>
+		<property name="reserve3" type="java.lang.String">
+			<column name="RESERVE3">
+				<comment>reserve3</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>
+
+

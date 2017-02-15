@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.rept.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="RptItemBaseVo" table="RPT_ITEM_BASE">
+  <composite-id>
+     <key-property name="item_cd" type="java.lang.String">
+    <column name="ITEM_CD" not-null="true">
+    	<comment>指标编码 </comment>
+    </column>
+   </key-property>
+    <key-property name="parent_item_cd" type="java.lang.String">
+    <column name="PARENT_ITEM_CD" not-null="true">
+    	<comment>上级指标编码 </comment>
+    </column>
+   </key-property>
+  
+  </composite-id>
+
+  
+  <property name="item_name" generated="never" not-null="false" type="java.lang.String">
+   <column name="ITEM_NAME">
+       	<comment>指标名称</comment>
+   </column>
+  </property>
+  <property name="relation_tablename" generated="never" not-null="false" type="java.lang.String">
+   <column name="RELATION_TABLENAME">
+       	<comment> 指标所属表名称</comment>
+   </column>
+  </property>
+  
+  <property name="item_creator" generated="never" not-null="false" type="java.lang.String">
+   <column name="ITEM_CREATOR">
+       	<comment>创建人</comment>
+   </column>
+  </property>
+  <property name="item_created" generated="never" not-null="false" type="java.sql.Timestamp">
+   <column name="ITEM_CREATED">
+       	<comment>创建时间</comment>
+   </column>
+  </property>
+   <property name="item_modifier" generated="never" not-null="false" type="java.lang.String">
+   <column name="ITEM_MODIFIER">
+       	<comment>修改人</comment>
+   </column>
+  </property>
+  <property name="item_modified" generated="never" not-null="false" type="java.sql.Timestamp">
+   <column name="ITEM_MODIFIEd">
+       	<comment>修改时间</comment>
+   </column>
+  </property>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.check.vo">
+	<class name="CheckComplianceBatchConfigVo" table="CHECK_COMPLIANCE_BATCH_CONFIG" 
+	dynamic-update="true" dynamic-insert="true">
+		<id name="last_synchronize_time" type="java.sql.Timestamp">
+			<column name="LAST_SYNCHRONIZE_TIME">
+				<comment>最后同步时间</comment>
+			</column>
+		</id>
+	</class>
+</hibernate-mapping>
+
+

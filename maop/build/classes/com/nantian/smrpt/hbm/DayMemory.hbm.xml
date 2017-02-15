@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.smrpt.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="DayMemoryVo" table="SMDB.CL_DAY_MEM">
+  <composite-id>
+  	<key-property name="hostName" type="java.lang.String" column="主机名"/>
+  	<key-property name="date" type="java.util.Date" column="日期"/>
+  </composite-id>
+  <property name="dayPeak" not-null="false" type="java.lang.Float" column="日峰值"/>
+  <property name="dayAvg" not-null="false" type="java.lang.Float" column="日均值"/>
+  <property name="onlinePeak" not-null="false" type="java.lang.Float" column="联机峰值"/>
+  <property name="onlineAvg" not-null="false" type="java.lang.Float" column="联机均值"/>
+  <property name="batchPeak" not-null="false" type="java.lang.Float" column="批量峰值"/>
+  <property name="batchAvg" not-null="false" type="java.lang.Float" column="批量均值"/>
+  </class>
+</hibernate-mapping>

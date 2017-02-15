@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.toolbox.vo">
+	<class dynamic-insert="true" dynamic-update="true" name="ToolBoxInfoVo"
+		table="TOOL_BOX_INFO">
+		<composite-id>
+		<key-property   name="appsys_code"  type="java.lang.String">
+			<column name="APPSYS_CODE" not-null="true">
+			</column>
+		</key-property>
+			<key-property name="tool_code" type="java.lang.String">
+				<column name="TOOL_CODE" not-null="true">
+				</column>
+			</key-property>
+		</composite-id>
+		<property generated="never" lazy="false" name="tool_type"
+			not-null="true" type="java.lang.String">
+			<column name="TOOL_TYPE">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="tool_name"
+			not-null="true" type="java.lang.String">
+			<column name="TOOL_NAME">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="tool_desc"
+			not-null="false" type="java.lang.String">
+			<column name="TOOL_DESC">
+			</column>
+		</property>
+		
+		<property generated="never" lazy="false" name="authorize_level_type"
+			not-null="true" type="java.lang.String">
+			<column name="AUTHORIZE_LEVEL_TYPE">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="field_type_one"
+			not-null="true" type="java.lang.String">
+			<column name="FIELD_TYPE_ONE">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="field_type_two"
+			 type="java.lang.String">
+			<column name="FIELD_TYPE_TWO">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="field_type_three"
+			 type="java.lang.String">
+			<column name="FIELD_TYPE_three">
+			</column>
+		</property>
+		
+		<property generated="never" lazy="false" name="tool_authorize_flag"
+			not-null="true" type="java.lang.String">
+			<column name="TOOL_AUTHORIZE_FLAG">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="tool_creator"
+			not-null="true" type="java.lang.String">
+			<column name="TOOL_CREATOR">
+			</column>
+		</property>
+		
+		<property generated="never" lazy="false" name="delete_flag"
+			not-null="true" type="java.lang.String">
+			<column name="DELETE_FLAG">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="tool_modifier"
+			 type="java.lang.String">
+			<column name="TOOL_MODIFIER">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="tool_created_time"
+			type="java.sql.Timestamp">
+			<column name="TOOL_CREATED_TIME">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="tool_updated_time"
+			type="java.sql.Timestamp">
+			<column name="TOOL_UPDATED_TIME">
+			</column>
+		</property>
+
+	</class>
+</hibernate-mapping>

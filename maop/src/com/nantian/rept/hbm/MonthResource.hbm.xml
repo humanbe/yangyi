@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.rept.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="MonthResourceVo" table="MONTH_RESOURCE">
+  <composite-id>
+   <key-property name="aplCode" type="java.lang.String">
+    <column name="APL_CODE" not-null="true">
+    	<comment>应用系统编号</comment>
+    </column>
+   </key-property>
+   <key-property name="countMonth" type="java.lang.String">
+    <column name="COUNT_MONTH" not-null="true">
+    	<comment>统计月份</comment>
+    </column>
+   </key-property>
+   <key-property name="srvCode" type="java.lang.String">
+    <column name="SRV_CODE" not-null="true">
+    	<comment>服务器编号(IP)</comment>
+    </column>
+   </key-property>
+  </composite-id>
+  <property name="cpuPeak" generated="never" not-null="false" type="java.lang.String">
+   <column name="CPU_PEAK">
+       	<comment>CPU月峰值</comment>
+   </column>
+  </property>
+  <property name="cpuOnlinePeakAvg" generated="never" not-null="false" type="java.lang.String">
+   <column name="CPU_ONLINE_PEAK_AVG">
+       	<comment>CPU联机峰值月均值</comment>
+   </column>
+  </property>
+  <property name="cpuBatchPeakAvg" generated="never" not-null="false" type="java.lang.String">
+   <column name="CPU_BATCH_PEAK_AVG">
+       	<comment>CPU批量峰值月均值</comment>
+   </column>
+  </property>
+  <property name="memPeak" generated="never" not-null="false" type="java.lang.String">
+   <column name="MEM_PEAK">
+       	<comment>内存月峰值</comment>
+   </column>
+  </property>
+  <property name="memOnlinePeakAvg" generated="never" not-null="false" type="java.lang.String">
+   <column name="MEM_ONLINE_PEAK_AVG">
+       	<comment>内存联机峰值月均值</comment>
+   </column>
+  </property>
+  <property name="memBatchPeakAvg" generated="never" not-null="false" type="java.lang.String">
+   <column name="MEM_BATCH_PEAK_AVG">
+       	<comment>内存批量峰值月均值)</comment>
+   </column>
+  </property>
+  <property name="ioPeak" generated="never" not-null="false" type="java.lang.String">
+   <column name="IO_PEAK">
+       	<comment>IO月峰值</comment>
+   </column>
+  </property>
+  <property name="ioOnlinePeakAvg" generated="never" not-null="false" type="java.lang.String">
+   <column name="IO_ONLINE_PEAK_AVG">
+       	<comment>IO联机峰值月均值</comment>
+   </column>
+  </property>
+  <property name="ioBatchPeakAvg" generated="never" not-null="false" type="java.lang.String">
+   <column name="IO_BATCH_PEAK_AVG">
+       	<comment>IO批量峰值月均值</comment>
+   </column>
+  </property>
+  </class>
+</hibernate-mapping>

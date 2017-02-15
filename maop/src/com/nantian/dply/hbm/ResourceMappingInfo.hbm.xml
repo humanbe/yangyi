@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.dply.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="ResourceMappingInfoVo" table="DPLY_RESOURCE_MAPPING_INFO">
+  <composite-id>
+   <key-property name="appsysCode" type="java.lang.String">
+    <column name="APPSYS_CODE" not-null="true">
+    </column>
+   </key-property>
+   <key-property name="subAppsysCode" type="java.lang.String">
+    <column name="SUB_APPSYS_CODE" not-null="true">
+    </column>
+   </key-property>
+   <key-property name="hostIp" type="java.lang.String">
+    <column name="HOST_IP" not-null="true">
+    </column>
+   </key-property>
+   <key-property name="environmentId" type="java.lang.String">
+    <column name="ENVIRONMENT_ID" not-null="true">
+    </column>
+   </key-property>
+  </composite-id>
+  <property generated="never" lazy="false" name="reserve1"
+   not-null="true" type="java.lang.String">
+   <column name="RESERVE1">
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="reserve2"
+   not-null="true" type="java.lang.String">
+   <column name="RESERVE2">
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="reserve3"
+   not-null="true" type="java.lang.String">
+   <column name="RESERVE3">
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="reserve4"
+   not-null="true" type="java.lang.String">
+   <column name="RESERVE4">
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="reserve5"
+   not-null="true" type="java.lang.String">
+   <column name="RESERVE5">
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="deleteFlag"
+   not-null="true" type="java.lang.String">
+   <column name="DELETE_FLAG">
+   </column>
+  </property>
+ </class>
+</hibernate-mapping>

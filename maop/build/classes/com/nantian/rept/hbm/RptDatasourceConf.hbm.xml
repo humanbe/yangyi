@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.rept.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="RptDatasourceConfVo" table="RPT_DATASOURCE_CONF">
+<composite-id>
+	<key-property name="aplCode" type="java.lang.String">
+		<column name="APL_CODE">
+		</column>
+	</key-property>
+	<key-property name="dataType" type="java.lang.String">
+		<column name="DATA_TYPE">
+		</column> 
+	</key-property>
+</composite-id>
+  
+  <property name="datasource" not-null="false" type="java.lang.String">
+   <column name="DATASOURCE">
+   </column>
+  </property>
+  </class>
+</hibernate-mapping>

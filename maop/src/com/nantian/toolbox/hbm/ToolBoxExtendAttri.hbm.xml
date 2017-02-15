@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.toolbox.vo">
+	<class dynamic-insert="true" dynamic-update="true" name="ToolBoxExtendAttriVo"
+		table="TOOL_BOX_EXTEND_ATTRI">
+		
+		
+		<id name="tool_code"  type="java.lang.String">
+			<column name="TOOL_CODE">
+				<comment>工具编号</comment>
+			</column>
+		</id>
+		
+		<property generated="never" lazy="false" name="tool_status"
+			not-null="true" type="java.lang.String">
+			<column name="TOOL_STATUS">
+			</column>
+		</property>
+			<property generated="never" lazy="false" name="tool_returnreasons"
+			not-null="false" type="java.lang.String">
+			<column name="TOOL_RETURNREASONS">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="tool_received_user"
+			 type="java.lang.String">
+			<column name="TOOL_RECEIVED_USER">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="tool_received_time"
+			type="java.sql.Timestamp">
+			<column name="TOOL_RECEIVED_TIME">
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

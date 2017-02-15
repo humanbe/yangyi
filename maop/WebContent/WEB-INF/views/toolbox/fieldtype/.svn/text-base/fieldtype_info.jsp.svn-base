@@ -1,0 +1,465 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="/include/taglibs.jsp"%>
+<script type="text/javascript">
+
+//定义列表
+FieldTypeList = Ext.extend(Ext.Panel, {
+	gridStore : null,// 数据列表数据源	grid : null,// 数据列表组件
+	form : null,// 查询表单组件
+	tabIndex : 0,// 查询表单组件Tab键顺序
+	csm : null,// 数据列表选择框组件
+	constructor : function(cfg) {// 构造方法		Ext.apply(this, cfg);
+		//禁止IE的backspace键(退格键)，但输入文本框时不禁止
+
+		Ext.getDoc().on('keydown',function(e) {
+							if (e.getKey() == 8
+									&& e.getTarget().type == 'text'
+									&& !e.getTarget().readOnly) {
+
+							} else if (e.getKey() == 8
+									&& e.getTarget().type == 'textarea'
+									&& !e.getTarget().readOnly) {
+
+							} else if (e.getKey() == 8) {
+								e.preventDefault();
+							}
+						});
+		this.userStore =  new Ext.data.Store({
+			proxy: new Ext.data.HttpProxy({
+				url : '${ctx}/${appPath}/jobdesign/getUserIdNames',
+				method : 'GET',
+				disableCaching : true
+			}),
+			reader : new Ext.data.JsonReader({}, ['username','name'])
+		});
+		this.userStore.load();
+		
+		//数据字典
+		this.field_type_directionStore= new Ext.data.JsonStore(
+		{
+			autoDestroy : true,
+			url : '${ctx}/${frameworkPath}/item/FIELD_TYPE_DIRECTION/sub',
+			root : 'data',
+			fields : [ 'value', 'name' ]
+		});
+		this.field_type_directionStore.load();
+		this.field_type_oneStore = new Ext.data.Store(
+				{
+					proxy: new Ext.data.HttpProxy({
+						url : '${ctx}/${appPath}/FieldTypeController/getFieldTypeone', 
+						method: 'POST'
+					}),
+					reader: new Ext.data.JsonReader({}, ['field_type_one'])
+				});
+				this.field_type_oneStore.load();
+				this.field_type_oneStore.on('beforeload', function(loader,node) {
+					//使用查询条件系统代码文本框时用
+					loader.baseParams.fieldType = Ext.getCmp("field_type_directionInfoId").getValue();
+				}, this);
+				this.field_type_twoStore = new Ext.data.Store(
+						{
+							proxy: new Ext.data.HttpProxy({
+								url : '${ctx}/${appPath}/FieldTypeController/getFieldTypetwo', 
+								method: 'POST'
+							}),
+							reader: new Ext.data.JsonReader({}, ['field_type_two'])
+						});
+				this.field_type_twoStore.load();
+				this.field_type_twoStore.on('beforeload', function(loader,node) {
+					//使用查询条件系统代码文本框时用
+					loader.baseParams.fieldType = Ext.getCmp("field_type_directionInfoId").getValue();
+				}, this);
+		Ext.apply(this, cfg);
+		// 实例化数据列表选择框组件
+		csm = new Ext.grid.CheckboxSelectionModel();
+		// 实例化数据列表数据源
+		this.gridStore = new Ext.data.JsonStore( {
+			proxy : new Ext.data.HttpProxy({
+				method : 'POST',
+				url :  '${ctx}/${appPath}/FieldTypeController/fieldType',
+				disableCaching : false
+			}),
+			autoDestroy : true,
+			root : 'data',
+			totalProperty : 'count',
+			fields : [ 'field_id','field_type_direction','field_type_one','field_type_two','field_type_three',
+			           'comments','filed_creator','filed_created','filed_modifier','filed_modified'],
+			remoteSort : true,
+			sortInfo : {
+				field : 'field_type_direction',
+				direction : 'ASC'
+			},
+			baseParams : {
+				start : 0,
+				limit : 100
+			}
+		});
+		//加载数据源
+		this.gridStore.load();
+		// 实例化数据列表组件
+
+		this.grid = new Ext.grid.GridPanel( {
+			id : 'FieldTypeListGridPanel',
+			region : 'center',
+			border : false,
+			viewConfig:{
+				forceFit : true
+			},
+			loadMask : true,
+			title : '<fmt:message key="title.list" />',
+			columnLines : true,
+			store : this.gridStore,
+			sm : csm,
+			// 列定义
+			columns : [ new Ext.grid.RowNumberer(), csm, 
+			            {header : 'ID', dataIndex : 'field_id', sortable : true,hidden:true},       
+				{header : '分类方向', dataIndex : 'field_type_direction', renderer:this.field_type_directionStoreone,scope : this,sortable : true},
+				{header : '一级分类', dataIndex : 'field_type_one', sortable : true},
+				{header : '二级分类', dataIndex : 'field_type_two', sortable : true},
+				{header : '三级分类', dataIndex : 'field_type_three', sortable : true}
+	  		
+	  		],
+	  		
+			// 定义按钮工具条
+			tbar : new Ext.Toolbar( {
+				items : [ '-' ]
+			}),
+			// 定义分页工具条
+			bbar : new Ext.PagingToolbar( {
+				store : this.gridStore,
+				displayInfo : true,
+				pageSize : 100,
+				buttons : [ '-' ]
+			}),
+			// 定义数据列表监听事件
+			listeners : {
+				scope : this,
+				// 行双击事件：打开数据查看页面
+				rowdblclick : this.doView
+
+			}
+		
+		});
+
+		// 实例化查询表单
+		this.form = new Ext.FormPanel( {
+			
+			region : 'east',
+			title : '<fmt:message key="button.find" />',
+			labelAlign : 'right',
+			labelWidth : 110,
+			buttonAlign : 'center',
+			frame : true,
+			split : true,
+			width : 280,
+			minSize : 280,
+			maxSize : 280,
+			autoScroll : true,
+			collapsible : true,
+			collapseMode : 'mini',
+			border : false,
+			defaults : {
+				anchor : '100%',
+				msgTarget : 'side'
+			},
+			// 定义查询表单组件
+			items : [ 
+				{
+					xtype : 'combo',
+					fieldLabel : '分类方向',
+					store : this.field_type_directionStore,
+					displayField : 'name',
+					valueField : 'value',
+					id :'field_type_directionInfoId',
+					name : 'field_type_direction',
+					hiddenName:'field_type_direction',
+					mode: 'local',
+					typeAhead: true,
+					forceSelection : true,
+				    triggerAction: 'all',
+					tabIndex : this.tabIndex++,
+					listeners : {
+						scope : this,
+						 beforequery : function(e){
+							var combo = e.combo;
+							combo.collapse();
+							 if(!e.forceAll){
+								var input = e.query.toUpperCase();
+								var regExp = new RegExp('.*' + input + '.*');
+								combo.store.filterBy(function(record, id){
+									var text = record.get(combo.displayField);
+									return regExp.test(text);
+								}); 
+								combo.restrictHeight();
+								combo.expand();
+								return false;
+							   }
+						 },
+							select : function(combo,record,index) {
+								this.field_type_oneStore.reload();
+								this.field_type_twoStore.reload();
+								}
+					}
+				},
+				{
+					xtype : 'combo',
+					store : this.field_type_oneStore,
+					fieldLabel : '<fmt:message key="toolbox.field_type_one" />',
+					name : 'field_type_one',
+					valueField : 'field_type_one',
+					displayField : 'field_type_one',
+					hiddenName : 'field_type_one',
+					mode : 'local',
+					triggerAction : 'all',
+					//forceSelection : true,
+					editable : true,
+					tabIndex : this.tabIndex++
+				},
+				{
+					xtype : 'combo',
+					store : this.field_type_twoStore,
+					fieldLabel : '<fmt:message key="toolbox.field_type_two" />',
+					name : 'field_type_two',
+					valueField : 'field_type_two',
+					displayField : 'field_type_two',
+					hiddenName : 'field_type_two',
+					mode : 'local',
+					triggerAction : 'all',
+					//forceSelection : true,
+					editable : true,
+					tabIndex : this.tabIndex++
+				},{
+				    xtype : 'textfield',
+					fieldLabel : '<fmt:message key="toolbox.field_type_three" />',
+					name : 'field_type_three'
+				} 
+			],
+			// 定义查询表单按钮
+			buttons : [ {
+				text : '<fmt:message key="button.ok" />',
+				iconCls : 'button-ok',
+				scope : this,
+				handler : this.doFind
+			}, {
+				text : '<fmt:message key="button.reset" />',
+				iconCls : 'button-reset',
+				scope : this,
+				handler : this.doReset
+			} ]
+		});
+
+		// 设置基类属性
+		FieldTypeList.superclass.constructor.call(this, {
+			layout : 'border',
+			border : false,
+			items : [ this.form, this.grid ]
+		});
+	},
+	
+	
+	userStoreone : function(value) {
+
+		var index = this.userStore.find('username', value);
+		if (index == -1) {
+			return value;
+		} else {
+			return this.userStore.getAt(index).get('name');
+		}
+	},
+	
+	field_type_directionStoreone : function(value) {
+
+		var index = this.field_type_directionStore.find('value', value);
+		if (index == -1) {
+			return value;
+		} else {
+			return this.field_type_directionStore.getAt(index).get('name');
+		}
+	},
+	
+	// 查询事件
+	doFind : function() {
+		
+		Ext.apply(this.grid.getStore().baseParams, this.form.getForm().getValues());
+		this.grid.getStore().load();
+	},
+	// 重置查询表单
+	doReset : function() {
+		this.form.getForm().reset();
+	},
+	// 新建事件
+	doCreate : function() {
+		app.loadTab('FIELDTYPE_CREATE',
+						'<fmt:message key="button.create" />',
+						'${ctx}/${appPath}/FieldTypeController/fieldtypecreate');
+
+	},
+	
+	// 查看事件
+	doView : function() {
+		var record = this.grid.getSelectionModel()
+				.getSelected();
+		var params = {
+				field_id:record.get("field_id")
+		};
+		app.loadTab('FIELDTYPE_VIEW','<fmt:message key="button.view" /><fmt:message key="title.list" />',
+				'${ctx}/${appPath}/FieldTypeController/fieldtypeView',params);
+	},
+	// 修改事件
+	doEdit : function() {
+		
+		if (this.grid.getSelectionModel().getCount() == 1) {
+			var record = this.grid.getSelectionModel()
+					.getSelected();
+			var params = {
+					field_id:record.get("field_id")
+			};
+			app.loadTab(
+							'FIELDTYPE_EDIT',
+							'<fmt:message key="button.edit" />',
+							'${ctx}/${appPath}/FieldTypeController/fieldtypeEdit',
+							params);
+		} else {
+			Ext.Msg.show({
+						title : '<fmt:message key="message.title" />',
+						msg : '<fmt:message key="message.select.one.only" />',
+						buttons : Ext.MessageBox.OK,
+						icon : Ext.MessageBox.ERROR
+					});
+		}
+	},
+	
+	// 删除事件
+	doDelete : function() {
+		if (this.grid.getSelectionModel().getCount() > 0) {
+			var records = this.grid.getSelectionModel()
+					.getSelections();
+			
+			var Ids = new Array();
+			for ( var i = 0; i < records.length; i++) {
+				Ids[i]= records[i].get("field_id");
+				
+			}
+
+			Ext.Msg.show({
+						title : '<fmt:message key="message.title" />',
+						msg : '<fmt:message key="message.confirm.to.delete" />',
+						buttons : Ext.MessageBox.OKCANCEL,
+						icon : Ext.MessageBox.QUESTION,
+						minWidth : 200,
+						scope : this,
+						fn : function(buttonId) {
+							if (buttonId == 'ok') {
+								app.mask.show();
+
+								Ext.Ajax.request({
+											url : '${ctx}/${appPath}/FieldTypeController/delete',
+											scope : this,
+											success : this.deleteSuccess,
+											failure : this.deleteFailure,
+											params : {
+												field_ids : Ids,
+												_method : 'delete'
+											}
+										});
+							}
+						}
+					});
+		} else {
+			Ext.Msg.show({
+						title : '<fmt:message key="message.title" />',
+						msg : '<fmt:message key="message.select.one.at.least" />',
+						minWidth : 200,
+						buttons : Ext.MessageBox.OK,
+						icon : Ext.MessageBox.ERROR
+					});
+		}
+	},
+
+	// 删除失败回调方法
+	deleteFailure : function() {
+		app.mask.hide();
+		Ext.Msg
+				.show({
+					title : '<fmt:message key="message.title" />',
+					msg : '<fmt:message key="message.delete.failed" />',
+					minWidth : 200,
+					buttons : Ext.MessageBox.OK,
+					icon : Ext.MessageBox.ERROR
+				});
+	},
+	// 删除成功回调方法
+	deleteSuccess : function(response, options) {
+		app.mask.hide();
+		if (Ext.decode(response.responseText).success == false) {
+			var error = Ext.decode(response.responseText).error;
+			Ext.Msg
+					.show({
+						title : '<fmt:message key="message.title" />',
+						msg : '<fmt:message key="message.delete.failed" /><fmt:message key="error.code" />:'
+								+ error,
+						minWidth : 200,
+						buttons : Ext.MessageBox.OK,
+						icon : Ext.MessageBox.ERROR
+					});
+		} else if (Ext.decode(response.responseText).success == true) {
+			this.grid.getStore().reload();// 重新加载数据源
+
+			Ext.Msg.show({
+						title : '<fmt:message key="message.title" />',
+						msg : '<fmt:message key="message.delete.successful" />',
+						minWidth : 200,
+						buttons : Ext.MessageBox.OK,
+						icon : Ext.MessageBox.INFO
+					});
+		}
+	}
+	
+	
+	
+	
+});
+
+var FieldTypeList = new FieldTypeList();
+</script>
+
+<%-- <sec:authorize access="hasRole('FIELDTYPE_CREATE')"> --%>
+<script type="text/javascript">
+FieldTypeList.grid.getTopToolbar().add({
+	iconCls : 'button-add',
+	text : '<fmt:message key="button.add" />',
+	scope : FieldTypeList,
+	handler : FieldTypeList.doCreate
+	},'-');
+</script>
+<%-- </sec:authorize> --%>
+
+<%--  <sec:authorize access="hasRole('FIELDTYPE_EDIT')"> --%>
+	<script type="text/javascript">
+	FieldTypeList.grid.getTopToolbar().add({
+		iconCls : 'button-edit',
+		text : '<fmt:message key="button.edit" />',
+		scope : FieldTypeList,
+		handler : FieldTypeList.doEdit
+	}, '-');
+</script>
+<%-- </sec:authorize>  --%>
+
+
+
+<%-- <sec:authorize access="hasRole('FIELDTYPE_DELETE')"> --%>
+	<script type="text/javascript">
+	FieldTypeList.grid.getTopToolbar().add({
+		iconCls : 'button-delete',
+		text : '<fmt:message key="button.delete" />',
+		scope : FieldTypeList,
+		handler : FieldTypeList.doDelete
+	}, '-');
+</script>
+<%-- </sec:authorize> --%>
+
+
+<script type="text/javascript">
+Ext.getCmp("FIELDTYPE_INFO").add(FieldTypeList);
+Ext.getCmp("FIELDTYPE_INFO").doLayout();
+</script>

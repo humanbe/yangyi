@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.dply.vo">
+	<class name="ApposUserVo" table="CMN_APP_OS_USER" 
+	dynamic-update="true" dynamic-insert="true">
+		<comment>table</comment>
+		<composite-id>
+		<key-property name="appsysCode" type="java.lang.String">
+			<column name="APPSYS_CODE">
+				<comment>系统代码</comment>
+			</column>
+		</key-property>
+		<key-property name="serverIp" type="java.lang.String">
+			<column name="SERVER_IP">
+				<comment>服务器IP</comment>
+			</column>
+		</key-property>
+		<key-property name="osUser" type="java.lang.String">
+			<column name="OS_USER">
+				<comment>操作系统用户</comment>
+			</column>
+		</key-property>
+		<key-property name="userId" type="java.lang.String">
+			<column name="USER_ID">
+				<comment>用户</comment>
+			</column>
+		</key-property>
+		
+	</composite-id>
+		<property name="deleteFlag" type="java.lang.String">
+				<column name="DELETE_FLAG">
+					<comment>删除标示</comment>
+				</column>
+		</property>
+		<property name="updateTime" type="java.sql.Timestamp">
+			<column name="UPDATE_TIME">
+				<comment>更新时间</comment>
+			</column>
+		</property>
+		<property name="updateBeforeRecord" type="java.lang.String">
+			<column name="UPDATE_BEFORE_RECORD">
+				<comment>更新前纪录</comment>
+			</column>
+		</property>
+		<property name="dataType" type="java.lang.String">
+			<column name="DATA_TYPE">
+				<comment>数据来源</comment>
+			</column>
+		</property>
+		
+	</class>
+</hibernate-mapping>
+

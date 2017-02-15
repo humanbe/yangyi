@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.jedarpt.vo">
+	<class name="JedaReportRuleVo" table="JEDA_REPORT_RULE" dynamic-update="true"
+		dynamic-insert="true">
+        <composite-id>
+			<key-property name="report_code" column="REPORT_CODE" type="integer"></key-property>
+			<key-property name="rule_code" column="RULE_CODE" type="integer"></key-property>
+		</composite-id>
+	</class>
+</hibernate-mapping>
+
+

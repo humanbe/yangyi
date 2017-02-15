@@ -1,0 +1,1185 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="/include/taglibs.jsp"%>
+<script type="text/javascript">
+var pageSize = 100;
+var rptChartConfGridStore = null;
+var rptitemlistStore = null;
+var rptChartConfform = null;
+var rptChartConfSheetNameStore = null;
+var rptChartConfItemListStore = null;
+var rptChartConfItemList = null;
+//统计报表科目名称列表
+var countItemNameColStore = null ;  
+//统计报表科目值列表
+var countItemValColStore = null ;  
+//图表配置Y轴位置列表var rptChartConfYaxisPositon = new Ext.data.ArrayStore({
+    fields: ['valueField', 'displayField'],
+    data : [ ['0', '左'],
+            	['1', '右']]
+});
+//图表配置图表类型列表
+var rptChartConfChartType = new Ext.data.ArrayStore({
+    fields: ['valueField', 'displayField'],
+    data : [['1', '趋势图'],
+            	['2', '柱状图'],
+            	['3', '饼图']
+            	//['4', '条形图']
+            ]
+});
+//图表配置报表类型列表
+var rptChartConfReportType = new Ext.data.ArrayStore({
+    fields: ['valueField', 'displayField'],
+    data : [['1', '日报']
+    //,
+            //	['2', '周报'],
+            //	['3', '月报']
+            ]
+});
+//图表配置报表类型列表
+var rptChartConfYaxisUnit = new Ext.data.ArrayStore({
+    fields: ['valueField', 'displayField'],
+    data : [	['1', '百'],
+            	['2', '千'],
+            	['3', '万'],
+            	['4', '十万'],
+            	['5', '百万'],
+            	['6', '%']
+            ]
+});
+//图表配置分割条件列表
+var rptChartConfSeparateCondition = new Ext.data.ArrayStore({
+    fields: ['valueField', 'displayField'],
+    data : [	['1', '起始行号'],
+            	['2', '阀值']
+            ]
+});
+
+function rptChartConfIndexBrowseItemNames(aplCode, reportType, sheetName,itemList){
+	//获取对应系统功能的科目列表信息并重新设置
+	rptChartConfItemListStore = new Ext.data.Store({
+		proxy: new Ext.data.HttpProxy({
+			url: '${ctx}/${managePath}/rptchartconf/browseItemNames?aplCode='+aplCode+'&reportType='+reportType+'&sheetName='+encodeURI(encodeURI(sheetName)),
+			method : 'GET'
+		}),
+		reader: new Ext.data.JsonReader({}, ['valueField', 'displayField'])
+	});
+	rptChartConfItemListStore.on("load",function(){
+		Ext.getCmp("RptChartConfIndexItemList").store = rptChartConfItemListStore;
+		Ext.getCmp("RptChartConfIndexItemList").bindStore(rptChartConfItemListStore); 
+		if(itemList !=null){
+			Ext.getCmp("RptChartConfIndexItemList").setValue(itemList);
+		}
+	});
+	rptChartConfItemListStore.load();
+}
+//获取系统代码列表数据
+var rptChartConfAplCodeStore =  new Ext.data.Store({
+	proxy: new Ext.data.HttpProxy({
+		url : '${ctx}/${managePath}/appInfo/querySystemIDAndNamesByUserForCheck',
+		method : 'GET',
+		disableCaching : true
+	}),
+	reader : new Ext.data.JsonReader({}, ['appsysCode','appsysName']),
+	listeners : {
+		load : function(store){
+			if(store.getCount() == 0){
+				Ext.Msg.show({
+					title : '<fmt:message key="message.title" />',
+					msg : '<fmt:message key="message.system.no.authorize" />',
+					minWidth : 200,
+					buttons : Ext.MessageBox.OK,
+					icon : Ext.MessageBox.WARNING
+				});
+			}
+		}
+	}
+});
+
+//定义列表
+RptChartConfList = Ext.extend(Ext.Panel, {
+	gridStore : null,// 数据列表数据源	grid : null,// 数据列表组件
+	form : null,// 查询表单组件
+	tabIndex : 0,// 查询表单组件Tab键顺序	csm : null,// 数据列表选择框组件	constructor : function(cfg) {// 构造方法		Ext.apply(this, cfg);
+		//禁止IE的backspace键(退格键)，但输入文本框时不禁止
+		Ext.getDoc().on('keydown',function(e) {
+			if (e.getKey() == 8
+					&& e.getTarget().type == 'text'
+					&& !e.getTarget().readOnly) {
+			} else if (e.getKey() == 8
+					&& e.getTarget().type == 'textarea'
+					&& !e.getTarget().readOnly) {
+			} else if (e.getKey() == 8) {
+				e.preventDefault();
+			}
+		});
+		// 实例化数据列表选择框组件		csm = new Ext.grid.CheckboxSelectionModel();
+		//加载系统代码数据
+		rptChartConfAplCodeStore.load();
+		
+		rptitemlistStore= new Ext.data.Store({
+			proxy: new Ext.data.HttpProxy({
+				url : '${ctx}/${managePath}/rptchartconf/item_list',
+				method : 'GET',
+				disableCaching : true
+			}),
+			reader : new Ext.data.JsonReader({}, ['value','name'])
+		});
+		
+		
+		// 实例化数据列表数据源
+		rptChartConfGridStore = new Ext.data.JsonStore( {
+			proxy : new Ext.data.HttpProxy( {
+				method : 'POST',
+				url : '${ctx}/${managePath}/rptchartconf/index',
+				disableCaching : true
+			}),
+			autoDestroy : true,
+			root : 'data',
+			totalProperty : 'count',
+			fields : [
+				'aplCode', 'reportType',  'sheetName',  'chartType', 'chartName',  'chartSeq', 
+				'itemList',  'chartYaxisTitle',  'chartYaxisMinval',  'chartYaxisMaxval', 'chartYaxisMaxval', 'chartYaxisUnit', 
+				'chartYaxisInterval','chartYaxisPosition',
+				'itemNameCol','itemValCol','separate_condition','separate_value'
+			],
+			remoteSort : true,
+			sortInfo : {
+				field : 'aplCode,reportType,sheetName,chartType,chartSeq,chartName,chartYaxisPosition',
+				direction : 'ASC'
+			},
+			baseParams : {
+				start : 0,
+				limit : pageSize
+			}
+		});
+		//rptChartConfGridStore.load();
+		
+		// 实例化数据列表组件		this.grid = new Ext.grid.GridPanel({
+			id : 'RptChartConfGridPanel',
+			region : 'south',
+			border : false,
+			loadMask : true,
+			title : '<fmt:message key="title.list" />',
+			columnLines : true,
+			//autoHeight : true,
+	      	height : 430,
+	      	autoScroll : true,
+			viewConfig : {
+				forceFit : false,
+				getRowClass : function(record, rowIndex, rowParams, store){
+					if(record.data.importantSeq =="1"){
+						return 'x-grid-back-SandyBrown';
+					}
+					if((rowIndex + 1) % 2 === 0){
+						return 'x-gridTran-row-alt';
+					}
+				}
+			},
+			store : rptChartConfGridStore,
+			sm : csm,
+			view: new Ext.ux.grid.LockingGridView(),
+			// 列定义			colModel : new Ext.ux.grid.LockingColumnModel([new Ext.grid.RowNumberer({locked: true}), csm, 
+			//columns : [ new Ext.grid.RowNumberer(), csm,
+				{
+					header : '应用系统编号',
+					dataIndex : 'aplCode',
+					sortable : true,
+					width : 90,
+					locked: true
+				},
+				{
+					header : '报表类型',
+					dataIndex : 'reportType',
+					sortable : true,
+					width : 60,
+					renderer : this.reportTypeChange
+				},
+				{
+					header : '日报功能名称',
+					dataIndex : 'sheetName',
+					sortable : true,
+					width : 230,
+					locked: true
+				},
+				{
+					header : '图表类型',
+					dataIndex : 'chartType',
+					sortable : true,
+					width : 60,
+					renderer : this.chartTypeChange
+				},
+				{
+					header : '图表顺序号',
+					dataIndex : 'chartSeq',
+					sortable : true
+				},
+				{
+					header : '图表名称',
+					dataIndex : 'chartName',
+					sortable : true,
+					width : 250
+				},
+				{
+					header : '图表Y轴位置',
+					dataIndex : 'chartYaxisPosition',
+					sortable : true,
+					renderer : this.YPositionChange
+				},
+				{
+					header : '科目列表',
+					dataIndex : 'itemList',
+					sortable : true,
+					width : 400,
+					renderer : this.rptitemlistStoreone
+				},
+				{
+					header : '统计科目名称',
+					dataIndex : 'itemNameCol'/* ,
+					hidden : true  */
+				},
+				{
+					header : '统计科目值',
+					dataIndex : 'itemValCol' /* ,
+					hidden : true  */
+				},
+				{
+					header : '分割条件',
+					dataIndex : 'separate_condition' /* ,
+					hidden : true  */
+				},
+				{
+					header : '分割值',
+					dataIndex : 'separate_value'/* ,
+					hidden : true  */
+				},
+				{
+					header : '图表Y轴标题',
+					dataIndex : 'chartYaxisTitle'
+				},
+				{
+					header : '图表Y轴最小值',
+					dataIndex : 'chartYaxisMinval',
+					sortable : true
+				},
+				{
+					header : '图表Y轴最大值',
+					dataIndex : 'chartYaxisMaxval',
+					sortable : true
+				},
+				{
+					header : '图表Y轴间隔',
+					dataIndex : 'chartYaxisInterval',
+					sortable : true
+				},
+				{
+					header : '图表Y轴单位',
+					dataIndex : 'chartYaxisUnit',
+					hidden : true
+				}
+	  		]
+			)
+			,
+			// 定义按钮工具条
+			tbar : new Ext.Toolbar( {
+				items : [ '-',{
+					iconCls : 'button-delete',
+					text : '<fmt:message key="button.delete" />',
+					scope : this,
+					handler : this.doDelete
+					},'-']
+			}),
+			// 定义分页工具条
+			bbar : new Ext.PagingToolbar({
+				store : rptChartConfGridStore,
+				displayInfo : true,
+				pageSize  : pageSize,
+				buttons : [ '-', {
+					iconCls : 'button-excel',
+					tooltip : '<fmt:message key="button.excel" />',
+					scope : this,
+					disabled : true
+				} ]
+			}),
+			// 定义数据列表监听事件
+			listeners : {
+				scope : this,
+				// 行双击事件：打开数据查看页面
+				//rowdblclick : this.doView
+				// 行单击事件：打开数据查看页面
+				cellclick : function(grid, rowIndex, columnIndex, e) {
+    		    	//var fieldName = grid.getColumnModel().getDataIndex(columnIndex); // 返回字段名称 Get field name
+    		    	var store = grid.getStore();
+    		    	var record = store.getAt(rowIndex);  // 返回Record对象 Get the Record
+					Ext.getCmp("RptChartConfIndexAplCode").setValue(record.get('aplCode'));
+					Ext.getCmp("RptChartConfIndexReportType").setValue(record.get('reportType'));
+					
+					//加载统计科目名称数据源
+
+					var vals = record.get('itemList');
+					var aplCode = record.get('aplCode');
+					countItemNameColStore = new Ext.data.Store({
+						proxy: new Ext.data.HttpProxy({
+							url: '${ctx}/${managePath}/rptchartconf/getItemColsForMul?itemList='+encodeURI(encodeURI(vals))+'&aplCode='+encodeURI(encodeURI(aplCode)),
+							method : 'GET'
+						}),
+						reader: new Ext.data.JsonReader({}, ['valueField', 'displayField'])
+					});
+					countItemNameColStore.load();
+					Ext.getCmp("RptChartConfItemNameCol").store = countItemNameColStore;
+					Ext.getCmp("RptChartConfItemNameCol").bindStore(countItemNameColStore);
+					
+					//获取对应系统功能列表信息
+					rptChartConfSheetNameStore = new Ext.data.Store({
+						proxy: new Ext.data.HttpProxy({
+							url: '${ctx}/${managePath}/rptchartconf/browseSheetNames?aplCode='+record.get('aplCode')+'&reportType='+record.get('reportType'),
+							method : 'GET'
+						}),
+						reader: new Ext.data.JsonReader({}, ['valueField', 'displayField'])
+					});
+					rptChartConfSheetNameStore.load();
+					Ext.getCmp("RptChartConfIndexSheetName").store = rptChartConfSheetNameStore;
+					Ext.getCmp("RptChartConfIndexSheetName").bindStore(rptChartConfSheetNameStore);
+					Ext.getCmp("RptChartConfIndexSheetName").setValue(record.get('sheetName'));
+					
+					Ext.getCmp("RptChartConfIndexChartType").setValue(record.get('chartType'));
+					Ext.getCmp("RptChartConfIndexChartName").setValue(record.get('chartName'));
+					Ext.getCmp("RptChartConfIndexChartSeq").setValue(record.get('chartSeq'));
+					
+					//获取对应系统的科目列表信息
+					rptChartConfItemList = record.get('itemList');
+					rptChartConfIndexBrowseItemNames(record.get('aplCode'), record.get('reportType'), record.get('sheetName'),record.get('itemList'));
+					
+					Ext.getCmp("RptChartConfIndexChartYaxisTitle").setRawValue(record.get('chartYaxisTitle'));
+					Ext.getCmp("RptChartConfIndexChartYaxisMinval").setRawValue(record.get('chartYaxisMinval'));
+					Ext.getCmp("RptChartConfIndexChartYaxisMaxval").setRawValue(record.get('chartYaxisMaxval'));
+					Ext.getCmp("RptChartConfIndexChartYaxisInterval").setRawValue(record.get('chartYaxisInterval'));
+					Ext.getCmp("RptChartConfIndexChartYaxisUnit").setRawValue(record.get('chartYaxisUnit'));
+					Ext.getCmp("RptChartConfIndexChartYaxisPosition").setValue(record.get('chartYaxisPosition'));
+					
+					
+					
+					//加载统计科目值数据源
+					var name = record.get('itemNameCol');
+					countItemValColStore = new Ext.data.Store({
+						proxy: new Ext.data.HttpProxy({
+							url: '${ctx}/${managePath}/rptchartconf/getItemColsForMul?itemList='+encodeURI(encodeURI(vals))+'&aplCode='+encodeURI(encodeURI(aplCode))+'&countItemName='+encodeURI(encodeURI(name)),
+							method : 'GET'
+						}),
+						reader: new Ext.data.JsonReader({}, ['valueField', 'displayField'])
+					});
+					countItemValColStore.load();
+					countItemValColStore.on('load',function(){
+						Ext.getCmp("RptChartConfItemNameCol").setValue(record.get('itemNameCol'));
+						Ext.getCmp("RptChartConfItemValCol").setValue(record.get('itemValCol'));
+					});
+					Ext.getCmp("RptChartConfItemValCol").store = countItemValColStore;
+					Ext.getCmp("RptChartConfItemValCol").bindStore(countItemValColStore);
+					
+					//处理隐藏字段
+					this.display(record.get('chartType'));
+					//设置默认值
+					Ext.getCmp("RptChartConfItemNameCol").setValue(record.get('itemNameCol'));
+					Ext.getCmp("RptChartConfItemValCol").setValue(record.get('itemValCol'));
+					Ext.getCmp("RptChartConfSeparateCondition").setValue(record.get('separate_condition'));
+					Ext.getCmp("RptChartConfSeparateValue").setValue(record.get('separate_value'));
+				}
+			}
+		});
+		var rptChartConfIndexItemListLov = new Ext.ux.form.LovCombo({
+			id:'RptChartConfIndexItemList',
+			fieldLabel : '科目列表',
+			tabIndex : this.tabIndex++,
+			width:300,
+			hideOnSelect:false,
+			maxHeight:200,
+			hiddenName : 'itemList',
+			displayField : 'displayField',
+			valueField : 'valueField',
+			typeAhead : true,
+			forceSelection  : true,
+			editable : false,
+			allowBlank : false,
+			emptyText : '必填项',
+			store : rptChartConfItemListStore,
+			triggerAction:'all',
+			mode:'local',
+			beforeBlur:function(){},//重写该方法为空方法，解决失去焦点时被清空的bug（由于选多个会以逗号分割，getValue时获取不到导致）
+			listeners : {
+				scope : this,
+				collapse : function(combo, record, index){
+					var vals = Ext.getCmp('RptChartConfIndexItemList').getValue();
+					var aplCode=Ext.getCmp('RptChartConfIndexAplCode').getValue();
+					//加载统计科目名称数据源					countItemNameColStore = new Ext.data.Store({
+						proxy: new Ext.data.HttpProxy({
+							url: '${ctx}/${managePath}/rptchartconf/getItemColsForMul?itemList='+encodeURI(encodeURI(vals))+'&aplCode='+encodeURI(encodeURI(aplCode)),
+							method : 'GET'
+						}),
+						reader: new Ext.data.JsonReader({}, ['valueField', 'displayField'])
+					});
+					if(''!=vals)countItemNameColStore.load();
+					Ext.getCmp("RptChartConfItemNameCol").store = countItemNameColStore;
+					Ext.getCmp("RptChartConfItemNameCol").bindStore(countItemNameColStore);
+					//加载统计科目值数据源
+					Ext.getCmp("RptChartConfItemValCol").store = countItemNameColStore;
+					Ext.getCmp("RptChartConfItemValCol").bindStore(countItemNameColStore);
+				}
+			}
+		});
+	    rptChartConfform = new Ext.FormPanel({
+			id : 'RptChartConfIndexFormPanel',
+			title : '配置',
+			region:'center',
+			frame : true,
+			split : true,
+			//autoHeight : true,
+			height : 330,
+			labelAlign : 'right',
+			buttonAlign : 'center',
+			labelWidth: 150,
+			//width : 270,
+			//minSize : 270,
+			//maxSize : 270,
+			collapsible : true,
+			animCollapse : true,
+			collapseMode : 'mini',
+			defaults: {
+            	anchor: '90%',
+            	msgTarget: 'qtip'
+        	},
+			monitorValid : true,
+	     	autoScroll : true,
+			items : [{xtype : 'combo',
+				fieldLabel : '系统代码',
+				id : 'RptChartConfIndexAplCode',
+				hiddenName : 'aplCode',
+				displayField : 'appsysName',
+				valueField : 'appsysCode',
+				typeAhead : true,
+				forceSelection  : true,
+				store : rptChartConfAplCodeStore,
+				tabIndex : this.tabIndex++,
+				mode : 'local',
+				triggerAction : 'all',
+				editable : true,
+				allowBlank : false,
+				emptyText : '请选择系统代码...',
+				width : 190,
+				listeners : {
+					beforequery : function(e){
+						var combo = e.combo;
+						combo.collapse();
+						 if(!e.forceAll){
+							var input = e.query.toUpperCase();
+							var regExp = new RegExp('.*' + input + '.*');
+							combo.store.filterBy(function(record, id){
+								var text = record.get(combo.displayField);
+								return regExp.test(text);
+							}); 
+							combo.restrictHeight();
+							combo.expand();
+							return false;
+						} 
+					},
+					select : function(combo, record, index){
+						//清空数据
+						Ext.getCmp('RptChartConfIndexReportType').setRawValue("");
+						Ext.getCmp('RptChartConfIndexSheetName').setRawValue("");
+						Ext.getCmp('RptChartConfIndexChartType').setRawValue("");
+						Ext.getCmp('RptChartConfIndexChartName').setRawValue("");
+						Ext.getCmp('RptChartConfIndexChartSeq').setRawValue("");
+						Ext.getCmp('RptChartConfIndexItemList').setRawValue("");
+						Ext.getCmp('RptChartConfIndexChartYaxisTitle').setValue("");
+						Ext.getCmp('RptChartConfIndexChartYaxisMinval').setValue("");
+						Ext.getCmp('RptChartConfIndexChartYaxisMaxval').setValue("");
+						Ext.getCmp('RptChartConfIndexChartYaxisInterval').setValue("");
+						Ext.getCmp('RptChartConfIndexChartYaxisUnit').setValue("");
+						Ext.getCmp('RptChartConfIndexChartYaxisPosition').setRawValue("");
+						Ext.getCmp("RptChartConfIndexSheetName").bindStore(null);
+						Ext.getCmp("RptChartConfIndexItemList").bindStore(null);
+						rptChartConfItemList = null;
+						//根据条件，重新加载数据						Ext.apply(rptChartConfGridStore.baseParams, {aplCode:combo.value});
+						Ext.apply(rptChartConfGridStore.sortInfo, {field : 'aplCode,reportType,sheetName,chartType,chartSeq,chartName,chartYaxisPosition'});
+						Ext.apply(rptitemlistStore.baseParams, {aplCode:combo.value});
+						rptitemlistStore.reload();
+						rptChartConfGridStore.reload();
+						
+						//Ext.getCmp('RptChartConfIndexSheetName').enable();
+						//Ext.getCmp('RptChartConfIndexItemList').enable();
+					}
+				}
+				},{
+  					xtype : 'combo',
+  					fieldLabel : '报表类型',
+					id : 'RptChartConfIndexReportType',
+					hiddenName : 'reportType',
+					displayField : 'displayField',
+					valueField : 'valueField',
+					typeAhead : true,
+					forceSelection  : true,
+					store : rptChartConfReportType,
+					tabIndex : this.tabIndex++,
+					mode : 'local',
+					triggerAction : 'all',
+					editable : false,
+					allowBlank : false,
+					emptyText : '必填项',
+					listeners : {
+						select : function(combo, record, index){
+							Ext.getCmp('RptChartConfIndexSheetName').setRawValue("");
+							Ext.getCmp('RptChartConfIndexChartName').setRawValue("");
+							Ext.getCmp('RptChartConfIndexChartSeq').setRawValue("");
+							Ext.getCmp('RptChartConfIndexItemList').setRawValue("");
+							Ext.getCmp('RptChartConfIndexChartYaxisTitle').setValue("");
+							Ext.getCmp("RptChartConfIndexItemList").bindStore(null);
+							rptChartConfItemList = null;
+							
+							var reportType = combo.value;
+							var aplCode = Ext.getCmp('RptChartConfIndexAplCode').getValue().trim();
+							if(aplCode != ''){
+								//获取对应系统的科目列表信息
+
+								rptChartConfSheetNameStore = new Ext.data.Store({
+									proxy: new Ext.data.HttpProxy({
+										url: '${ctx}/${managePath}/rptchartconf/browseSheetNames?aplCode='+aplCode+'&reportType='+reportType,
+										method : 'GET'
+									}),
+									reader: new Ext.data.JsonReader({}, ['valueField', 'displayField'])
+								});
+								rptChartConfSheetNameStore.load();
+								Ext.getCmp("RptChartConfIndexSheetName").store = rptChartConfSheetNameStore;
+								Ext.getCmp("RptChartConfIndexSheetName").bindStore(rptChartConfSheetNameStore);
+							}
+						}
+					}
+            	},{
+  					xtype : 'combo',
+  					fieldLabel : '日报功能名称',
+					id : 'RptChartConfIndexSheetName',
+					hiddenName : 'sheetName',
+					displayField : 'displayField',
+					valueField : 'valueField',
+					typeAhead : true,
+					forceSelection  : true,
+					store : rptChartConfSheetNameStore,
+					tabIndex : this.tabIndex++,
+					mode : 'local',
+					triggerAction : 'all',
+					editable : false,
+					allowBlank : false,
+					emptyText : '必填项',
+					listeners : {
+						select : function(combo, record, index){
+							 //清空科目列表
+							Ext.getCmp('RptChartConfIndexChartName').setRawValue("");
+							Ext.getCmp('RptChartConfIndexChartSeq').setRawValue("");
+							Ext.getCmp('RptChartConfIndexItemList').setRawValue("");
+							Ext.getCmp('RptChartConfIndexChartYaxisTitle').setValue("");
+							Ext.getCmp("RptChartConfIndexItemList").bindStore(null);
+							rptChartConfItemList = null;
+							
+							var aplCode = Ext.getCmp('RptChartConfIndexAplCode').getValue().trim();
+							var reportType = Ext.getCmp('RptChartConfIndexReportType').getValue().trim();
+							var sheetName =  combo.value;
+							if(aplCode != '' && reportType != '' && sheetName != ''){
+								rptChartConfIndexBrowseItemNames(aplCode, reportType, sheetName,null);
+							}else{
+								Ext.getCmp("RptChartConfIndexItemList").bindStore(null);
+							}
+						}
+					}
+            	},{
+        			layout: 'column',
+                    defaults: {anchor : '100%'},
+                    border:false,
+                    labelAlign : 'right',
+                    items: [{
+                    	columnWidth:.5,
+                    	layout: 'form',
+                    	defaults: {anchor : '100%'},
+                    	items : [{
+                    		xtype : 'combo',
+          					fieldLabel : '图表类型',
+        					id : 'RptChartConfIndexChartType',
+        					hiddenName : 'chartType',
+        					displayField : 'displayField',
+        					valueField : 'valueField',
+        					typeAhead : true,
+        					forceSelection  : true,
+        					store : rptChartConfChartType,
+        					tabIndex : this.tabIndex++,
+        					mode : 'local',
+        					triggerAction : 'all',
+        					editable : false,
+        					allowBlank : false,
+        					emptyText : '必填项',
+        					maxLength : 50,
+        					listeners : {
+        						scope : this,
+        						select : function(combo, record, index){
+        							this.display(combo.value);
+        						}
+        					}
+                    	}]
+    				},{
+    					columnWidth:.5,
+    					layout: 'form',
+    					defaults: {anchor : '100%'},
+    					items : [{
+    						xtype : 'textfield',
+    						id : 'RptChartConfIndexChartSeq',
+    						fieldLabel : '图表顺序号',
+    						name : 'chartSeq',
+    						editable : true,
+    						allowBlank : false,
+    						emptyText : '必填项',
+    						vtype : 'alphanum',
+    						maskRe : /[0-9]/,
+    						maxLength : 2
+    					}]
+    				}]
+        		},{
+  					xtype : 'textfield',
+					id : 'RptChartConfIndexChartName',
+					fieldLabel : '图表标题名称',
+					name : 'chartName',
+					editable : true,
+					allowBlank : false,
+					emptyText : '必填项',
+					maxLength : 80
+    		},rptChartConfIndexItemListLov,
+    		{
+    			layout: 'column',
+                defaults: {anchor : '100%'},
+                border:false,
+                labelAlign : 'right',
+                items: [{
+                	columnWidth:.5,
+                	layout: 'form',
+                	defaults: {anchor : '100%'},
+                	items : [{
+                		xtype : 'combo',
+      					fieldLabel : '统计科目名称',
+    					id : 'RptChartConfItemNameCol',
+    					hiddenName : 'itemNameCol',
+    					displayField : 'displayField',
+    					valueField : 'valueField',
+    					typeAhead : true,
+    					forceSelection  : true,
+    					store : countItemNameColStore,
+    					tabIndex : this.tabIndex++,
+    					mode : 'local',
+    					triggerAction : 'all',
+    					editable : false,
+    					//allowBlank : false,
+    					emptyText : '必填项',
+    					listeners : {
+    						scope : this,
+    						select : function(combo, record, index){
+    							var vals = Ext.getCmp('RptChartConfIndexItemList').getValue();
+    							var name = combo.value;
+    							var aplCode=Ext.getCmp('RptChartConfIndexAplCode').getValue();
+    							//加载统计科目名称数据源
+    							countItemValColStore = new Ext.data.Store({
+    								proxy: new Ext.data.HttpProxy({
+    									url: '${ctx}/${managePath}/rptchartconf/getItemColsForMul?itemList='+encodeURI(encodeURI(vals))+'&aplCode='+encodeURI(encodeURI(aplCode))+'&countItemName='+encodeURI(encodeURI(name)),
+    									method : 'GET'
+    								}),
+    								reader: new Ext.data.JsonReader({}, ['valueField', 'displayField'])
+    							});
+    							countItemValColStore.load();
+    							Ext.getCmp("RptChartConfItemValCol").store = countItemValColStore;
+    							Ext.getCmp("RptChartConfItemValCol").bindStore(countItemValColStore);
+    						}
+    					}
+                	}]
+				},{
+					columnWidth:.5,
+					layout: 'form',
+					defaults: {anchor : '100%'},
+					items : [{
+						xtype : 'combo',
+      					fieldLabel : '统计科目值',
+    					id : 'RptChartConfItemValCol',
+    					hiddenName : 'itemValCol',
+    					displayField : 'displayField',
+    					valueField : 'valueField',
+    					typeAhead : true,
+    					forceSelection  : true,
+    					store : countItemValColStore,
+    					tabIndex : this.tabIndex++,
+    					mode : 'local',
+    					triggerAction : 'all',
+    					editable : false,
+    					//allowBlank : false,
+    					emptyText : '必填项',
+    					maxLength : 50
+					}]
+				}]
+    		},{
+    			layout: 'column',
+                defaults: {anchor : '100%'},
+                border:false,
+                labelAlign : 'right',
+                items: [{
+                	columnWidth:.5,
+                	layout: 'form',
+                	defaults: {anchor : '100%'},
+                	items : [{
+                		xtype : 'combo',
+      					fieldLabel : '分割条件',
+    					id : 'RptChartConfSeparateCondition',
+    					hiddenName : 'separate_condition',
+    					displayField : 'displayField',
+    					valueField : 'valueField',
+    					typeAhead : true,
+    					forceSelection  : true,
+    					store : rptChartConfSeparateCondition,
+    					tabIndex : this.tabIndex++,
+    					mode : 'local',
+    					triggerAction : 'all',
+    					editable : false,
+    					//allowBlank : false,
+    					emptyText : '必填项',
+    					maxLength : 50
+                	}]
+				},{
+					columnWidth:.5,
+					layout: 'form',
+					defaults: {anchor : '100%'},
+					items : [{
+						xtype : 'textfield',
+      					fieldLabel : '分割值',
+    					id : 'RptChartConfSeparateValue',
+    					name : 'separate_value',
+    					tabIndex : this.tabIndex++,
+    					//allowBlank : false,
+    					emptyText : '必填项',
+    					maxLength : 8
+					}]
+				}]
+    		},{
+  					xtype : 'textfield',
+					id : 'RptChartConfIndexChartYaxisTitle',
+					fieldLabel : '图表Y轴标题',
+					name : 'chartYaxisTitle',
+					editable : true,
+					allowBlank : true,
+					maxLength : 50
+    		},{
+					xtype:"fieldset",
+			        border : false,
+					layout : 'column',
+					labelAlign : 'right',
+					columnWidth : 1,
+					bodyStyle: 'padding-left:0px;padding-bottom:0px;padding-top:0px;padding-right:0px;',
+		            items:[{
+		            	columnWidth : .25,
+		                xtype: 'fieldset',
+		                layout : 'form',
+		                border : false,
+						labelWidth : 140,
+		                autoHeight : true,
+		                items : [{
+		  					xtype : 'combo',
+							fieldLabel : 'Y轴位置',
+							id : 'RptChartConfIndexChartYaxisPosition',
+							hiddenName : 'chartYaxisPosition',
+							displayField : 'displayField',
+							valueField : 'valueField',
+							typeAhead : true,
+							forceSelection  : true,
+							store : rptChartConfYaxisPositon,
+							tabIndex : this.tabIndex++,
+							mode : 'local',
+							triggerAction : 'all',
+							editable : false,
+							allowBlank : false,
+							emptyText : '必填项',
+							anchor : '95%'
+		            	}]
+		            },{
+		            	columnWidth : .2,
+		                xtype: 'fieldset',
+		                layout : 'form',
+		                border : false,
+						labelWidth : 65,
+		                autoHeight : true,
+		                items : [{
+		  					xtype : 'textfield',
+							fieldLabel : 'Y轴最小值',
+							id : 'RptChartConfIndexChartYaxisMinval',
+							name : 'chartYaxisMinval',
+							editable : true,
+							allowBlank : true,
+							//vtype : 'alphanum',
+							maskRe : /[0-9.]/,
+							maxLength : 8,
+							anchor : '95%'
+		    			}]
+		            },{
+		            	columnWidth : .2,
+		                xtype: 'fieldset',
+		                layout : 'form',
+		                border : false,
+						labelWidth : 65,
+		                autoHeight : true,
+		                items : [{
+		  					xtype : 'textfield',
+							id : 'RptChartConfIndexChartYaxisMaxval',
+							fieldLabel : 'Y轴最大值',
+							name : 'chartYaxisMaxval',
+							editable : true,
+							allowBlank : true,
+							//vtype : 'alphanum',
+							maskRe : /[0-9.]/,
+							maxLength : 8,
+							anchor : '95%'
+		    			}]
+		            },{
+		            	columnWidth : .2,
+		                xtype: 'fieldset',
+		                layout : 'form',
+		                border : false,
+						labelWidth : 65,
+		                autoHeight : true,
+		                items : [{
+		  					xtype : 'textfield',
+							id : 'RptChartConfIndexChartYaxisInterval',
+							fieldLabel : 'Y轴间隔',
+							name : 'chartYaxisInterval',
+							editable : true,
+							allowBlank : true,
+							//vtype : 'alphanum',
+							maskRe : /[0-9.]/,
+							maxLength : 8,
+							anchor : '95%'
+		    			}]
+		            },{
+		            	columnWidth : .15,
+		                xtype: 'fieldset',
+		                layout : 'form',
+		                border : false,
+						labelWidth : 65,
+		                autoHeight : true,
+		                items : [{
+		  					xtype : 'combo',
+							fieldLabel : 'Y轴单位',
+							id : 'RptChartConfIndexChartYaxisUnit',
+							hiddenName : 'chartYaxisUnit',
+							displayField : 'displayField',
+							valueField : 'displayField',
+							typeAhead : true,
+							forceSelection  : false,
+							store : rptChartConfYaxisUnit,
+							tabIndex : this.tabIndex++,
+							mode : 'local',
+							triggerAction : 'all',
+							editable : true,
+							allowBlank : true,
+							emptyText : '可选',
+							anchor : '100%'
+		            	}]
+		            }]
+    		}],
+			// 定义按钮
+			buttons : [{
+				text : '<fmt:message key="button.save" />',
+				iconCls : 'button-save',
+				tabIndex : this.tabIndex++,
+				formBind : true,
+				scope : this,
+				handler : this.doSave
+			}, {
+				text : '<fmt:message key="button.reset" />',
+				iconCls : 'button-reset',
+				scope : this,
+				handler : this.doReset
+			} ]
+		});
+	    
+	    /*  this.panel=new Ext.Panel({
+	    	layout : 'border',
+			border : false,
+			frame : false,
+			height:700,
+			items : [ rptChartConfform,this.grid ]
+		}); */
+	     
+		// 设置基类属性		RptChartConfList.superclass.constructor.call(this, {
+			layout : 'form',
+			border : false,
+			//height:800,
+			autoScroll : true,
+			items : [rptChartConfform,this.grid  ]
+		});
+	},
+	
+	//根据图表类型显示或隐藏相关属性
+	display : function(chartType){
+		if(chartType == 3){ //饼状图
+			//设置默认Y轴位置：左
+			Ext.getCmp('RptChartConfIndexChartYaxisPosition').setValue('0'); 
+			//不显示Y轴设置信息
+			Ext.getCmp('RptChartConfIndexChartYaxisPosition').el.up('.x-form-item').setDisplayed(false);
+			Ext.getCmp('RptChartConfIndexChartYaxisMinval').el.up('.x-form-item').setDisplayed(false);
+			Ext.getCmp('RptChartConfIndexChartYaxisMaxval').el.up('.x-form-item').setDisplayed(false);
+			Ext.getCmp('RptChartConfIndexChartYaxisInterval').el.up('.x-form-item').setDisplayed(false);
+			Ext.getCmp('RptChartConfIndexChartYaxisUnit').el.up('.x-form-item').setDisplayed(false);
+			//显示多科目配置信息
+			Ext.getCmp('RptChartConfItemNameCol').el.up('.x-form-item').setDisplayed(true);
+			Ext.getCmp('RptChartConfItemValCol').el.up('.x-form-item').setDisplayed(true);
+			Ext.getCmp('RptChartConfSeparateCondition').el.up('.x-form-item').setDisplayed(true);
+			Ext.getCmp('RptChartConfSeparateValue').el.up('.x-form-item').setDisplayed(true);
+		}else{
+			//显示Y轴设置信息
+				Ext.getCmp('RptChartConfIndexChartYaxisPosition').el.up('.x-form-item').setDisplayed(true);
+				Ext.getCmp('RptChartConfIndexChartYaxisMinval').el.up('.x-form-item').setDisplayed(true);
+				Ext.getCmp('RptChartConfIndexChartYaxisMaxval').el.up('.x-form-item').setDisplayed(true);
+				Ext.getCmp('RptChartConfIndexChartYaxisInterval').el.up('.x-form-item').setDisplayed(true);
+				Ext.getCmp('RptChartConfIndexChartYaxisUnit').el.up('.x-form-item').setDisplayed(true);
+				if(chartType == 2){ //柱形图
+					//显示多科目配置信息
+					Ext.getCmp('RptChartConfItemNameCol').el.up('.x-form-item').setDisplayed(true);
+					Ext.getCmp('RptChartConfItemValCol').el.up('.x-form-item').setDisplayed(true);
+					Ext.getCmp('RptChartConfSeparateCondition').el.up('.x-form-item').setDisplayed(true);
+					Ext.getCmp('RptChartConfSeparateValue').el.up('.x-form-item').setDisplayed(true);
+				}else{
+					//不显示多科目配置信息
+					Ext.getCmp('RptChartConfItemNameCol').el.up('.x-form-item').setDisplayed(false);
+					Ext.getCmp('RptChartConfItemValCol').el.up('.x-form-item').setDisplayed(false);
+					Ext.getCmp('RptChartConfSeparateCondition').el.up('.x-form-item').setDisplayed(false);
+					Ext.getCmp('RptChartConfSeparateValue').el.up('.x-form-item').setDisplayed(false);
+				}
+		}
+	},
+	
+	// 保存操作
+	doSave : function() {
+		var chartType = Ext.getCmp('RptChartConfIndexChartType').getValue();
+		//柱形图、饼图相关配置验证
+		if(chartType==2 || chartType==3){
+			var nameCol = Ext.getCmp('RptChartConfItemNameCol').getValue();
+			var valCol = Ext.getCmp('RptChartConfItemValCol').getValue();
+			var condition = Ext.getCmp('RptChartConfSeparateCondition').getValue();
+			var conditionVal = Ext.getCmp('RptChartConfSeparateValue').getValue();
+			if(nameCol.trim()==''){
+				Ext.Msg.show( {
+					title : '<fmt:message key="message.title" />',
+					msg : '统计科目名称不能为空！',
+					minWidth : 200,
+					buttons : Ext.MessageBox.OK,
+					icon : Ext.MessageBox.ERROR
+				});
+				return false;
+			}
+			if(valCol.trim()==''){
+				Ext.Msg.show( {
+					title : '<fmt:message key="message.title" />',
+					msg : '统计科目值不能为空！',
+					minWidth : 200,
+					buttons : Ext.MessageBox.OK,
+					icon : Ext.MessageBox.ERROR
+				});
+				return false;
+			}
+			if(condition==''){
+				Ext.Msg.show( {
+					title : '<fmt:message key="message.title" />',
+					msg : '分割条件不能为空！',
+					minWidth : 200,
+					buttons : Ext.MessageBox.OK,
+					icon : Ext.MessageBox.ERROR
+				});
+				return false;
+			}
+			if(conditionVal.trim()==''){
+				Ext.Msg.show( {
+					title : '<fmt:message key="message.title" />',
+					msg : '分割值不能为空！',
+					minWidth : 200,
+					buttons : Ext.MessageBox.OK,
+					icon : Ext.MessageBox.ERROR
+				});
+				return false;
+			}
+		}
+		rptChartConfform.getForm().submit({
+			url : '${ctx}/${managePath}/rptchartconf/create',
+			success : this.saveSuccess,
+			failure : this.saveFailure,
+			waitTitle : '<fmt:message key="message.wait" />',
+			waitMsg : '<fmt:message key="message.saving" />'
+		});
+	},
+	// 保存成功回调
+	saveSuccess : function(form, action) {
+		Ext.Msg.show( {
+			title : '<fmt:message key="message.title" />',
+			msg : '<fmt:message key="message.save.successful" />',
+			buttons : Ext.MessageBox.OK,
+			icon : Ext.MessageBox.INFO,
+			minWidth : 200,
+			fn : function() {
+				rptitemlistStore.reload();
+				rptChartConfGridStore.reload();
+			}
+		});
+	},
+	// 保存失败回调
+	saveFailure : function(form, action) {
+		var error = action.result.error;
+		Ext.Msg.show( {
+			title : '<fmt:message key="message.title" />',
+			msg : '<fmt:message key="message.save.failed" /><fmt:message key="error.code" />:' + error,
+			buttons : Ext.MessageBox.OK,
+			icon : Ext.MessageBox.ERROR
+		});
+	},
+	// 删除事件
+	doDelete : function() {
+		if (this.grid.getSelectionModel().getCount() > 0) {
+			var records = this.grid.getSelectionModel().getSelections();
+			var ids = new Array();
+			for ( var i = 0; i < records.length; i++) {
+				ids[i] = records[i].get('aplCode')  + "|+|"
+						+ records[i].get('reportType')  + "|+|"
+						+ records[i].get('sheetName')  + "|+|"
+						+ records[i].get('chartType')  + "|+|"
+						+ records[i].get('chartName')  + "|+|"
+						+ records[i].get('chartSeq')  + "|+|"
+						+ records[i].get('chartYaxisPosition');
+			}
+			Ext.Msg.show( {
+				title : '<fmt:message key="message.title" />',
+				msg : '<fmt:message key="message.confirm.to.delete" />',
+				buttons : Ext.MessageBox.OKCANCEL,
+				icon : Ext.MessageBox.QUESTION,
+				minWidth : 200,
+				scope : this,
+				fn : function(buttonId) {
+					if (buttonId == 'ok') {
+						app.mask.show();
+						Ext.Ajax.request( {
+							url : '${ctx}/${managePath}/rptchartconf/delete',
+							scope : this,
+							success : this.deleteSuccess,
+							failure : this.deleteFailure,
+							params : {
+								primaryKeys : ids,
+								_method : 'delete'
+							}
+						});
+
+					}
+				}
+			});
+		} else {
+			Ext.Msg.show( {
+				title : '<fmt:message key="message.title" />',
+				msg : '<fmt:message key="message.select.one.at.least" />',
+				minWidth : 200,
+				buttons : Ext.MessageBox.OK,
+				icon : Ext.MessageBox.ERROR
+			});
+		}
+	},
+	// 删除成功回调方法
+	deleteSuccess : function(response, options) {
+		app.mask.hide();
+		if (Ext.decode(response.responseText).success == false) {
+			var error = Ext.decode(response.responseText).error;
+			Ext.Msg.show( {
+				title : '<fmt:message key="message.title" />',
+				msg : '<fmt:message key="message.delete.failed" /><fmt:message key="error.code" />:' + error,
+				minWidth : 200,
+				buttons : Ext.MessageBox.OK,
+				icon : Ext.MessageBox.ERROR
+			});
+		} else if (Ext.decode(response.responseText).success == true) {
+			rptitemlistStore.reload();
+			rptChartConfGridStore.reload();// 重新加载数据源
+			this.doReset();
+			Ext.Msg.show({
+				title : '<fmt:message key="message.title" />',
+				msg : '<fmt:message key="message.delete.successful" />',
+				minWidth : 200,
+				buttons : Ext.MessageBox.OK,
+				icon : Ext.MessageBox.INFO
+			});
+		}
+	},
+	// 删除失败回调方法
+	deleteFailure : function() {
+		app.mask.hide();
+		Ext.Msg.show( {
+			title : '<fmt:message key="message.title" />',
+			msg : '<fmt:message key="message.delete.failed" />',
+			minWidth : 200,
+			buttons : Ext.MessageBox.OK,
+			icon : Ext.MessageBox.ERROR
+		});
+	},
+	// 重置查询表单
+	doReset : function() {
+		rptChartConfform.getForm().reset();
+		Ext.getCmp("RptChartConfIndexItemList").bindStore(null);
+	},
+	reportTypeChange : function(val)
+	{
+	  if (val == 1) {
+	    val = '<span style="color:green;">' + '日报' + '</span>';
+	  }else if(val == 2) {
+		val = '<span style="color:blue;">' + '周报' + '</span>';
+	  }else if(val == 3) {
+		val = '<span style="color:red;">' + '月报' + '</span>';
+	  }
+	  return val;
+	},
+	chartTypeChange : function(val)
+	{
+	  if (val == 1) {
+	    val = '<span style="color:black;">' + '趋势图' + '</span>';
+	  }else if(val == 2) {
+		val = '<span style="color:black;">' + '柱状图' + '</span>';
+	  }else if(val == 3) {
+		val = '<span style="color:black;">' + '饼图' + '</span>';
+	  }else if(val == 4) {
+		val = '<span style="color:black;">' + '条形图' + '</span>';
+	  }
+	  return val;
+	},
+	YPositionChange : function(val)
+	{
+	  if (val == 0) {
+	    val = '<span style="color:Orange;">' + '左' + '</span>';
+	  }else if(val == 1) {
+		val = '<span style="color:red;">' + '右' + '</span>';
+	  }
+	  return val;
+	},
+	rptitemlistStoreone : function(value) {
+		var n="";
+		var v=value.split(',');
+		for(var i=0;i<v.length;i++){
+			var index = rptitemlistStore.find('value', v[i]);
+			if (index == -1) {
+			    n=n+","+v[i];
+			} else {
+				n= n+","+rptitemlistStore.getAt(index).get('name');
+			}
+		}
+		return n.substring(1);
+		
+	}
+});
+var rtpChartConfList = new RptChartConfList();
+Ext.getCmp("REP_CHART_CONF").add(rtpChartConfList);
+Ext.getCmp("REP_CHART_CONF").doLayout();
+//不显示多科目饼图配置信息
+Ext.getCmp('RptChartConfItemNameCol').el.up('.x-form-item').setDisplayed(false);
+Ext.getCmp('RptChartConfItemValCol').el.up('.x-form-item').setDisplayed(false);
+Ext.getCmp('RptChartConfSeparateCondition').el.up('.x-form-item').setDisplayed(false);
+Ext.getCmp('RptChartConfSeparateValue').el.up('.x-form-item').setDisplayed(false);
+
+</script>
+<div id='lovcomboct'></div>

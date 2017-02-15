@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.check.vo">
+	<class name="CheckJobTemplateVo" table="CHECK_JOB_TEMPLATE" dynamic-update="true"
+		dynamic-insert="true">
+		<composite-id>
+			<key-property name="appsys_code" column="APPSYS_CODE" type="java.lang.String"></key-property>
+			<key-property name="job_code" column="JOB_CODE" type="java.lang.Integer"></key-property>
+			<key-property name="template_group" column="TEMPLATE_PATH" type="java.lang.String"></key-property>
+			<key-property name="template_name" column="TEMPLATE_NAME" type="java.lang.String"></key-property>
+		</composite-id>
+	</class>
+</hibernate-mapping>
+
+

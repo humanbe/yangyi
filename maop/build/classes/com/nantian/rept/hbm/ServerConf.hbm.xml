@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.rept.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="ServerConfVo" table="SERVER_CONF">
+  <composite-id>
+   <key-property name="aplCode" type="java.lang.String">
+    <column name="APL_CODE" not-null="true">
+    	<comment>应用系统编号</comment>
+    </column>
+   </key-property>
+   <key-property name="srvCode" type="java.lang.String">
+    <column name="SRV_CODE" not-null="true">
+    	<comment>服务器编号</comment>
+    </column>
+   </key-property>
+   <key-property name="serClass" type="java.lang.String">
+   <column name="SER_CLASS"  not-null="true">
+       	<comment>服务器分类</comment>
+   </column>
+  </key-property>
+   </composite-id>
+  <property name="loadMode" not-null="false" type="java.lang.String">
+   <column name="LOAD_MODE">
+       	<comment>负载方式</comment>
+   </column>
+  </property>
+  
+  <property name="serName" not-null="false" type="java.lang.String">
+   <column name="SER_NAME">
+       	<comment>服务器名称</comment>
+   </column>
+  </property>
+  <property name="memConf" not-null="false" type="java.lang.String">
+   <column name="MEM_CONF">
+       	<comment>内存配置</comment>
+   </column>
+  </property>
+  <property name="cpuConf" not-null="false" type="java.lang.String">
+   <column name="CPU_CONF">
+       	<comment>CPU配置</comment>
+   </column>
+  </property>
+  <property name="diskConf" not-null="false" type="java.lang.String">
+   <column name="DISK_CONF">
+       	<comment>硬盘配置</comment>
+   </column>
+  </property>
+  <property name="ipAddress" not-null="false" type="java.lang.String">
+   <column name="IP_ADDRESS">
+       	<comment>IP地址</comment>
+   </column>
+  </property>
+  <property name="floatAddress" not-null="false" type="java.lang.String">
+   <column name="FLOAT_ADDRESS">
+       	<comment>浮动IP地址</comment>
+   </column>
+  </property>
+  <property name="autoCapture" not-null="false" type="java.lang.String">
+   <column name="AUTO_CAPTURE">
+       	<comment>是否自动获取系统资源</comment>
+   </column>
+  </property>
+  </class>
+</hibernate-mapping>

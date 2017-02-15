@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.toolbox.vo">
+	<class dynamic-insert="true" dynamic-update="true" name="ToolBoxCmnInfoVo"
+		table="CMN_APP_GROUP_SERVER">
+		<composite-id>
+			<key-property name="server_group" type="java.lang.String">
+				<column name="SERVER_GROUP" not-null="true">
+				</column>
+			</key-property>
+			<key-property   name="appsys_code"  type="java.lang.String">
+			<column name="APPSYS_CODE" not-null="true">
+			</column>
+		</key-property>
+		<key-property name="server_ip"  type="java.lang.String">
+			<column name="SERVER_IP" not-null="true">
+			</column>
+		</key-property>
+		</composite-id>
+		
+		
+		
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.jeda.common.model">
+	<class name="RelServiceInfo" table="T_REL_SERVICE_INFO" dynamic-update="true" dynamic-insert="true">
+		<comment>外围通讯系统信息表</comment>
+		<id name="tranid" length="20">
+			<column name="TRANID">
+				<comment>交易ID</comment>
+			</column>
+		</id>
+		<property name="appsystemid" length="10">
+			<column name="APPSYSTEMID">
+				<comment>系统代码</comment>
+			</column>
+		</property>
+		<property name="outappsystemid">
+			<column name="OUTAPPSYSTEMID" length="10">
+				<comment>调用外部系统代码</comment>
+			</column>
+		</property>
+		<property name="outserivcesid">
+			<column name="OUTSERIVCESID" length="40">
+				<comment>调用外部服务代码</comment>
+			</column>
+		</property>
+		<property name="outtrancode">
+			<column name="OUTTRANCODE" length="20">
+				<comment>调用外部交易码</comment>
+			</column>
+		</property>
+		<property name="commprotocol">
+			<column name="COMMPROTOCOL" length="1">
+				<comment>与外部系统通讯方式</comment>
+			</column>
+		</property>
+		<property name="callway">
+			<column name="CALLWAY" length="2">
+				<comment>调用方式</comment>
+			</column>
+		</property>
+		<property name="callnum" type="integer">
+			<column name="CALLNUM">
+				<comment>调用序号</comment>
+			</column>
+		</property>
+		<property name="condition">
+			<column name="CONDITION" length="255">
+				<comment>条件描述（当调用方式选择T时填写）</comment>
+			</column>
+		</property>
+		<property name="reserve">
+			<column name="RESERVE" length="20">
+				<comment>备用字段</comment>
+			</column>
+		</property>
+		<property name="reserve1" length="20">
+			<column name="RESERVE1">
+				<comment>备用字段1</comment>
+			</column>
+		</property>
+		<property name="reserve2">
+			<column name="RESERVE2" length="20">
+				<comment>备用字段2</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

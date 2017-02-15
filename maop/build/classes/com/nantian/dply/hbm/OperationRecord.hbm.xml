@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.dply.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="OperationRecordVo" table="DPLY_OPERATION_RECORD">
+  <composite-id>
+   <key-property name="functionId" type="java.lang.String">
+    <column name="FUNCTION_ID" not-null="true">
+    	<comment>功能ID</comment>
+    </column>
+   </key-property>
+   <key-property name="execYmdhmsf" type="java.lang.String">
+    <column name="EXEC_YMDHMSF" not-null="true">
+    	<comment>执行年月日时分毫秒</comment>
+    </column>
+   </key-property>
+   <key-property name="procomInputFile" type="java.lang.String">
+    <column name="PROCOM_INPUT_FILE" not-null="true">
+    	<comment>处理完成输入文件</comment>
+    </column>
+   </key-property>
+  </composite-id>
+  <property name="fileType" generated="never" lazy="false" not-null="true" type="java.lang.String">
+   <column name="FILE_TYPE">
+       	<comment>文件区分</comment>
+   </column>
+  </property>
+  <property name="execUserId" generated="never" lazy="false" not-null="true" type="java.lang.String">
+   <column name="EXEC_USER_ID">
+       	<comment>执行用户ID</comment>
+   </column>
+  </property>
+  <property name="entryId" generated="never" lazy="false" not-null="true" type="java.lang.String">
+   <column name="ENTRY_ID">
+       	<comment>登录ID</comment>
+   </column>
+  </property>
+  <property name="clientInputFileName" generated="never" lazy="false" not-null="false" type="java.lang.String">
+   <column name="CLIENT_INPUT_FILE_NAME">
+       	<comment>客户端输入文件路径</comment>
+   </column>
+  </property>
+  <property name="serverInputFilePath" generated="never" lazy="false" type="java.lang.String">
+   <column name="SERVER_INPUT_FILE_PATH">
+       	<comment>服务端输入文件路径</comment>
+   </column>
+  </property>
+  <property name="serverInputFileName" generated="never" lazy="false" type="java.lang.String">
+   <column name="SERVER_INPUT_FILE_NAME">
+       	<comment>服务端输入文件名</comment>
+   </column>
+  </property>
+  <property name="resultOutputFilePath" generated="never" lazy="false" type="java.lang.String">
+   <column name="RESULT_OUTPUT_FILE_PATH">
+       	<comment>结果输出路径</comment>
+   </column>
+  </property>
+  <property name="resultOutputFileName" generated="never" lazy="false" type="java.lang.String">
+   <column name="RESULT_OUTPUT_FILE_NAME">
+       	<comment>结果输出文件名</comment>
+   </column>
+  </property>
+  <property name="resultGetFlag" generated="never" lazy="false" type="java.lang.String">
+   <column name="RESULT_GET_FLAG">
+       	<comment>结果取得标示</comment>
+   </column>
+  </property>
+  <property name="execResultStatus" generated="never" lazy="false" not-null="true" type="java.lang.String">
+   <column name="EXEC_RESULT_STATUS">
+       	<comment>执行结果状态</comment>
+   </column>
+  </property>
+  <property name="execStartYmdhmsf" generated="never" lazy="false" not-null="true" type="java.lang.String">
+   <column name="EXEC_START_YMDHMSF">
+       	<comment>执行开始年月日时分毫秒</comment>
+   </column>
+  </property>
+  <property name="execEndYmdhmsf" generated="never" lazy="false" not-null="true" type="java.lang.String">
+   <column name="EXEC_END_YMDHMSF">
+       	<comment>执行结束年月日时分毫秒</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="reserve1" type="java.lang.String">
+   <column name="RESERVE1">
+       	<comment>备用1</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="reserve2" type="java.lang.String">
+   <column name="RESERVE2">
+       	<comment>备用2</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="reserve3" type="java.lang.String">
+   <column name="RESERVE3">
+       	<comment>备用3</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="reserve4" type="java.lang.String">
+   <column name="RESERVE4">
+       	<comment>备用4</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="reserve5" type="java.lang.String">
+   <column name="RESERVE5">
+       	<comment>备用5</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="deleteFlag" type="java.lang.String">
+   <column name="DELETE_FLAG">
+       	<comment>删除标示</comment>
+   </column>
+  </property>
+ </class>
+</hibernate-mapping>

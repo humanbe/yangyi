@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.dply.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="JobDetailStepsVo" table="DPLY_JOB_DETAIL_STEPS">
+  <comment>任务详细步骤表</comment>
+  <composite-id>
+   <key-property name="jobCode" type="java.lang.String">
+    <column name="JOB_CODE" not-null="true">
+     <comment>任务编号</comment>
+    </column>
+   </key-property>
+   <key-property name="stepSeq" type="java.lang.Integer">
+    <column name="STEP_SEQ" not-null="true">
+     <comment>工作事项序号</comment>
+    </column>
+   </key-property>
+  </composite-id>
+  <property generated="never" lazy="false" name="stepDecribe"
+   not-null="true" type="java.lang.String">
+   <column name="STEP_DECRIBE">
+    <comment>工作事项描述</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="releaseStep"
+   not-null="true" type="java.lang.String">
+   <column name="RELEASE_STEP">
+    <comment>详细投产步骤</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="backingStep" type="java.lang.String">
+   <column name="BACKING_STEP">
+    <comment>详细回退步骤</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="errorMessage" type="java.lang.String">
+   <column name="ERROR_MESSAGE">
+    <comment>返回错误信息</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="excuteStatus"
+   not-null="true" type="java.lang.String">
+   <column name="EXCUTE_STATUS">
+    <comment>执行状态</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="startDate" type="java.lang.String">
+   <column name="START_DATE">
+    <comment>实际开始日期</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="startTime" type="java.lang.String">
+   <column name="START_TIME">
+    <comment>实际开始时间</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="endDate" type="java.lang.String">
+   <column name="END_DATE">
+    <comment>实际完成日期</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="endTime" type="java.lang.String">
+   <column name="END_TIME">
+    <comment>实际完成时间</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="excute" type="java.lang.String">
+   <column name="EXCUTE">
+    <comment>操作人</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="verify" type="java.lang.String">
+   <column name="VERIFY">
+    <comment>审核人</comment>
+   </column>
+  </property>
+ </class>
+</hibernate-mapping>

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.rept.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="WeekTransVo" table="WEEK_TRAN">
+  <composite-id>
+   <key-property name="aplCode" type="java.lang.String">
+    <column name="APL_CODE" not-null="true">
+    	<comment>应用系统编号</comment>
+    </column>
+   </key-property>
+    <key-property name="countWeek" type="java.lang.String">
+    <column name="COUNT_WEEK" not-null="true">
+    	<comment>统计周开始日</comment>
+    </column>
+   </key-property>
+  </composite-id>
+  <property name="weekTotalTrans" generated="never" not-null="false" type="java.lang.String">
+   <column name="WEEK_TOTAL_TRANS">
+       	<comment>周总交易量</comment>
+   </column>
+  </property>
+  <property name="weekPeakTrans" generated="never" not-null="false" type="java.lang.String">
+   <column name="WEEK_PEAK_TRANS">
+       	<comment>周峰值交易量</comment>
+   </column>
+  </property>
+  </class>
+</hibernate-mapping>

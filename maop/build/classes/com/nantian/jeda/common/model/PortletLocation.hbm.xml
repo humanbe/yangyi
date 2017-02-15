@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.jeda.common.model">
+	<class name="PortletLocation" table="JEDA_PORTLET_LOCATION" dynamic-update="true" dynamic-insert="true">
+		<comment>数据项主表</comment>
+		<id name="id" length="50">
+			<column name="PORTLET_LOCATION_ID">
+				<comment>主键</comment>
+			</column>
+			<generator class="org.hibernate.id.enhanced.TableGenerator">
+				<param name="table_name">JEDA_SEQUENCES</param>
+				<param name="segment_value">PORTLET_LOCATION</param>
+				<param name="initial_value">50</param>
+			</generator>
+		</id>
+		<version name="version" type="integer">
+			<column name="PORTLET_LOCATION_VERSION">
+				<comment>数据版本</comment>
+			</column>
+		</version>
+		<property name="row" type="integer">
+			<column name="PORTLET_LOCATION_ROW">
+				<comment>行号</comment>
+			</column>
+		</property>
+		<property name="column" type="integer">
+			<column name="PORTLET_LOCATION_COLUMN">
+				<comment>列号</comment>
+			</column>
+		</property>
+		<many-to-one name="portlet" class="com.nantian.jeda.common.model.Portlet" fetch="join" lazy="false">
+			<column name="PORTLET_ID">
+				<comment>PortletID</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="position" class="com.nantian.jeda.common.model.Position" fetch="join" lazy="false">
+			<column name="POSITION_ID">
+				<comment>岗位ID</comment>
+			</column>
+		</many-to-one>
+		<property name="order" type="integer">
+			<column name="PORTLET_LOCATION_ORDER">
+				<comment>排序</comment>
+			</column>
+		</property>
+		<many-to-one name="creator" class="com.nantian.jeda.common.model.User" fetch="join" update="false">
+			<column name="PORTLET_LOCATION_CREATOR">
+				<comment>创建者</comment>
+			</column>
+		</many-to-one>
+		<property name="created" type="date" update="false">
+			<column name="PORTLET_LOCATION_CREATED">
+				<comment>创建时间</comment>
+			</column>
+		</property>
+		<many-to-one name="modifier" class="com.nantian.jeda.common.model.User" fetch="join">
+			<column name="PORTLET_LOCATION_MODIFIER">
+				<comment>修改者</comment>
+			</column>
+		</many-to-one>
+		<property name="modified" type="date">
+			<column name="PORTLET_LOCATION_MODIFIED">
+				<comment>修改时间</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

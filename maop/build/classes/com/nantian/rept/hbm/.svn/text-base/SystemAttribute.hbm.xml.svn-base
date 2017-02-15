@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.rept.vo">
+	<class name="SystemAttributeVo" table="APP_ATTRIBUTE" dynamic-update="true"
+		dynamic-insert="true">
+		<comment>应用系统属性表</comment>
+		<id name="sysId" type="java.lang.String">
+			<column name="ID">
+				<comment>系统编号</comment>
+			</column>
+		</id>
+		<property name="coreRank" type="java.lang.String">
+			<column name="HEXIN_JIBIE">
+				<comment>核心级别</comment>
+			</column>
+		</property>
+		<property name="importantRank" type="java.lang.String">
+			<column name="ZHONGYAO_JIBIE">
+				<comment>重要级别</comment>
+			</column>
+		</property>
+		<property name="hingeRank" type="java.lang.String">
+			<column name="GUANJIAN_JIBIE">
+				<comment>关键级别</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>
+
+

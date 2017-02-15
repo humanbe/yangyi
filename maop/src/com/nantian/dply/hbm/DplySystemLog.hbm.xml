@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.dply.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="DplySystemLogVo" table="DPLY_SYSTEM_LOG">
+  <composite-id>
+   <key-property name="appsysCode" type="java.lang.String">
+    <column name="APPSYS_CODE" not-null="true">
+    </column>
+   </key-property>
+   <key-property name="reqId" type="java.lang.Integer">
+    <column name="REQ_ID" not-null="true">
+    </column>
+   </key-property>
+      <key-property name="stepId" type="java.lang.Integer">
+    <column name="STEP_ID" not-null="true">
+    </column>
+   </key-property>
+  </composite-id>
+  <property generated="never" lazy="false" name="reqName"
+   not-null="true" type="java.lang.String">
+   <column name="REQ_NAME">
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="reqStep"
+   not-null="true" type="java.lang.String">
+   <column name="REQ_STEP">
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="exeTime"
+   not-null="true" type="java.lang.String">
+   <column name="EXE_TIME">
+   </column>
+  </property>
+    <property generated="never" lazy="false" name="startTime"
+   not-null="true" type="java.lang.String">
+   <column name="START_TIME">
+   </column>
+  </property>
+    <property generated="never" lazy="false" name="finishTime"
+   not-null="true" type="java.lang.String">
+   <column name="FINISH_TIME">
+   </column>
+  </property>
+    <property generated="never" lazy="false" name="estimateTime"
+   not-null="true" type="java.lang.String">
+   <column name="ESTIMATE_TIME">
+   </column>
+  </property>
+     <property generated="never" lazy="false" name="exeResult"
+   not-null="true" type="java.lang.String">
+   <column name="EXE_RESULT">
+   </column>
+  </property>
+     <property generated="never" lazy="false" name="runLog"
+   not-null="true" type="java.lang.String">
+   <column name="RUN_LOG">
+   </column>
+  </property>
+ </class>
+</hibernate-mapping>

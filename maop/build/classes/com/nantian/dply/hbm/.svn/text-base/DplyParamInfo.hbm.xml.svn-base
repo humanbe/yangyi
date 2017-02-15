@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.dply.vo">
+	<class name="DplyParamInfoVo" table="DPLY_PARAM_INFO" dynamic-update="true"
+		dynamic-insert="true">
+		<comment>table</comment>
+		<composite-id>
+		   <key-property name="appsysCode" type="java.lang.String">
+		    <column name="APPSYS_CODE" not-null="true">
+		    	<comment>应用系统</comment>
+		    </column>
+		   </key-property>
+		   <key-property name="instanceValue" type="java.lang.String">
+		    <column name="INSTANCE_VALUE" not-null="true">
+		    	<comment>实例名称</comment>
+		    </column>
+		   </key-property>
+		    <key-property name="dplyParamCode" type="java.lang.String">
+		    <column name="DPLY_PARAM_CODE" not-null="true">
+		    	<comment>参数名称</comment>
+		    </column>
+		   </key-property>
+	  	</composite-id>
+		<property name="importanceLevel" type="java.lang.String">
+			<column name="IMPORTANCE_LEVEL">
+				<comment>重要标识</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>
+
+

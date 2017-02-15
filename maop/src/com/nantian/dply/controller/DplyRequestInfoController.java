@@ -1,0 +1,838 @@
+package com.nantian.dply.controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URISyntaxException;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.json.JSONArray;
+
+import org.jdom2.JDOMException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.context.NoSuchMessageException;
+import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.nantian.common.util.ComUtil;
+import com.nantian.component.brpm.BrpmInvocationException;
+import com.nantian.component.log.Logger;
+import com.nantian.dply.service.ApplicationProcessService;
+import com.nantian.dply.service.DplyRequestInfoService;
+import com.nantian.dply.vo.ApplicationProcessRecordsVo;
+import com.nantian.dply.vo.DplyRequestInfoVo;
+import com.nantian.dply.vo.OccasServersInfoVo;
+import com.nantian.jeda.Constants;
+import com.nantian.jeda.ErrorCode;
+import com.nantian.jeda.JEDAException;
+import com.nantian.jeda.security.util.SecurityUtils;
+import com.nantian.jeda.util.RequestUtil;
+
+/**
+ * 控制层 -- 负责变更请求页面跳转及响应.
+ * @author <a href="mailto:fujunze@nantian.com.cn">LJay</a>
+ *
+ */
+@Controller
+@RequestMapping("/" + Constants.MANAGE_PATH + "/dplyrequestinfo")
+public class DplyRequestInfoController {
+	/** 日志输出 */
+	private static Logger logger = Logger.getLogger(DplyRequestInfoController.class);
+
+	/** 领域对象名称 */
+	private static final String domain = "request";
+
+	/** 视图前缀 */
+	private static final String viewPrefix = "dply/" + domain + "/" + domain + "_";
+
+	@Autowired
+	private ApplicationProcessService applicationProcessService;
+	@Autowired
+	private DplyRequestInfoService dplyRequestInfoService;
+	
+	/** 国际化资源 */
+	@Autowired
+	private MessageSourceAccessor messages;
+	
+	@Autowired
+	private SecurityUtils securityUtils;
+	/**
+	 * 注册Editor
+	 * 
+	 * @param binder
+	 */
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		dateFormat.setLenient(false);
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(
+				dateFormat, true));
+	}
+	
+	/**
+	 * 返回列表页面
+	 * 
+	 * @return 列表页面视图名称
+	 * @throws FrameworkException
+	 */
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public String list() throws JEDAException {
+		return viewPrefix + "index";
+	}
+	
+	/**
+	 * 返回列表页面
+	 * 
+	 * @return 列表页面视图名称
+	 * @throws FrameworkException
+	 */
+	@RequestMapping(value = "/authorize_index", method = RequestMethod.GET)
+	public String authorize_index() throws JEDAException {
+		return viewPrefix + "authorize_index";
+	}
+	/**
+	 * 查询发布请求信息
+	 * @param start 起始索引
+	 * @param limit 每页至多显示的记录数
+	 * @param sort  排序的字段
+	 * @param dir 排序的方式
+	 * @param appSysCode 系统编号
+	 * @param deployCode 投产编号
+	 * @param planDeployDate 计划发布日期
+	 * @param execStatus 执行状态
+	 * @param request
+	 * @param modelMap
+	 * @return
+	 * @throws JEDAException
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/index", method = RequestMethod.POST)
+	public @ResponseBody
+	ModelMap list(
+			@RequestParam(value = "start", required = false) Integer start,
+			@RequestParam(value = "limit", required = false) Integer limit,
+			@RequestParam(value = "sort", required = false) String sort,
+			@RequestParam(value = "dir", required = false) String dir,
+			@RequestParam(value = "appSysCode", required = false) String appSysCode,
+			@RequestParam(value = "environment", required = false) String environment,
+			@RequestParam(value = "deployCode", required = false) String deployCode,
+			@RequestParam(value = "planDeployDate", required = false) String planDeployDate,
+			@RequestParam(value = "trunSwitch", required = false) String trunSwitch,
+			@RequestParam(value = "execStatus", required = false) String execStatus,
+			@RequestParam(value = "deployMonth", required = false) String deployMonth,
+			@RequestParam(value = "requestStatus", required = false) String requestStatus,
+			HttpServletRequest request, ModelMap modelMap) throws JEDAException {
+		Map<String, Object> params = RequestUtil.getQueryMap(request, dplyRequestInfoService.fields);
+		
+		modelMap.addAttribute(Constants.DEFAULT_RECORD_MODEL_KEY,
+				dplyRequestInfoService.queryDplyRequestInfo(start, limit, sort, dir, params, request,deployMonth,requestStatus));
+		modelMap.addAttribute(Constants.DEFAULT_COUNT_MODEL_KEY,
+				((List<Map<String, String>>)request.getSession().getAttribute("dplyRequestInfo4ExportOn")).size());
+		modelMap.addAttribute("success", Boolean.TRUE);
+
+		return modelMap;
+	}
+	
+	/**
+	 * 查询发布请求信息
+	 * @param start 起始索引
+	 * @param limit 每页至多显示的记录数
+	 * @param sort  排序的字段
+
+
+	 * @param dir 排序的方式
+
+
+	 * @param appSysCode 系统编号
+	 * @param deployCode 投产编号
+	 * @param planDeployDate 计划发布日期
+	 * @param execStatus 执行状态
+
+
+	 * @param request
+	 * @param modelMap
+	 * @return
+	 * @throws JEDAException
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/authorize_index", method = RequestMethod.POST)
+	public @ResponseBody
+	ModelMap authorize_index(
+			@RequestParam(value = "start", required = false) Integer start,
+			@RequestParam(value = "limit", required = false) Integer limit,
+			@RequestParam(value = "sort", required = false) String sort,
+			@RequestParam(value = "dir", required = false) String dir,
+			@RequestParam(value = "appSysCode", required = false) String appSysCode,
+			@RequestParam(value = "environment", required = false) String environment,
+			@RequestParam(value = "deployCode", required = false) String deployCode,
+			@RequestParam(value = "planDeployDate", required = false) String planDeployDate,
+			@RequestParam(value = "trunSwitch", required = false) String trunSwitch,
+			@RequestParam(value = "execStatus", required = false) String execStatus,
+			@RequestParam(value = "deployMonth", required = false) String deployMonth,
+			@RequestParam(value = "requestStatus", required = false) String requestStatus,
+			HttpServletRequest request, ModelMap modelMap) throws JEDAException {
+		Map<String, Object> params = RequestUtil.getQueryMap(request, dplyRequestInfoService.fields);
+		try {
+			modelMap.addAttribute(Constants.DEFAULT_RECORD_MODEL_KEY,
+					dplyRequestInfoService.queryDplyRequestAuthorizeInfo(start,
+							limit, sort, dir, params, request, deployMonth,
+							requestStatus));
+			modelMap.addAttribute(Constants.DEFAULT_COUNT_MODEL_KEY,
+					((List<Map<String, String>>) request.getSession()
+							.getAttribute("dplyRequestInfo4ExportAuthorize")).size());
+			modelMap.addAttribute("success", Boolean.TRUE);
+		} catch (Exception e) {
+			e.printStackTrace();
+			modelMap.addAttribute("success", Boolean.FALSE);
+			modelMap.addAttribute("error", ErrorCode.UNCAUGHT_EXCEPTION);
+		}
+
+		return modelMap;
+	}
+	
+	/**
+	 * 返回列表页面
+	 * 
+	 * @return 列表页面视图名称
+	 * @throws FrameworkException
+	 */
+	@RequestMapping(value = "/paramList", method = RequestMethod.GET)
+	public String paramList() throws JEDAException {
+		return viewPrefix + "param_list";
+	}
+	
+	/**
+	 * 设置发布请求的开关为ON
+	 * @param appSysCodes
+	 * @param requestCodes
+	 * @param planDeployDates
+	 * @param modelMap
+	 * @return
+	 * @throws JDOMException 
+	 * @throws URISyntaxException 
+	 * @throws BrpmInvocationException 
+	 * @throws IOException 
+	 * @throws NoSuchMessageException 
+	 * @throws ParseException 
+	 */
+	@RequestMapping(value = "/updateSwitchOn", method = RequestMethod.POST)
+	public @ResponseBody ModelMap updateSwitchOn(
+			@RequestParam(value = "appSysCodes", required = true) String [] appSysCodes,
+			@RequestParam(value = "requestCodes", required = true) String [] requestCodes,
+			@RequestParam(value = "environment", required = true) String [] environment,
+
+			ModelMap modelMap) throws NoSuchMessageException, IOException,
+			BrpmInvocationException, URISyntaxException, JDOMException, ParseException {
+		try {
+			String info = "";
+			for(int i=0;i<appSysCodes.length;i++){
+				info += dplyRequestInfoService.checkStartTime(appSysCodes[i], requestCodes[i], environment[i]) ;
+			}
+			if(!info.equals("")){
+				String info2 = "</br>" + info ;
+				modelMap.addAttribute("success", Boolean.FALSE);
+				modelMap.addAttribute("error", info2);
+				return modelMap;
+			}
+			
+			dplyRequestInfoService.updateSwitchOn(appSysCodes, requestCodes, environment);
+			modelMap.addAttribute("success", Boolean.TRUE);
+		} catch (IllegalArgumentException e) {
+			modelMap.addAttribute("success", Boolean.FALSE);
+			modelMap.addAttribute("error", e.getMessage());
+		}
+		return modelMap;
+	}
+	
+	/**
+	 * 设置发布请求的开关为ON
+	 * @param appSysCodes
+	 * @param requestCodes
+	 * @param planDeployDates
+	 * @param modelMap
+	 * @return
+	 * @throws JDOMException 
+	 * @throws URISyntaxException 
+	 * @throws BrpmInvocationException 
+	 * @throws IOException 
+	 * @throws NoSuchMessageException 
+	 * @throws ParseException 
+	 * @throws SQLException 
+	 */
+	@RequestMapping(value = "/updateSwitchOnByPhone", method = RequestMethod.POST)
+	public @ResponseBody ModelMap updateSwitchOnByPhone(
+			@RequestParam(value = "appSysCodes", required = true) String [] appSysCodes,
+			@RequestParam(value = "requestCodes", required = true) String [] requestCodes,
+			@RequestParam(value = "environment", required = true) String [] environment,
+
+			ModelMap modelMap) throws NoSuchMessageException, IOException,
+			BrpmInvocationException, URISyntaxException, JDOMException, ParseException, SQLException {
+		try {
+			String info = "";
+			for(int i=0;i<appSysCodes.length;i++){
+				info += dplyRequestInfoService.checkStartTime(appSysCodes[i], requestCodes[i], environment[i]) ;
+			}
+			if(!info.equals("")){
+				String info2 = "</br>" + info ;
+				modelMap.addAttribute("success", Boolean.FALSE);
+				modelMap.addAttribute("error", info2);
+				return modelMap;
+			}
+			
+			Date startDate = new Date();
+			String created_time = new SimpleDateFormat("yyyyMMdd").format(startDate) ;
+			String created_time2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(startDate) ;
+			String createUser =applicationProcessService.findbyUserId();
+			String subject_info ="4";
+			String reason="";
+			String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(startDate) ;
+			String process_description =time+"<br>"+createUser+": 发布请求，电话授权审批流程提交;<br>";
+			for(int i=0;i<requestCodes.length;i++){
+				process_description=process_description.concat(environment[i]).concat("环境,").concat(appSysCodes[i]).concat("系统,").concat(requestCodes[i]).concat("的请求<br>");
+				reason =reason.concat(requestCodes[i]).concat("   ");
+			}
+			String record_id ="REQUEST_AUTH_"+created_time+"-"+applicationProcessService.findProcessSeq();
+			 String uname = securityUtils.getUser().getUsername();
+			
+			ApplicationProcessRecordsVo applicationProcessRecordsVo=new ApplicationProcessRecordsVo();
+			applicationProcessRecordsVo.setApplication_user(uname);
+			applicationProcessRecordsVo.setApplication_time(Timestamp.valueOf(created_time2.concat(".000").toString()));
+			applicationProcessRecordsVo.setRecord_id(record_id);
+			applicationProcessRecordsVo.setProcess_description(process_description);
+			applicationProcessRecordsVo.setSubject_info(subject_info);
+			applicationProcessRecordsVo.setCurrent_state("1");
+			applicationProcessRecordsVo.setDelete_flag("0");
+			applicationProcessRecordsVo.setApplication_reasons(reason);
+			
+			applicationProcessService.save(applicationProcessRecordsVo);
+			
+			
+			dplyRequestInfoService.updateSwitchOn(appSysCodes, requestCodes, environment);
+			modelMap.addAttribute("success", Boolean.TRUE);
+		} catch (IllegalArgumentException e) {
+			modelMap.addAttribute("success", Boolean.FALSE);
+			modelMap.addAttribute("error", e.getMessage());
+		}
+		return modelMap;
+	}
+	
+	/**
+	 * 设置发布请求的开关为OFF
+	 * @param appSysCodes
+	 * @param requestCodes
+	 * @param planDeployDates
+	 * @param modelMap
+	 * @return
+	 * @throws JDOMException 
+	 * @throws URISyntaxException 
+	 * @throws BrpmInvocationException 
+	 * @throws IOException 
+	 * @throws NoSuchMessageException 
+	 */
+	@RequestMapping(value = "/updateSwitchOff", method = RequestMethod.POST)
+	public @ResponseBody ModelMap updateSwitchOff(
+			@RequestParam(value = "appSysCodes", required = true) String [] appSysCodes,
+			@RequestParam(value = "requestCodes", required = true) String [] requestCodes,
+			@RequestParam(value = "environment", required = true) String [] environment,
+
+			ModelMap modelMap) throws NoSuchMessageException, IOException,
+			BrpmInvocationException, URISyntaxException, JDOMException {
+		try {
+			dplyRequestInfoService.updateSwitchOff(appSysCodes, requestCodes, environment);
+			modelMap.addAttribute("success", Boolean.TRUE);
+		} catch (IllegalArgumentException e) {
+			modelMap.addAttribute("success", Boolean.FALSE);
+			modelMap.addAttribute("error", e.getMessage());
+		}
+		return modelMap;
+	}
+	
+	
+	/**
+	 * 更新发布请求的排期时间.
+	 * @param dplyRequestInfoVo
+	 * @return
+	 * @throws JDOMException 
+	 * @throws IOException 
+	 * @throws BrpmInvocationException 
+	 * @throws URISyntaxException 
+	 * @throws NoSuchMessageException 
+	 */
+	@RequestMapping(value = "/updateArrange", method = RequestMethod.POST)
+	public @ResponseBody 
+	ModelMap updateArrange(@ModelAttribute DplyRequestInfoVo dplyRequestInfoVo,
+			ModelMap modelMap) throws Exception,
+			JDOMException, HibernateOptimisticLockingFailureException, NoSuchMessageException, URISyntaxException, Exception{
+		modelMap.clear();
+		try {
+			String msg = "";
+			
+			//dplyRequestInfoService.buildExcelDocument();//request excel file
+			//dplyRequestInfoService.getAllProperty2File(dplyRequestInfoVo.getAppSysCode());//property sh file
+			
+			msg += dplyRequestInfoService.getRequest4Servers(dplyRequestInfoVo);
+			msg += dplyRequestInfoService.getAllProperty(dplyRequestInfoVo.getAppSysCode(),dplyRequestInfoVo.getEnvironment());
+
+			if(!msg.equals("")){
+				String msg2 = "</br>" + msg;
+				modelMap.addAttribute("success", Boolean.FALSE);
+				modelMap.addAttribute("error", msg2 ); 
+				return modelMap;
+			}
+			dplyRequestInfoService.updateArrange(dplyRequestInfoVo);
+			modelMap.addAttribute("success", Boolean.TRUE);
+		} catch (BrpmInvocationException e) {
+			modelMap.addAttribute("success", Boolean.FALSE);
+			modelMap.addAttribute("error", e.getMessage());
+			
+		}
+		return modelMap;
+	}
+	
+	/**
+	 * 加载应用系统的参数属性值.
+	 * @param appSysCode
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping(value = "/loadParams", method = RequestMethod.POST)
+	public @ResponseBody
+		ModelMap loadParams(
+				@RequestParam(value = "appSysCode", required = false) String appSysCode	,
+				@RequestParam(value = "env", required = false) String env ,
+				HttpServletRequest request,
+				ModelMap modelMap) throws Exception {
+		List<Map<String, Object>> dataList = dplyRequestInfoService.getAllPropertyAndValues(appSysCode,env);
+		request.getSession().setAttribute("bsaParameterList", dataList);
+		modelMap.addAttribute(Constants.DEFAULT_RECORD_MODEL_KEY, dataList);
+		modelMap.addAttribute(Constants.DEFAULT_COUNT_MODEL_KEY, dataList.size());
+		modelMap.addAttribute("success", Boolean.TRUE);
+		return modelMap;
+	}
+	
+	/**
+	 * 导出BSA参数到excel
+	 * @param request
+	 * @param modelMap
+	 * @return
+	 * @throws JEDAException
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/exportParams2Excel", method = RequestMethod.GET)
+	public String exportParams2Excel(HttpServletRequest request, ModelMap modelMap) throws JEDAException {
+		Object obj = request.getSession().getAttribute("bsaParameterList");
+		if(obj != null){
+			List<Map<String, Object>> dataList = (List<Map<String, Object>>) obj;
+			// 定义列显示顺序以及列标题
+			Map<String, String> columns = new LinkedHashMap<String, String>();
+			columns.put("name", messages.getMessage("dplyRequestInfo.paramClass"));
+			columns.put("instance", messages.getMessage("dplyRequestInfo.propInstance"));
+			columns.put("prop", messages.getMessage("dplyRequestInfo.paramName"));
+			columns.put("value", messages.getMessage("dplyRequestInfo.paramValue"));
+			modelMap.addAttribute(Constants.DEFAULT_EXCEL_COLUMNS_MODEL_KEY, columns);
+			modelMap.addAttribute(Constants.DEFAULT_RECORD_MODEL_KEY, dataList);
+			return "excelViewBsaParam";
+		}
+		return null;
+	}
+	
+	/**
+	 * 导入BSA参数
+	 * @param request
+	 * @param modelMap
+	 * @return
+	 * @throws JEDAException
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/importParams", method = RequestMethod.POST)
+	public @ResponseBody
+	ModelMap importParams(
+			@RequestParam(value = "filePath", required = true) String filePath,
+			@RequestParam(value = "appSysCode", required = true) String appSysCode,
+			@RequestParam(value = "env", required = true) String env,
+			HttpServletRequest request, ModelMap modelMap) throws JEDAException {
+		Object obj = request.getSession().getAttribute("bsaParameterList");
+		if(obj != null){
+			List<Map<String, Object>> dataList = (List<Map<String, Object>>) obj;
+			try {
+				dplyRequestInfoService.importBsaParams(filePath, appSysCode, dataList.size(),env);
+				modelMap.addAttribute("success", Boolean.TRUE);
+			} catch (Exception e) {
+				modelMap.addAttribute("success", Boolean.FALSE);
+				modelMap.addAttribute("error", e.getMessage());
+			}
+		} else {
+			modelMap.addAttribute("success", Boolean.FALSE);
+		}
+		return modelMap;
+	}
+	
+	/**
+	 * 更新属性类实例的参数值.
+	 * @param appSysCode 系统编号
+	 * @param propsValues 属性值键值对
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping(value = "/updatePropInstance", method = RequestMethod.POST)
+	public @ResponseBody ModelMap updatePropInstance(
+			@RequestParam String propsValues,
+			@RequestParam(value = "appSysCode", required = true) String  appSysCode,
+			ModelMap modelMap) throws Exception {
+		dplyRequestInfoService.updatePropInstance(propsValues,appSysCode);
+		modelMap.addAttribute("success", Boolean.TRUE);
+		return modelMap;
+	}
+	
+	/**
+	 * 执行请求
+	 * @param appSysCodes
+	 * @param requestCodes
+	 * @param modelMap
+	 * @return
+	 * @throws Exception  
+	 */
+	@RequestMapping(value = "/executeRequests", method = RequestMethod.POST)
+	public @ResponseBody ModelMap executeRequests(
+			@RequestParam(value = "appSysCodes", required = true) String [] appSysCodes,
+			@RequestParam(value = "requestCodes", required = true) String [] requestCodes,
+			@RequestParam(value = "environment", required = true) String [] environment,
+			ModelMap modelMap) throws Exception {
+		
+		String info = "";
+		for(int i=0;i<appSysCodes.length;i++){
+			info += dplyRequestInfoService.checkStartTime2(appSysCodes[i], requestCodes[i], environment[i]) ;
+		}
+		if(!info.equals("")){
+			String info2 = "</br>" + info ;
+			modelMap.addAttribute("success", Boolean.FALSE);
+			modelMap.addAttribute("error", info2);
+			return modelMap;
+		}
+		
+		modelMap.addAttribute("count", dplyRequestInfoService.executeRequests(appSysCodes, requestCodes, environment));
+		modelMap.addAttribute("success", Boolean.TRUE);
+		return modelMap;
+	}
+	
+	/**
+	 * 重置请求
+	 * @param appSysCodes
+	 * @param requestCodes
+	 * @param modelMap
+	 * @return
+	 * @throws Exception  
+	 */
+	@RequestMapping(value = "/reopenRequests", method = RequestMethod.POST)
+	public @ResponseBody ModelMap reopenRequests(
+			@RequestParam(value = "appSysCodes", required = true) String [] appSysCodes,
+			@RequestParam(value = "requestCodes", required = true) String [] requestCodes,
+			@RequestParam(value = "environment", required = true) String [] environment,
+
+			ModelMap modelMap) throws Exception {
+		dplyRequestInfoService.reopenRequests(appSysCodes, requestCodes, environment);
+		modelMap.addAttribute("success", Boolean.TRUE);
+		return modelMap;
+	}
+	
+	/**
+	 * 同步当前用户创建的BRPM发布请求信息
+	 * @param plannedStartDate 计划发布时间下限
+	 * @param plannedEndDate 计划发布时间上限
+	 * @param modelMap
+	 * @return
+	 * @throws BrpmInvocationException
+	 * @throws IOException
+	 * @throws JDOMException
+	 * @throws ParseException
+	 * @throws NoSuchMessageException
+	 * @throws URISyntaxException
+	 */
+	@RequestMapping(value = "/synBrpmCurMonthReqInfos", method = RequestMethod.POST)
+	public @ResponseBody
+	ModelMap synBrpmCurMonthReqInfos(
+			@RequestParam(required = true) String plannedStartDate,
+			@RequestParam(required = true) String plannedEndDate,
+			ModelMap modelMap)
+			throws BrpmInvocationException, IOException, JDOMException,
+			ParseException, NoSuchMessageException, URISyntaxException {
+		String requestCodes = dplyRequestInfoService.synBrpmCurMonthReqInfos(plannedStartDate, plannedEndDate);
+		modelMap.addAttribute("success", Boolean.TRUE);//Boolean.TRUE
+		modelMap.addAttribute("requestCodes", requestCodes.toString());
+		return modelMap;
+	}
+	
+	/**
+	 * 发布授权结果导出查询结果到excel文件
+	 * @param request
+	 * @param modelMap
+	 * @return
+	 * @throws JEDAException
+	 */
+	@RequestMapping(value = "/excelAuthorize", method = RequestMethod.GET)
+	public String excel(HttpServletRequest request, ModelMap modelMap) throws JEDAException {
+		// 定义列显示顺序以及列标题
+		Map<String, String> columns = new LinkedHashMap<String, String>();
+		columns.put("appSysCode", messages.getMessage("dplyRequestInfo.appSysCd"));
+		columns.put("deployCode", messages.getMessage("dplyRequestInfo.deployCode"));
+		columns.put("requestCode", messages.getMessage("dplyRequestInfo.requestCode"));
+		columns.put("requestName", messages.getMessage("dplyRequestInfo.requestName"));
+		columns.put("environment", messages.getMessage("dplyRequestInfo.environment"));
+		columns.put("trunSwitch", messages.getMessage("dplyRequestInfo.trunSwitch"));
+		columns.put("execStatus", messages.getMessage("dplyRequestInfo.execStatus"));
+		columns.put("planDeployDate", messages.getMessage("dplyRequestInfo.planDeployDate"));
+		columns.put("planStartTime", messages.getMessage("dplyRequestInfo.planStartTime"));
+		columns.put("planEndTime", messages.getMessage("dplyRequestInfo.planEndTime"));
+		columns.put("realStartDate", messages.getMessage("dplyRequestInfo.realStartTime"));
+		columns.put("realEndDate", messages.getMessage("dplyRequestInfo.realEndTime"));
+		
+		modelMap.addAttribute(Constants.DEFAULT_EXCEL_COLUMNS_MODEL_KEY, columns);
+		modelMap.addAttribute(Constants.DEFAULT_RECORD_MODEL_KEY, request.getSession().getAttribute("dplyRequestInfo4ExportAuthorize"));
+		return "excelView";
+	}
+	
+	/**
+	 * 发布备份结果导出到Excel表
+	 * @param request
+	 * @param modelMap
+	 * @return
+	 * @throws JEDAException
+	 */
+	@RequestMapping(value = "/excelBack", method = RequestMethod.GET)
+	public String excelBack(HttpServletRequest request, ModelMap modelMap) throws JEDAException {
+		// 定义列显示顺序以及列标题
+		Map<String, String> columns = new LinkedHashMap<String, String>();
+		columns.put("appSysCode", messages.getMessage("dplyRequestInfo.appSysCd"));
+		columns.put("deployCode", messages.getMessage("dplyRequestInfo.deployCode"));
+		columns.put("requestCode", messages.getMessage("dplyRequestInfo.requestCode"));
+		columns.put("requestName", messages.getMessage("dplyRequestInfo.requestName"));
+		columns.put("environment", messages.getMessage("dplyRequestInfo.environment"));
+		columns.put("trunSwitch", messages.getMessage("dplyRequestInfo.trunSwitch"));
+		columns.put("execStatus", messages.getMessage("dplyRequestInfo.execStatus"));
+		columns.put("planDeployDate", messages.getMessage("dplyRequestInfo.planDeployDate"));
+		columns.put("planStartTime", messages.getMessage("dplyRequestInfo.planStartTime"));
+		columns.put("planEndTime", messages.getMessage("dplyRequestInfo.planEndTime"));
+		columns.put("realStartDate", messages.getMessage("dplyRequestInfo.realStartTime"));
+		columns.put("realEndDate", messages.getMessage("dplyRequestInfo.realEndTime"));
+		
+		modelMap.addAttribute(Constants.DEFAULT_EXCEL_COLUMNS_MODEL_KEY, columns);
+		modelMap.addAttribute(Constants.DEFAULT_RECORD_MODEL_KEY, request.getSession().getAttribute("dplyRequestInfo4ExportBack"));
+		return "excelView";
+	}
+	
+	/**
+	 * 发布请求启动导出到excel
+	 * @param request
+	 * @param modelMap
+	 * @return
+	 * @throws JEDAException
+	 */
+	@RequestMapping(value = "/excelOn", method = RequestMethod.GET)
+	public String excelOn(HttpServletRequest request, ModelMap modelMap) throws JEDAException {
+		// 定义列显示顺序以及列标题
+		Map<String, String> columns = new LinkedHashMap<String, String>();
+		columns.put("appSysCode", messages.getMessage("dplyRequestInfo.appSysCd"));
+		columns.put("deployCode", messages.getMessage("dplyRequestInfo.deployCode"));
+		columns.put("requestCode", messages.getMessage("dplyRequestInfo.requestCode"));
+		columns.put("requestName", messages.getMessage("dplyRequestInfo.requestName"));
+		columns.put("environment", messages.getMessage("dplyRequestInfo.environment"));
+		columns.put("trunSwitch", messages.getMessage("dplyRequestInfo.trunSwitch"));
+		columns.put("execStatus", messages.getMessage("dplyRequestInfo.execStatus"));
+		columns.put("planDeployDate", messages.getMessage("dplyRequestInfo.planDeployDate"));
+		columns.put("planStartTime", messages.getMessage("dplyRequestInfo.planStartTime"));
+		columns.put("planEndTime", messages.getMessage("dplyRequestInfo.planEndTime"));
+		columns.put("realStartDate", messages.getMessage("dplyRequestInfo.realStartTime"));
+		columns.put("realEndDate", messages.getMessage("dplyRequestInfo.realEndTime"));
+		
+		modelMap.addAttribute(Constants.DEFAULT_EXCEL_COLUMNS_MODEL_KEY, columns);
+		modelMap.addAttribute(Constants.DEFAULT_RECORD_MODEL_KEY, request.getSession().getAttribute("dplyRequestInfo4ExportOn"));
+		return "excelView";
+	}
+	
+	/**
+	 * 刪除请求
+
+	 * @param appsysCodes 系统代码
+     * @param serverGroups 服务器分组
+
+
+	 * @return
+	 */
+	@RequestMapping(value = "/delete",  method = RequestMethod.DELETE)
+	public @ResponseBody
+	ModelMap delete(
+			@RequestParam(value = "appSysCds", required = true) String[] appSysCds, 
+			@RequestParam(value = "requestCodes", required = true) String[] requestCodes,
+			ModelMap modelMap)throws DataAccessException, SQLException ,DataIntegrityViolationException,Exception {
+			modelMap.clear();
+			dplyRequestInfoService.deleteByIds(appSysCds, requestCodes);
+			modelMap.addAttribute("success", Boolean.TRUE);
+			return modelMap;
+	}
+	
+	/**
+	 * 查询用户关联应用系统列表
+	 * @param response
+	 */
+	@RequestMapping(value = "/queryEnv", method = RequestMethod.GET)
+	public @ResponseBody void queryEnv(@RequestParam(value = "appsysCode", required = false) String appsysCode,HttpServletResponse response){
+		PrintWriter out = null;
+		// 输出开始日志
+
+		if (logger.isEnableFor("Component0001")) {
+			logger.log("Component0001", ComUtil.getCurrentMethodName());
+			}
+		try {
+			Object queryEnv = dplyRequestInfoService.queryEnv(securityUtils.getUser().getUsername());
+			response.setCharacterEncoding("utf-8");
+			out = response.getWriter();
+			out.print(JSONArray.fromObject(queryEnv));
+		} catch (Exception e) {
+			e.printStackTrace();
+			// 输出异常结束日志
+			if (logger.isEnableFor("Component0999")) {
+				logger.log("Component0999", ComUtil.getCurrentMethodName());
+				}
+		}finally{
+			if(out != null){
+				out.close();
+			}
+		}
+		// 输出结束日志
+		if (logger.isEnableFor("Component0002")) {
+			logger.log("Component0002", ComUtil.getCurrentMethodName());
+			}
+	}
+	
+	
+	/**
+	 * 返回备份列表页面
+	 * 
+	 * @return 列表页面视图名称
+	 * @throws FrameworkException
+	 */
+	@RequestMapping(value = "/emergencybak_index", method = RequestMethod.GET)
+	public String emergencybak_index() throws JEDAException {
+		return viewPrefix + "emergencybak_index";
+	}
+	
+	
+	/**
+	 * 查询发布请求信息
+	 * @param start 起始索引
+	 * @param limit 每页至多显示的记录数
+	 * @param sort  排序的字段
+
+	 * @param dir 排序的方式
+
+	 * @param appSysCode 系统编号
+	 * @param deployCode 投产编号
+	 * @param planDeployDate 计划发布日期
+	 * @param execStatus 执行状态
+
+	 * @param request
+	 * @param modelMap
+	 * @return
+	 * @throws JEDAException
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/emergencybak_index", method = RequestMethod.POST)
+	public @ResponseBody
+	ModelMap emergencybak_index(
+			@RequestParam(value = "start", required = false) Integer start,
+			@RequestParam(value = "limit", required = false) Integer limit,
+			@RequestParam(value = "sort", required = false) String sort,
+			@RequestParam(value = "dir", required = false) String dir,
+			@RequestParam(value = "appSysCode", required = false) String appSysCode,
+			@RequestParam(value = "environment", required = false) String environment,
+			@RequestParam(value = "deployCode", required = false) String deployCode,
+			@RequestParam(value = "planDeployDate", required = false) String planDeployDate,
+			@RequestParam(value = "trunSwitch", required = false) String trunSwitch,
+			@RequestParam(value = "execStatus", required = false) String execStatus,
+			@RequestParam(value = "deployMonth", required = false) String deployMonth,
+			@RequestParam(value = "requestStatus", required = false) String requestStatus,
+			HttpServletRequest request, ModelMap modelMap) throws JEDAException {
+		Map<String, Object> params = RequestUtil.getQueryMap(request, dplyRequestInfoService.fields);
+		
+		modelMap.addAttribute(Constants.DEFAULT_RECORD_MODEL_KEY,
+				dplyRequestInfoService.queryDplyRequestEmergencybakInfo(start, limit, sort, dir, params, request,deployMonth,requestStatus));
+		modelMap.addAttribute(Constants.DEFAULT_COUNT_MODEL_KEY,
+				((List<Map<String, String>>)request.getSession().getAttribute("dplyRequestInfo4ExportBack")).size());
+		modelMap.addAttribute("success", Boolean.TRUE);
+
+		return modelMap;
+	}
+	/**
+	 *发布请求应急备份
+
+	 * @param appSysCodes
+	 * @param requestCodes
+	 * @param planDeployDates
+	 * @param modelMap
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping(value = "/EmergencyBak", method = RequestMethod.POST)
+	public @ResponseBody ModelMap EmergencyBak(
+			@RequestParam(value = "appSysCodes", required = true) String [] appSysCodes,
+			@RequestParam(value = "requestCodes", required = true) String [] requestCodes,
+			@RequestParam(value = "environments", required = true) String [] environments,
+			ModelMap modelMap) throws Exception{
+				dplyRequestInfoService.handlebak(appSysCodes, requestCodes, environments);
+				modelMap.addAttribute("success", Boolean.TRUE);
+				return modelMap;
+		
+	}
+	
+	/**
+	 * 检查BSA参数是否为空
+	 * @param request
+	 * @param modelMap
+	 * @return
+	 * @throws JEDAException
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/checkBSAParams", method = RequestMethod.POST)
+	public @ResponseBody
+	ModelMap checkBSAParams(
+			HttpServletRequest request, ModelMap modelMap) throws JEDAException {
+		String ErrorMessage="";
+		Object obj = request.getSession().getAttribute("bsaParameterList");
+		if(obj != null){
+			List<Map<String, Object>> dataList = (List<Map<String, Object>>) obj;
+				 ErrorMessage=dplyRequestInfoService.checkBSAParams(dataList);
+			if(ErrorMessage.length()>0){
+				modelMap.addAttribute("success", Boolean.FALSE);
+				modelMap.addAttribute("error",ErrorMessage);
+			} else {
+				modelMap.addAttribute("success", Boolean.TRUE);
+		}
+		}else{
+			modelMap.addAttribute("success", Boolean.TRUE);
+		}
+		return modelMap;
+	
+	}
+	
+}

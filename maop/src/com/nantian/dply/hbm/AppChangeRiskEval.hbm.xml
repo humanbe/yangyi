@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.dply.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="AppChangeRiskEvalVo" table="APP_CHANGE_RISK_EVAL">
+	<id name="appChangeId" column="app_change_id" type="long" unsaved-value="0">
+		<generator class="foreign">
+  			<param name="property">appChange</param>
+  		</generator>
+	</id>
+  	<property name="aplCode" not-null="true" type="java.lang.String">
+   		<column name="APL_CODE">
+       		<comment>系统编号</comment>
+   		</column>
+  	</property>
+  	<property name="changeRiskEval" not-null="false" type="java.lang.String">
+   		<column name="CHANGE_RISK_EVAL">
+       		<comment>变更风险评估.1:低,2：中,3：高</comment>
+   		</column>
+  	</property>
+  	<property name="stopServiceTime" not-null="false" type="java.lang.String">
+   		<column name="STOP_SERVICE_TIME">
+       		<comment>服务停止时间</comment>
+   		</column>
+  	</property>
+  	<property name="primaryChangeRisk" not-null="false" type="org.springframework.orm.hibernate3.support.ClobStringType" length="4000">
+   		<column name="PRIMARY_CHANGE_RISK">
+       		<comment>主要变更风险</comment>
+   		</column>
+  	</property>
+  	<property name="riskHandleMethod" not-null="false" type="org.springframework.orm.hibernate3.support.ClobStringType" length="4000">
+   		<column name="RISK_HANDLE_METHOD">
+       		<comment>风险应对措施</comment>
+   		</column>
+  	</property>
+  	<property name="other" not-null="false" type="java.lang.String">
+   		<column name="OTHER">
+       		<comment>其他注意事项</comment>
+   		</column>
+  	</property>
+  	<one-to-one name="appChange" class="AppChangeVo" cascade="all"></one-to-one>
+  </class>
+</hibernate-mapping>

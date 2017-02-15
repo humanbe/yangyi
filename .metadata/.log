@@ -1,0 +1,75 @@
+!SESSION 2015-09-02 15:43:10.826 -----------------------------------------------
+eclipse.buildId=M20110909-1335
+java.version=1.6.0_34
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=zh_CN
+Framework arguments:  -product org.eclipse.epp.package.jee.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.jee.product
+
+!ENTRY org.eclipse.osgi 2 1 2015-09-02 15:43:14.840
+!MESSAGE NLS unused message: provider_invalid_general in: org.eclipse.core.internal.runtime.messages
+
+!ENTRY org.eclipse.osgi 2 1 2015-09-02 15:43:14.842
+!MESSAGE NLS unused message: provider_invalid in: org.eclipse.core.internal.runtime.messages
+
+!ENTRY org.eclipse.osgi 2 1 2015-09-02 15:43:14.844
+!MESSAGE NLS unused message: product_notFound in: org.eclipse.core.internal.runtime.messages
+
+!ENTRY org.eclipse.osgi 2 1 2015-09-02 15:43:14.886
+!MESSAGE NLS unused message: HideItemsCannotMakeVisible_expandItemText in: org.eclipse.ui.internal.messages
+
+!ENTRY org.eclipse.osgi 2 1 2015-09-02 15:43:14.891
+!MESSAGE NLS unused message: ErrorLogUtil_ShowErrorLog in: org.eclipse.ui.internal.messages
+
+!ENTRY org.eclipse.osgi 2 1 2015-09-02 15:43:14.894
+!MESSAGE NLS unused message: WorkbenchStatusDialog_Support in: org.eclipse.ui.internal.messages
+
+!ENTRY org.eclipse.osgi 2 1 2015-09-02 15:43:30.676
+!MESSAGE NLS unused message: url_couldNotResolve in: org.eclipse.core.internal.utils.messages
+
+!ENTRY org.eclipse.osgi 2 1 2015-09-02 15:43:31.981
+!MESSAGE NLS unused message: PropertyTester_error_activating_plugin in: org.eclipse.core.internal.expressions.ExpressionMessages
+
+!ENTRY org.eclipse.core.net 1 0 2015-09-02 15:43:36.070
+!MESSAGE System property http.proxyHost is not set but should be 10.1.118.74.
+
+!ENTRY org.eclipse.core.net 1 0 2015-09-02 15:43:36.072
+!MESSAGE System property http.proxyPort is not set but should be 808.
+
+!ENTRY org.eclipse.osgi 2 1 2015-09-02 15:43:39.917
+!MESSAGE NLS unused message: Could_not_provide_children_for_element in: org.eclipse.ui.internal.navigator.messages
+
+!ENTRY org.eclipse.osgi 2 1 2015-09-02 15:43:40.911
+!MESSAGE NLS unused message: TextEditorPreferencePage_colorsAndFonts_link_tooltip in: org.eclipse.ui.internal.editors.text.TextEditorMessages
+
+!ENTRY org.eclipse.osgi 2 1 2015-09-02 15:43:40.916
+!MESSAGE NLS unused message: TextEditorPreferencePage_overwriteMode in: org.eclipse.ui.internal.editors.text.TextEditorMessages
+
+!ENTRY org.eclipse.osgi 2 1 2015-09-02 15:43:42.142
+!MESSAGE NLS unused message: rowser_homeButton_tooltip in: org.eclipse.ui.internal.intro.impl.Messages
+
+!ENTRY org.eclipse.osgi 2 1 2015-09-02 15:43:42.145
+!MESSAGE NLS unused message: null in: org.eclipse.ui.internal.intro.impl.Messages
+
+!ENTRY org.eclipse.ui.workbench 2 0 2015-09-02 15:43:42.640
+!MESSAGE A handler conflict occurred.  This may disable some commands.
+!SUBENTRY 1 org.eclipse.ui.workbench 2 0 2015-09-02 15:43:42.640
+!MESSAGE Conflict for 'org.eclipse.ui.navigate.openResource':
+HandlerActivation(commandId=org.eclipse.ui.navigate.openResource,
+	handler=ActionDelegateHandlerProxy(null,org.eclipse.ui.internal.ide.handlers.OpenResourceHandler),
+	expression=AndExpression(ActionSetExpression(com.adobe.flexbuilder.standalone.navigate,org.eclipse.ui.internal.WorkbenchWindow@a9509d),WorkbenchWindowExpression(org.eclipse.ui.internal.WorkbenchWindow@a9509d)),sourcePriority=16640)
+HandlerActivation(commandId=org.eclipse.ui.navigate.openResource,
+	handler=ActionDelegateHandlerProxy(null,org.eclipse.ui.internal.ide.handlers.OpenResourceHandler),
+	expression=AndExpression(ActionSetExpression(org.eclipse.ui.NavigateActionSet,org.eclipse.ui.internal.WorkbenchWindow@a9509d),WorkbenchWindowExpression(org.eclipse.ui.internal.WorkbenchWindow@a9509d)),sourcePriority=16640)
+
+!ENTRY com.android.ide.eclipse.ddms 4 0 2015-09-02 15:43:46.188
+!MESSAGE DDMS files not found: D:\software\eclipse\platform-tools\adb.exe D:\software\eclipse\tools\hprof-conv.exe D:\software\eclipse\tools\traceview.bat 
+
+!ENTRY org.eclipse.osgi 2 1 2015-09-02 15:43:46.977
+!MESSAGE NLS unused message: AutomaticUpdater_ErrorCheckingUpdates in: org.eclipse.equinox.internal.p2.ui.sdk.scheduler.messages
+
+!ENTRY org.eclipse.osgi 2 1 2015-09-02 15:43:46.980
+!MESSAGE NLS unused message: AutomaticUpdater_ResolutionOperationLabel in: org.eclipse.equinox.internal.p2.ui.sdk.scheduler.messages
+
+!ENTRY org.eclipse.osgi 2 1 2015-09-02 15:43:48.864
+!MESSAGE NLS unused message: CVSTeamProvider_errorAddingFileToDiff in: org.eclipse.team.internal.ccvs.core.messages

@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.common.system.vo">
+	<class name="AppConfVo" table="CMN_APP_CONF" dynamic-update="true" dynamic-insert="true">
+		<id name="itsmAppsysCode" type="java.lang.String">
+			<column name="ITSM_APPSYS_CODE">
+				<comment>系统编号</comment>
+			</column>
+		</id>
+		<property name="maopAppsysCode" type="java.lang.String">
+			<column name="MAOP_APPSYS_CODE">
+			</column>
+		</property>
+		
+		<property name="aopFlag" type="java.lang.String">
+			<column name="AOP_FLAG">
+				<comment>运维自动化平台上线标示</comment>
+			</column>
+		</property>
+		<property name="lastScanTime" type="java.sql.Timestamp">
+			<column name="LAST_SCAN_TIME">
+				<comment>上次扫描时间</comment>
+			</column>
+		</property>
+		<property name="deleteFlag" type="java.lang.String">
+			<column name="DELETE_FLAG">
+				<comment>删除标示</comment>
+			</column>
+		</property>
+		<property name="updateTime" type="java.sql.Timestamp">
+			<column name="UPDATE_TIME">
+				<comment>更新时间</comment>
+			</column>
+		</property>
+		<property name="updateBeforeRecord" type="java.lang.String">
+			<column name="UPDATE_BEFORE_RECORD">
+				<comment>更新前纪录</comment>
+			</column>
+		</property>
+		<property name="onlineEnv" type="java.lang.String">
+			<column name="ONLINE_ENV">
+				<comment>系统上线环境</comment>
+			</column>
+		</property>
+		<property name="syncType" type="java.lang.String">
+			<column name="SYNC_TYPE">
+				<comment>系统同步类型 H :人工  A:自动</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>
+
+

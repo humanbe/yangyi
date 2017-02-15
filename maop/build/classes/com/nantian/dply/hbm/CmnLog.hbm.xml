@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.dply.vo">
+	<class name="CmnLogVo" table="CMN_LOG" dynamic-update="true"
+		dynamic-insert="true">
+		<id name="logJnlNo" column="LOG_JNL_NO" type="long">
+			<generator class="sequence">
+				<param name="sequence">REQUEST_LOG_SEQ</param>
+			</generator>
+		</id>
+		<property generated="never" lazy="false" name="execDate"
+			not-null="true" type="java.lang.String">
+			<column name="EXEC_DATE">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="appsysCode"
+			not-null="true" type="java.lang.String">
+			<column name="APPSYS_CODE">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="logResourceType"
+			not-null="true" type="java.lang.String">
+			<column name="LOG_RESOURCE_TYPE">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="requestName"
+			not-null="true" type="java.lang.String">
+			<column name="REQUEST_NAME">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="logType"
+			not-null="true" type="java.lang.String">
+			<column name="LOG_TYPE">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="execStatus"
+			not-null="true" type="java.lang.String">
+			<column name="EXEC_STATUS">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="execStartTime"
+			not-null="true" type="java.sql.Timestamp">
+			<column name="EXEC_START_TIME">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="execCompletedTime"
+			not-null="true" type="java.sql.Timestamp">
+			<column name="EXEC_COMPLETED_TIME">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="execCreatedTime"
+			not-null="true" type="java.sql.Timestamp">
+			<column name="EXEC_CREATED_TIME">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="execUpdatedTime"
+			not-null="true" type="java.sql.Timestamp">
+			<column name="EXEC_UPDATED_TIME">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="authorizedUser"
+			not-null="true" type="java.lang.String">
+			<column name="AUTHORIZED_USER">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="platformUser"
+			not-null="true" type="java.lang.String">
+			<column name="PLATFORM_USER">
+			</column>
+		</property>
+		
+		<property generated="never" lazy="false" name="event_id"
+			 type="java.lang.String">
+			<column name="EVENT_ID">
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

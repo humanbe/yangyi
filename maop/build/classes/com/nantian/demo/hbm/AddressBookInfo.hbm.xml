@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.demo.vo">
+	<class name="AddressBookInfoVo" table="T_ADDRESS_BOOK_INFO" dynamic-update="true"
+		dynamic-insert="true">
+		<comment>table</comment>
+		<id name="adminid" unsaved-value="null" type="java.lang.String">
+			<column name="ADMINID">
+				<comment>adminid</comment>
+			</column>
+			<generator class="uuid" />
+		</id>
+		<property name="adminname" type="java.lang.String">
+			<column name="ADMINNAME">
+				<comment>adminname</comment>
+			</column>
+		</property>
+		<property name="admintype" type="java.lang.String">
+			<column name="ADMINTYPE">
+				<comment>admintype</comment>
+			</column>
+		</property>
+		<property name="mobile" type="java.lang.String">
+			<column name="MOBILE">
+				<comment>mobile</comment>
+			</column>
+		</property>
+		<property name="phone" type="java.lang.String">
+			<column name="PHONE">
+				<comment>phone</comment>
+			</column>
+		</property>
+		<property name="email" type="java.lang.String">
+			<column name="EMAIL">
+				<comment>email</comment>
+			</column>
+		</property>
+		<property name="remark" type="java.lang.String">
+			<column name="REMARK">
+				<comment>remark</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>
+
+

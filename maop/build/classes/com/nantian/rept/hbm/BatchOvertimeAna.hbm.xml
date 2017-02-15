@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.rept.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="BatchOvertimeAnaVo" table="BATCH_OVERTIME_ANA">
+  	<comment>批量超时事件分析表</comment>
+	<composite-id>
+		<key-property name="jobName" type="java.lang.String">
+			<column name="JOB_NAME">
+				<comment>任务名</comment>
+			</column>
+		</key-property>
+		<key-property name="errorTime" type="java.lang.String">
+			<column name="ERROR_TIME">
+				<comment>报错时间</comment>
+			</column>
+		</key-property>
+	</composite-id>
+  <property name="appSysCd" not-null="false" type="java.lang.String">
+   <column name="APPSYSCD">
+       	<comment>系统代码</comment>
+   </column>
+  </property>
+  <property name="jobDesc" not-null="false" type="java.lang.String">
+   <column name="JOB_DESC">
+       	<comment>任务描述</comment>
+   </column>
+  </property>
+  <property name="overtimeFlag" not-null="false" type="java.lang.String">
+   <column name="OVERTIME_FLAG">
+       	<comment>是否为超时报错</comment>
+   </column>
+  </property>
+  <property name="capaRiskType" not-null="false" type="java.lang.String">
+   <column name="CAPA_RISK_TYPE">
+       	<comment>容量风险分类</comment>
+   </column>
+  </property>
+  <property name="jobEffect" not-null="false" type="java.lang.String">
+   <column name="JOB_EFFECT">
+       	<comment>任务影响情况</comment>
+   </column>
+  </property>
+  <property name="errorCauseAna" not-null="false" type="java.lang.String">
+   <column name="ERROR_CAUSE_ANA">
+       	<comment>报错原因分析与改进</comment>
+   </column>
+  </property>
+  </class>
+</hibernate-mapping>

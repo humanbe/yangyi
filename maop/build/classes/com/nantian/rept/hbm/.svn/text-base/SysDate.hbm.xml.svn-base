@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.rept.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="SysDateVo" table="SYS_DATE">
+  <composite-id>
+   <key-property name="sysDate" type="java.lang.String">
+    <column name="SYS_DATE" not-null="true">
+    	<comment>日期</comment>
+    </column>
+   </key-property>
+  </composite-id>
+  <property name="holidayFlag" generated="never" not-null="true" type="java.lang.String">
+   <column name="HOLIDAY_FLAG">
+       	<comment>假日区分</comment>
+   </column>
+  </property>
+  </class>
+</hibernate-mapping>

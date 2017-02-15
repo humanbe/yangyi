@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.rept.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="SysResrcVo" table="SYS_RESRC">
+  <composite-id>
+   <key-property name="aplCode" type="java.lang.String">
+    <column name="APL_CODE" not-null="true">
+    	<comment>应用系统编号</comment>
+    </column>
+   </key-property>
+    <key-property name="transDate" type="java.lang.String">
+    <column name="TRANS_DATE" not-null="true">
+    	<comment>交易日期</comment>
+    </column>
+   </key-property>
+   <key-property name="srvCode" type="java.lang.String">
+    <column name="SRV_CODE" not-null="true">
+    	<comment>服务器编号（IP）</comment>
+    </column>
+   </key-property>
+   <key-property name="minPoint" type="java.lang.String">
+    <column name="MIN_POINT" not-null="true">
+    	<comment>五分钟统计时间点</comment>
+    </column>
+   </key-property>
+  </composite-id>
+  <property name="cpuPercent" not-null="false" type="java.lang.String">
+   <column name="CPU_PERCENT">
+       	<comment>cpu百分比</comment>
+   </column>
+  </property>
+  <property name="memPercent" not-null="false" type="java.lang.String">
+   <column name="MEM_PERCENT">
+       	<comment>内存百分比</comment>
+   </column>
+  </property>
+  <property name="diskPercent" not-null="false" type="java.lang.String">
+   <column name="DISK_PERCENT">
+       	<comment>磁盘IO百分比</comment>
+   </column>
+  </property>
+  </class>
+</hibernate-mapping>

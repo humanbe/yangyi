@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.jeda.common.model">
+	<class name="Portlet" table="JEDA_PORTLET" dynamic-update="true" dynamic-insert="true">
+		<comment>门户应用表</comment>
+		<id name="id">
+			<column name="PORTLET_ID">
+				<comment>主键</comment>
+			</column>
+		</id>
+		<version name="version" type="integer">
+			<column name="PORTLET_VERSION">
+				<comment>数据版本</comment>
+			</column>
+		</version>
+		<property name="title">
+			<column name="PORTLET_TITLE" length="100">
+				<comment>标题</comment>
+			</column>
+		</property>
+		<property name="description">
+			<column name="PORTLET_DESCRIPTION" length="1000">
+				<comment>描述</comment>
+			</column>
+		</property>
+		<property name="url">
+			<column name="PORTLET_URL" length="100">
+				<comment>描述</comment>
+			</column>
+		</property>
+		<property name="order" type="integer">
+			<column name="PORTLET_ORDER">
+				<comment>排序</comment>
+			</column>
+		</property>
+		<many-to-one name="creator" class="com.nantian.jeda.common.model.User" fetch="join" update="false">
+			<column name="PORTLET_CREATOR">
+				<comment>创建者</comment>
+			</column>
+		</many-to-one>
+		<property name="created" type="date" update="false">
+			<column name="PORTLET_CREATED">
+				<comment>创建时间</comment>
+			</column>
+		</property>
+		<many-to-one name="modifier" class="com.nantian.jeda.common.model.User" fetch="join">
+			<column name="PORTLET_MODIFIER">
+				<comment>修改者</comment>
+			</column>
+		</many-to-one>
+		<property name="modified" type="date">
+			<column name="PORTLET_MODIFIED">
+				<comment>修改时间</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

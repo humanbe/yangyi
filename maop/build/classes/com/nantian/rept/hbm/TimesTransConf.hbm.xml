@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.rept.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="TimesTransConfVo" table="TIMES_TRANS_CONF">
+<composite-id>
+	<key-property name="aplCode" type="java.lang.String">
+		<column name="APL_CODE">
+			<comment>应用系统编号</comment>
+		</column>
+	</key-property>
+	<key-property name="countItem" type="java.lang.String">
+		<column name="COUNT_ITEM">
+			<comment>统计科目名</comment>
+		</column>
+	</key-property>
+</composite-id>
+  <property name="relatedItem" not-null="false" type="java.lang.String">
+   <column name="RELATED_ITEM">
+       	<comment>关联的科目名, 多个科目以逗号隔开</comment>
+   </column>
+  </property>
+  <property name="type" not-null="true" type="java.lang.Integer">
+   <column name="type">
+       	<comment>类型</comment>
+   </column>
+  </property>
+  </class>
+</hibernate-mapping>

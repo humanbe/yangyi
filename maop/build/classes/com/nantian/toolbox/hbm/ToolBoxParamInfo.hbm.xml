@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.toolbox.vo">
+	<class dynamic-insert="true" dynamic-update="true" name="ToolBoxParamInfoVo"
+		table="TOOL_BOX_PARAM_INFO">
+		<composite-id>
+			<key-property name="tool_code" type="java.lang.String">
+				<column name="TOOL_CODE" not-null="true">
+				</column>
+			</key-property>
+			<key-property   name="appsys_code"  type="java.lang.String">
+			<column name="APPSYS_CODE" not-null="true">
+			</column>
+		</key-property>
+		<key-property  name="param_name" type="java.lang.String">
+			<column name="PARAM_NAME" not-null="true">
+			</column>
+		</key-property>
+		</composite-id>
+		
+		<property generated="never" lazy="false" name="param_desc"
+			not-null="false" type="java.lang.String">
+			<column name="PARAM_DESC">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="param_type"
+			not-null="false" type="java.lang.String">
+			<column name="PARAM_TYPE">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="param_length"
+			not-null="false" type="java.lang.Long">
+			<column name="PARAM_LENGTH">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="param_format"
+			not-null="false" type="java.lang.String">
+			<column name="PARAM_FORMAT">
+			</column>
+		</property>
+		
+		
+		
+		<property generated="never" lazy="false" name="param_default_value"
+			not-null="false" type="java.lang.String">
+			<column name="PARAM_DEFAULT_VALUE">
+			</column>
+		</property>
+		
+	</class>
+</hibernate-mapping>

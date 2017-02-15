@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.jeda.common.model">
+	<class name="Function" table="JEDA_FUNCTION">
+		<comment>功能表</comment>
+		<id name="id" unsaved-value="null" length="50">
+			<column name="FUNCTION_ID">
+				<comment>功能主健</comment>
+			</column>
+		</id>
+		<version name="version" type="integer">
+			<column name="FUNCTION_VERSION">
+				<comment>功能数据版本</comment>
+			</column>
+		</version>
+		<property name="name">
+			<column name="FUNCTION_NAME" length="100">
+				<comment>功能名称</comment>
+			</column>
+		</property>
+		<property name="url">
+			<column name="FUNCTION_URL" length="100">
+				<comment>功能地址</comment>
+			</column>
+		</property>
+		<property name="type">
+			<column name="FUNCTION_TYPE" length="100">
+				<comment>功能类型</comment>
+			</column>
+		</property>
+		<property name="hasPermission" type="boolean">
+			<column name="FUNCTION_HAS_PERMISSION">
+				<comment>可配权限</comment>
+			</column>
+		</property>
+		<many-to-one name="module" class="com.nantian.jeda.common.model.Module" fetch="join" update="false">
+			<column name="MODULE_ID">
+				<comment>所属模块</comment>
+			</column>
+		</many-to-one>
+		<property name="order" type="integer">
+			<column name="FUNCTION_ORDER">
+				<comment>功能排序</comment>
+			</column>
+		</property>
+		<set name="roles" table="JEDA_ROLE_FUNCTION">
+			<key column="FUNCTION_ID" />
+			<many-to-many class="Role" >
+				<column name="ROLE_ID">
+					<comment>角色ID</comment>
+				</column>
+			</many-to-many>
+		</set>
+		<many-to-one name="creator" class="User" fetch="join" update="false">
+			<column name="FUNCTION_CREATOR">
+				<comment>功能创建者</comment>
+			</column>
+		</many-to-one>
+		<property name="created" type="date" update="false">
+			<column name="FUNCTION_CREATED">
+				<comment>功能创建时间</comment>
+			</column>
+		</property>
+		<many-to-one name="modifier" class="User" fetch="join">
+			<column name="FUNCTION_MODIFIER">
+				<comment>功能修改者</comment>
+			</column>
+		</many-to-one>
+		<property name="modified" type="date">
+			<column name="FUNCTION_MODIFIED">
+				<comment>功能修改时间</comment>
+			</column>
+		</property>
+		<property name="accessDomainIp" type="java.lang.String">
+			<column name="FUNCTION_ACCESS_DOMAIN_IP">
+				<comment>域访问控制IP</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,516 @@
+package com.nantian.common.util;
+
+/**
+ * 常量类.
+ * 
+ * @author donghui
+ * 
+ */
+public class CommonConst {
+	
+    /** NANTIAN */
+    public static final String NANTIAN = "NANTIAN";
+    
+    public static final String DOWNLOAD_CHARTS_DIR = "downLoadChartsDir";
+    
+    /** 工作日 */
+    public static final String HOLIDAY_FLAG_1 = "1";
+    /** 周末 */
+    public static final String HOLIDAY_FLAG_2 = "2";
+    /** 法定假日 */
+    public static final String HOLIDAY_FLAG_3 = "3";
+    
+    /** 合计值、平均值、最大值标示 */
+    public static final String STATISTICAL_FLAG = "1";
+    
+    /** UTF-8 */
+    public static final String UTF8 = "UTF-8";
+    
+	/**命令执行成功*/
+	public static int CMD_EXECUTE_SUCCESS = 1;
+	
+	/**命令执行失败*/
+	public static int CMD_EXECUTE_FAIL = -1;
+	
+	/**待替换字符*/
+	public static String REPLACE_CHAR = "@";
+    
+	/**runtime procedure执行错误流类型*/
+	public static String ERROR = "Error";
+	
+	/**runtime procedure执行普通流类型*/
+	public static String OUT_PUT = "OutPut";
+	
+    /** 开始 */
+    public static final String MOVESTATUS_START_CH = "开始";
+    /** 等待 */
+    public static final String MOVESTATUS_WAIT_CH = "等待";
+    /** 进行中 */
+    public static final String MOVESTATUS_RUNNING_CH = "进行中";
+    /** 完成 */
+    public static final String MOVESTATUS_OK_CH = "完成";
+    /** 失败 */
+    public static final String MOVESTATUS_ERR_CH = "失败";
+	
+    /** 异常 */
+    public static final String ABNORMAL_CH = "异常";
+
+    /** 错误 */
+    public static final String ERROR_CH = "错误";
+    
+    /** FTP文件夹名 */
+    public static final String WC_PATH_FTP = "ftp";
+    
+    /** EXPORT文件夹名 */
+    public static final String WC_PATH_EXPORT = "export";
+    
+    /** CHECKOUT文件夹名 */
+    public static final String WC_PATH_CHECKOUT = "checkout";
+    
+    /** 步骤执行状态 1: 未开始 */
+    public static final String DEV_STATUS_1 = "1";
+
+    /** 步骤执行状态 2: 执行中 */
+    public static final String DEV_STATUS_2 = "2";
+
+    /** 步骤执行状态 3: 执行完 */
+    public static final String DEV_STATUS_3 = "3";
+
+    /** 步骤执行状态 4: 验证完 */
+    public static final String DEV_STATUS_4 = "4";
+    
+    /** 步骤执行状态 5: 执行异常 */
+    public static final String DEV_STATUS_5 = "5";
+    
+    /** 状态值: 1：新增登录 */
+    public static final String STATUS_ONE = "1";
+
+    /** 状态值: 2：更新登录 */
+    public static final String STATUS_TWO = "2";
+
+    /** 状态值: 3：完成登录 */
+    public static final String STATUS_THREE = "3";
+
+    /** 发布标示‘0’(未发布) */
+    public static final String DPLY_FLG_ZERO = "0";
+    
+    /** 发布标示'1'(已发布) */
+    public static final String DPLY_FLG_ONE = "1";
+    
+    /** 删除标示‘0’(未删除) */
+    public static final String DEL_FLG_ZERO = "0";
+    
+    /** 删除标示'1'(删除) */
+    public static final String DEL_FLG_ONE = "1";
+    
+    
+    /** 文件压缩形式定义开始*/
+    /** 压缩标示:0 （未压缩）*/
+    public static final String COMPRESS_FLG_ZERO = "0";
+    
+    /** 压缩标示:1 （ZIP压缩）*/
+    public static final String COMPRESS_FLG_ONE = "1";
+    
+    /** 压缩标示:2 （WAR压缩）*/
+    public static final String COMPRESS_FLG_TWO = "2";
+    
+    /** 压缩标示:3 （JAR压缩）*/
+    public static final String COMPRESS_FLG_THREE = "3";
+    /** 文件压缩形式定义结束*/
+
+    
+    /** 文件定义开始*/
+    /** 后缀 .csv */
+    public static final String FILE_SUFFIX_CSV = ".csv";
+    /** 后缀 .txt */
+    public static final String FILE_SUFFIX_TXT = ".txt";
+    /** 后缀 .tar */
+    public static final String FILE_SUFFIX_TAR = ".tar";
+    /** 后缀 .tar.gz */
+    public static final String FILE_SUFFIX_TARGZ = ".tar.gz";
+    /** 后缀 .sql */
+    public static final String FILE_SUFFIX_SQL = ".sql";
+    /** 后缀 .sh */
+    public static final String FILE_SUFFIX_SH = ".sh";
+    /** 后缀 .zip */
+    public static final String FILE_SUFFIX_ZIP = ".zip";
+    /** 后缀 .dat */
+    public static final String FILE_SUFFIX_DAT = ".dat";
+    /** 文件定义结束*/
+    
+    
+    /** 方法名定义开始*/
+    /** 方法名:doProcess */
+    public static final String METHOD_DOPROCESS = "doProcess";
+    /** 方法名:preProcess */
+    public static final String METHOD_PREROCESS = "preProcess";
+    /** 方法名:postProcess */
+    public static final String METHOD_POSTROCESS = "postProcess";
+    /** 方法名定义结束*/
+    
+    
+    /** 命令定义开始*/
+    /** 解压缩打包文件 tar -xf */
+    public static final String CMD_TAR_XF = "tar -xf ";
+    /** 解压缩打包压缩的文件 tar -xzf */
+    public static final String CMD_TAR_XZF = "tar -xzf ";
+    /** 打包命令 tar -cf */
+    public static final String CMD_TAR_CF = "tar -cf ";
+    /** 打包压缩命令 tar -czf */
+    public static final String CMD_TAR_CZF = "tar -czf ";
+    /** 解压缩 WAR文件 -xf */
+    public static final String CMD_JAR_XF = "jar -xf ";
+    /** 解压缩 ZIP文件 -xf */
+    public static final String CMD_UNZIP = "unzip ";
+    /** 切换目录命令 */
+    public static final String CMD_CD = "cd  ";
+    /** 复制命令 */
+    public static final String CMD_COPY = "cp -p ";
+    /** 删除命令 递归强制删除 */
+    public static final String CMD_DELETE_FR = "rm -fr ";
+    /** 删除命令 强制删除 */
+    public static final String CMD_DELETE_F = "rm -f ";
+    /** 修改权限chmod 444 */
+    public static final String CMD_CHMOD_444 = "chmod 444 ";
+    /** 改变权限chmod */
+    public static final String CMD_CHMOD = "chmod ";
+    /** 755 */
+    public static final String PER_CODE_755 = "755 ";
+    /** 777 */
+    public static final String PER_CODE_777 = "777";
+    /** 改变用户命令chown */
+    public static final String CMD_CHOWN = "chown  ";
+    /** 命令mysql */
+    public static final String CMD_MYSQL = "mysql";
+    /** 命令参数 -u */
+    public static final String CMD_U = "-u";
+    /** 命令参数 -p */
+    public static final String CMD_P = "-p";
+    /** 命令参数 -e */
+    public static final String CMD_E = "-e";
+    /** 命令参数 source */
+    public static final String CMD_SOURCE = "source";
+    /** 命令定义结束*/
+    
+
+    /** 加密定义开始*/
+    /** 加密MD5 */
+    public static final String MD5 = "MD5";
+    /** 加密定义结束*/
+    
+
+    /** 常量值定义开始*/
+    /** 异常编号: "20"业务异常 */
+    public static final String ERR_CD_BUSINESS = "20";
+    /** 异常编号: "21"入力参数异常 */
+    public static final String ERR_CD_PARAMETER = "21";
+    /** 异常编号: "22"数据异常 */
+    public static final String ERR_CD_DATA = "22";
+    /** 异常编号: "99" */
+    public static final String ERROR_CODE_99 = "99";
+    /** 状态编号: "0" OK*/
+    public static final int STATUS_0 = 0;
+    /**  状态编号: "10" DOWNLOAD*/
+    public static final int STATUS_10 = 10;
+    /** 状态编号: "20" ERROR*/
+    public static final int STATUS_20 = 20;
+    /** 状态编号: "99" BL_BUSINESS无数据*/
+    public static final int STATUS_99 = 99;
+    /** 状态编号: "100" BL_WARN*/
+    public static final int STATUS_100 = 100;
+    
+    /** 正常 */
+    public static final String NORMAL = "正常";
+
+    /** 执行结果: 0 */
+    public static final String RESULT_ZERO = "0";
+    /** 执行结果: 1 */
+    public static final String RESULT_ONE = "1";
+    
+    /** 处理类别1 */
+    public static final String HANDLE_TYPE_ONE = "1";
+    /** 处理类别2 */
+    public static final String SHANDLE_TYPE_TWO = "2";
+    /** 处理类别3 */
+    public static final String HANDLE_TYPE_THREE = "3";
+
+    /** 语言类型不可FLAG0 */
+    public static final String LANG_TYPE_PATH_FKA_FLG_ZERO = "0";
+    /** 语言类型不可FLAG1 */
+    public static final String LANG_TYPE_PATH_FKA_FLG_ONE = "1";
+    
+    /** 文件区分 投产文件清单: 1 */
+    public static final String FILE_TYPE_ONE = "1";
+    /** 文件区分 投产控制表:2 */
+    public static final String FILE_TYPE_TWO = "2";
+
+    /** NG */
+    public static final String RESULT_NG = "NG";
+    /** SKIP */
+    public static final String RESULT_SK = "SK";
+    /** OK */
+    public static final String RESULT_OK = "OK";
+    
+    /** 行类别D */
+    public static final String LINE_SHBT_D = "D";
+    /** 行类别H1 */
+    public static final String LINE_SHBT_H1 = "H1";
+    /** 行类别H2 */
+    public static final String LINE_SHBT_H2 = "H2";
+    /** 行类别H */
+    public static final String LINE_SHBT_H = "H";
+    /** 行类别T */
+    public static final String LINE_SHBT_T = "T";
+    /** 行类别E */
+    public static final String LINE_SHBT_E = "E";
+    /** 行类别A */
+    public static final String LINE_SHBT_A = "A";
+
+    /**星号 "*" */
+    public static final String ASTERISK = "*";
+    
+    /** 环境定义开始*/
+    /** 环境区分1：测试环境 */
+    public static final String ENV_TYPE_ONE = "1";
+    /** 环境区分2：验证环境 */
+    public static final String ENV_TYPE_TWO = "2";
+    /** 环境区分3：生产环境 */
+    public static final String ENV_TYPE_THREE = "3";
+    /** 环境定义结束*/
+
+    /** DateFomateConst */
+    public static final String YYYYMMDDHHMISS = "yyyyMMddHHmmss";
+
+    /** 连接符及分隔符定义开始*/
+    /** 连接符号"/" */
+    public static final String SLASH = "/";
+    /** 连接符号"/" */
+    public static final String SLASH_DOUBLE = "//";
+    /** 连接符号"_" */
+    public static final String UNDERLINE = "_";
+    /** 左括号"(" */
+    public static final String LEFT_SMALL_BRACKETS = "\\(";
+    public static final String LEFT_SMALL_BRACKETS_NOESCAPE = "(";    
+    
+    /** 左括号"(" */
+    public static final String RIGHT_SMALL_BRACKETS = "\\)";
+    public static final String RIGHT_SMALL_BRACKETS_NOESCAPE = ")";
+    
+    /** SPACE */
+    public static final String RIGHT_SLASH = "\\";
+    /** SPACE */
+    public static final String SPACE = " ";
+    /** char: SPACE */
+    public static final char CHAR_SPACE = ' ';
+    /** EMPTY */
+    public static final String EMPTY = "";
+    /** 逗号 字符 */
+    public static final char COMMA = ',';
+    /** 逗号 字符串*/
+    public static final String STRING_COMMA = ",";
+    /** 百分号 */
+    public static final String PERCENT_SYMBOL = "%";
+    /** 分隔符:. */
+    public static final String DOT = "\\.";
+    /** 分隔符:_@_ */
+    public static final String REPLACE_CHAR_BETWEEN_DOUBLE_UDERLINE = "_@_";
+    /** 分隔符:. */
+    public static final String DOT_UNESCAPE = ".";
+    /** 分隔符:. */
+    public static final String DOT_SLASH = "./";
+	/**数据分隔符*/
+	public static String DATA_SEPARATOR = "|+|";
+	/**报表交易量三级分类分隔符*/
+	public static String LEVEL_SEPARATOR = "=>";
+	/**报表交易量三级分类分隔符-DB*/
+	public static String LEVEL_SEPARATOR_DB = "'=>'";
+    /** 管道| */
+    public static final String PIPE = "|";
+    /** 竖线分割符' | ' */
+    public static final String MSG_CUT_UP = " | ";
+    /** ' & ' */
+    public static final String AND_MARK = " & ";
+    public static final String AND_MARK2 = "&";
+    
+    /** '<,>' */
+    public static final String MULT_TRANS_SPLIT_ITEM = "<,>";
+    /** '<:>' */
+    public static final String MULT_TRANS_SPLIT_DATA = "<:>";
+    /** 连接符及分隔符定义结束*/
+
+	/**报表交易量科目默认值*/
+	public static String LEVEL_DEFAULT_VALUE = "ALL";
+    /** 左中括号 */
+    public static final String BRACKET_LEFT = "[";
+    /** 右中括号 */
+    public static final String BRACKET_RIGHT = "]";
+    /**顿号'、' */
+    public static final String CAESURA_SIGN = "、";
+    /**等号'=' */
+    public static final String EQUAL_SIGN = "=";
+    /** 分号(:) */
+    public static final String COLON = " : ";
+    /** 半角冒号(:) */
+    public static final String HALF_COLON = ":";
+    /** 半角分号(;) */
+    public static final String HALF_SEMICOLON = ";";
+    /** 全角空格 */
+    public static final String QUANJIAO_SPACE = "　";
+    /** 全角左括号 */
+    public static final String LEFT_BRACKETS = "【";
+    /** 全角右括号 */
+    public static final String RIGHT_BRACKETS = "】";
+    /** 双引号 */
+    public static final char QUOTATION_MARK = '"';
+    /** 单引号 */
+    public static final char DAN_QUOTATION_MARK = '\'';
+    /** 回车换行 */
+    public static final String CHANGE_LINE = "\r\n";
+    /**换行 */
+    public static final String LINE_FEED = "\n";
+    /** /r */
+    public static final String REP_SPACE = "/r";
+
+    /** 新增更新区分：新增（10） */
+    public static final String NEW_UPD_KBN_NEW = "10";
+    
+    /** CHECK IN理由区分：初次登录（1） */
+    public static final String CHECKIN_RYU_KBN_NEW = "1";
+
+    /** 行种别 W */
+    public static final String LINE_SHBT_W = "W";
+    /** 行类别I */
+    public static final String LINE_SHBT_I = "I";
+
+    /** 0 */
+    public static final String ZERO = "0";
+
+    /** 1 */
+    public static final String ONE = "1";
+    
+    /** 3 */
+    public static final String THREE = "3";
+    
+    /** 0 */
+    public static final String STRING_ZERO = "0";
+    /** 1 */
+    public static final String STRING_ONE = "1";
+    /** 0 */
+    public static final char CHAR_ZERO = '0';
+    /** 1 */
+    public static final char CHAR_ONE = '1';
+    
+    /** 0 */
+    public static final int ZERO_INT = 0;
+    
+    /** 1 */
+    public static final int ONE_INT = 1;
+    
+    /** 2 */
+    public static final int TWO_INT = 2;
+    
+    /** 3 */
+    public static final int THREE_INT = 3;
+    
+    /** 命令 -C */
+    public static final String CMD_C = " -C ";
+    /** NO.1 */
+    public static final String CMD_NO_ONE = "1";
+    /** NO.2 */
+    public static final String CMD_NO_TWO = "2";
+    /** NO.3 */
+    public static final String CMD_NO_THREE = "3"; 
+    /** NO.4 */
+    public static final String CMD_NO_FOUR = "4";
+    /** NO.5 */
+    public static final String CMD_NO_FIVE = "5";
+    /** NO.6 */
+    public static final String CMD_NO_SIX = "6";
+    /** NO.7 */
+    public static final String CMD_NO_SEVEN = "7";
+    /** NO.8 */
+    public static final String CMD_NO_EIGHT = "8";
+    /** NO.9 */
+    public static final String CMD_NO_NINE = "9";
+    /** NO.10 */
+    public static final String CMD_NO_TEN = "10";
+    /** NO.11 */
+    public static final String CMD_NO_ELEVEN = "11";
+
+    /** 顺序号初始值 */
+    public static final String SEQ = "1";
+    /** 取得环境类别: "1" */
+    public static final String GET_ENV_SHBT_ONE = "1";
+    /** 取得环境类别: "2" */
+    public static final String GET_ENV_SHBT_TWO = "2";
+    
+//    /** svn:// */
+//    public static final String SVN_PATH = "svn://";
+//    
+//    /** svn://localhost/ */
+//    public static final String SVN_REP_PATH = "svn://localhost/";
+    
+    /** InputF 上传文件保存临时文件前缀*/
+    public static final String INPUT_FILE_BEGIN = "InputF";
+    /** OutputF 输出文件保存临时文件前缀*/
+    public static final String OUTPUT_FILE_BEGIN = "OutputF";
+    
+    /** 文件区分1(投产文件清单) */
+    public static final String FILE_TYPE_1 = "1";
+    /** 文件区分2(变更控制表) */
+    public static final String FILE_TYPE_2 = "2";
+    /**webservice连接超时时间-5分钟*/
+    public static final long WEBSERVICE_TIME_OUT = 300000;
+
+    /*主控服务主机信息*/
+    public static final String LOCAL_HOST_IP = "10.1.120.68";
+    public static final String LOCAL_HOST_USERNAME = "user";
+    public static final String LOCAL_HOST_PASSWORD = "password";
+    
+    /**DBCheck作业路径*/
+	public static String DB_CHECK_PATH = "/SYSMANAGE/DBCHECK";
+    /**DBCheck作业名*/
+	public static String DB_CHECK = "ALLAPP_DB_CHECK";
+
+	
+    /**
+     * @return localhost serverName
+     */
+    public static String getSshServerName() {
+        return LOCAL_HOST_IP;
+    }
+    /**
+     * @return 用户
+     */
+    public static String getSshUserId() {
+        return LOCAL_HOST_USERNAME;
+    }
+    /**
+     * @return 密码
+     */
+    public static String getSshPwdId() {
+        return LOCAL_HOST_PASSWORD;
+    }
+    
+    /**
+     * @return localhost serverName
+     */
+    public static String getFtpServerName() {
+        return LOCAL_HOST_IP;
+    }
+    /**
+     * @return 用户名
+     */
+    public static String getFtpUserId() {
+        return LOCAL_HOST_USERNAME;
+    }
+    /**
+     * @return 密码
+     */
+    public static String getFtpPwdId() {
+        return LOCAL_HOST_IP;
+    }
+    /*主控服务主机信息*/
+    
+    
+}///:~

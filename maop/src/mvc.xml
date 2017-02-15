@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+
+	<mvc:annotation-driven />
+		
+	<context:component-scan base-package="com.nantian" use-default-filters="false">
+		<context:include-filter expression="org.springframework.stereotype.Controller" type="annotation" />
+	</context:component-scan>
+
+	<mvc:view-controller path="/" view-name="index" />
+	<mvc:view-controller path="/login" />
+	<mvc:view-controller path="/logout" />
+	<mvc:view-controller path="/portal" />
+	<mvc:view-controller path="/home" />
+	<mvc:view-controller path="/f5check_run_normal"  view-name= "f5check/f5check_run_normal" />
+	<mvc:view-controller path="/alarmviewtoollist"  view-name="toolbox/toolbox_alarmviewtoollistindex"/>
+	<mvc:view-controller path="/header" view-name="common/header" />
+	<mvc:view-controller path="/not-found" view-name="common/not-found" />
+	<mvc:view-controller path="/access-denied" view-name="common/access-denied" />
+	<mvc:view-controller path="/internal-server-error" view-name="common/internal-server-error" />
+	<mvc:view-controller path="/setup" />
+	
+	<mvc:interceptors>
+		<bean class="com.nantian.jeda.security.interceptor.TrailingSlashInterceptor" /> 
+		<bean class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor">
+			<property name="sessionFactory" ref="sessionFactory"></property>
+		</bean>
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
+	</mvc:interceptors>
+	
+	<mvc:resources mapping="/static/**" location="/static/" />
+	
+	<!-- 定义内容协商，定义了几种请求类型的支持，如text/html、application/json、application/xml -->
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="ignoreAcceptHeader" value="true"/>
+		<property name="defaultContentType" value="text/html"/>
+		<property name="mediaTypes">
+			<map>
+				<entry key="json" value="application/json"/>
+				<entry key="xml" value="application/xml"/>
+				<entry key="xls" value="#{excelView.getContentType()}" />
+				<entry key="file" value="#{fileView.getContentType()}" />
+			</map>
+		</property>
+		<!-- 定义视图解析器-->
+		<property name="viewResolvers">
+			<list>
+				<!-- 处理浏览器发起的请求 -->
+				<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+					<property name="prefix" value="/WEB-INF/views/"/>
+				    <property name="suffix" value=".jsp"/>
+				</bean>
+				<!-- 处理指定请求头Accept:application/xml或Accept:application/json的请求 -->
+				<bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
+			</list>
+		</property>
+		<property name="defaultViews">
+			<list>
+				<bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />
+			</list>
+		</property>
+	</bean>
+	 
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver" />
+	
+	<bean name="excelView" class="com.nantian.jeda.core.web.ExcelView">
+		<property name="url" value="/file/template" />
+	</bean>
+	<bean name="excelViewBsaParam" class="com.nantian.jeda.core.web.ExcelViewBsaParam">
+		<property name="url" value="/file/template" />
+	</bean>
+	<bean name="excelViewJedaRpt" class="com.nantian.jeda.core.web.ExcelViewJedaRpt">
+		<property name="url" value="/file/template" />
+	</bean>
+	<!-- 应用变更汇总下载 -->
+    <bean name="ExcelViewManageChange" class="com.nantian.jeda.core.web.ExcelViewManageChange">
+		<property name="url" value="/file/changeTemplate" />
+	</bean>
+	<!--日报导出-->
+	<bean name="excelViewDayRpt" class="com.nantian.jeda.core.web.ExcelViewDayRpt">
+		<property name="url" value="/file/dayRptTemplate" />
+	</bean>
+	<!--日报全量导出-->
+	<bean name="excelViewDayRptAll" class="com.nantian.jeda.core.web.ExcelViewDayRptAll">
+		<property name="url" value="/file/dayRptTemplate" />
+	</bean>
+	<bean name="fileView" class="com.nantian.jeda.core.web.FileView" />
+	
+	<!-- 对web包中的所有controller类进行扫描，以完成Bean创建和自动依赖注入的功能 -->
+	<context:component-scan base-package="com.**.controller" />
+	
+	<!--  启动加载异常处理的类，用于监听各模块中触发的异常  -->
+    <bean id="handlerExceptionResolver" class="com.nantian.common.exception.CommHandlerExceptionResolver">
+    	<property name="defaultErrorView" value="common/internal-server-error"/>
+    </bean>
+    
+	<bean id="exceptionIntercepter" class="com.nantian.common.filter.ExceptionInterceptor"> 
+    </bean>
+    
+    <bean id="proxy" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator" autowire="no">
+        <property name="beanNames">
+            <list>
+                <value>*Controller</value>
+            </list>        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>exceptionIntercepter</value>
+            </list>
+        </property>
+    </bean>
+    
+	<!-- 请求模板下载 -->
+	<bean name="excelView4Request" class="com.nantian.jeda.core.web.ExcelView4Request">
+		<property name="url" value="/file/request_templet" />
+	</bean>
+	<!-- 变更实施控制表 模板下载 -->
+	<bean name="excelControlRequest" class="com.nantian.jeda.core.web.excelControlRequest">
+		<property name="url" value="/file/control_templet" />
+	</bean>
+	<!-- 容量阀值采集下载 -->
+	<bean name="excelView4Threshold" class="com.nantian.jeda.core.web.ExcelViewThreshold">
+		<property name="url" value="/file/thresholdTemplate" />
+	</bean>
+</beans>

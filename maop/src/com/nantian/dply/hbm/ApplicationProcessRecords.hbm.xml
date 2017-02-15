@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.dply.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="ApplicationProcessRecordsVo" table="APPLICATION_PROCESS_RECORDS">
+ 	<id name="record_id" type="java.lang.String">
+	<column name="RECORD_ID">
+		<comment>申请编号</comment>
+	</column>
+	</id>
+  <property generated="never" lazy="false" name="subject_info"
+   not-null="true" type="java.lang.String">
+   <column name="SUBJECT_INFO">
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="handled_user"
+   not-null="true" type="java.lang.String">
+   <column name="HANDLED_USER">
+   </column>
+  </property>
+    <property generated="never" lazy="false" name="completed_user"
+   not-null="true" type="java.lang.String">
+   <column name="COMPLETED_USER">
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="completed_time"
+   not-null="true" type="java.sql.Timestamp">
+   <column name="COMPLETED_TIME">
+   </column>
+  </property>
+    <property generated="never" lazy="false" name="handled_time"
+   not-null="true" type="java.sql.Timestamp">
+   <column name="HANDLED_TIME">
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="application_user"
+   not-null="true" type="java.lang.String">
+   <column name="APPLICATION_USER">
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="application_time"
+   not-null="true" type="java.sql.Timestamp">
+   <column name="APPLICATION_TIME">
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="current_state"
+   not-null="true" type="java.lang.String">
+   <column name="CURRENT_STATE">
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="application_reasons"
+   not-null="true" type="java.lang.String">
+   <column name="APPLICATION_REASONS">
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="process_description"
+   not-null="true" type="java.lang.String">
+   <column name="PROCESS_DESCRIPTION">
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="delete_flag"
+   not-null="true" type="java.lang.String">
+   <column name="DELETE_FLAG">
+   </column>
+  </property>
+ </class>
+</hibernate-mapping>

@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.dply.vo">
+	<class name="CmnUserAppVo" table="CMN_USER_APP" dynamic-update="true"
+		dynamic-insert="true">
+		<comment>table</comment>
+		<composite-id>
+		   <key-property name="userId" type="java.lang.String">
+		    <column name="USER_ID" not-null="true">
+		    	<comment>用户</comment>
+		    </column>
+		   </key-property>
+		   <key-property name="appsysCode" type="java.lang.String">
+		    <column name="APPSYS_CODE" not-null="true">
+		    	<comment>应用系统</comment>
+		    </column>
+		   </key-property>
+	  	</composite-id>
+		<property name="appType" type="java.lang.String">
+			<column name="APP_TYPE">
+			<comment>系统同步类型</comment>
+			</column>
+		</property>
+		<property name="dplyFlag" type="java.lang.String">
+			<column name="DPLY_FLAG">
+			<comment>是否对应用发布开放权限标志</comment>
+			</column>
+		</property>
+		<property name="checkFlag" type="java.lang.String">
+			<column name="CHECK_FLAG">
+			<comment>是否对巡检开放权限标志</comment>
+			</column>
+		</property>
+		<property name="toolFlag" type="java.lang.String">
+			<column name="TOOL_FLAG">
+			<comment>是否对工具箱开放权限标志</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

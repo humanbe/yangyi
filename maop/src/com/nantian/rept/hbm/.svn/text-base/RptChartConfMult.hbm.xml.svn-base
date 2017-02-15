@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.rept.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="RptChartConfMultVo" table="RPT_CHART_CONF_MULT">
+  <composite-id>
+   <key-property name="aplCode" type="java.lang.String">
+    <column name="APL_CODE" not-null="true">
+    	<comment>应用系统编号</comment>
+    </column>
+   </key-property>
+   <key-property name="sheetName" type="java.lang.String">
+    <column name="SHEET_NAME" not-null="true">
+    	<comment>日报SHEET名</comment>
+    </column>
+   </key-property>
+   <key-property name="reportType" type="java.lang.String">
+    <column name="REPORT_TYPE" not-null="true">
+    	<comment>报表类型</comment>
+    </column>
+   </key-property>
+   <key-property name="chartType" type="java.lang.String">
+    <column name="CHART_TYPE" not-null="true">
+    	<comment>图表类型</comment>
+    </column>
+   </key-property>
+   <key-property name="chartName" type="java.lang.String">
+    <column name="CHART_NAME" not-null="true">
+    	<comment>图表名称</comment>
+    </column>
+   </key-property>
+   <key-property name="chartSeq" type="java.lang.String">
+    <column name="CHART_SEQ" not-null="true">
+    	<comment>图表序号</comment>
+    </column>
+   </key-property>
+  </composite-id>
+  <property name="itemNameCol" generated="never" lazy="false" not-null="true" type="java.lang.String">
+   <column name="ITEM_NAME_COL">
+       	<comment>科目值科目所对应名称科目 </comment>
+   </column>
+  </property>
+  <property name="itemValCol" generated="never" lazy="false" not-null="true" type="java.lang.String">
+   <column name="ITEM_VAL_COL">
+       	<comment>科目值科目 </comment>
+   </column>
+  </property>
+  <property name="separateRowNum" generated="never" lazy="false" not-null="true" type="java.lang.Float">
+   <column name="SEPARATE_ROWNUM">
+       	<comment>分割起始行号 </comment>
+   </column>
+  </property>
+  <property name="separateThreshold" generated="never" lazy="false" not-null="true" type="java.lang.Float">
+   <column name="SEPARATE_THRESHOLD">
+       	<comment>分割阀值</comment>
+   </column>
+  </property>
+  <property name="reserve3" generated="never" lazy="false" not-null="true" type="java.lang.String">
+   <column name="RESERVE3">
+       	<comment>备注</comment>
+   </column>
+  </property>
+  </class>
+</hibernate-mapping>

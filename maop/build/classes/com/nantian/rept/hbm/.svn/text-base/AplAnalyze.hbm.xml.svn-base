@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.rept.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="AplAnalyzeVo" table="APL_ANALYZE">
+<composite-id>
+	<key-property name="aplCode" type="java.lang.String">
+		<column name="APL_CODE">
+			<comment>应用系统编号</comment>
+		</column>
+	</key-property>
+	<key-property name="transDate" type="java.lang.String">
+		<column name="TRANS_DATE">
+			<comment>交易日期</comment>
+		</column> 
+	</key-property>
+	<key-property name="transTime" type="java.lang.String">
+		<column name="TRANS_TIME">
+			<comment>交易时间</comment>
+		</column>
+	</key-property>
+	<key-property name="anaItem" type="java.lang.String">
+		<column name="ANA_ITEM">
+			<comment>分析科目</comment>
+		</column>
+	</key-property>
+</composite-id>
+  <property name="exeAnaDesc" not-null="false" type="java.lang.String">
+   <column name="EXE_ANA_DESC">
+       	<comment>运行情况分析描述</comment>
+   </column>
+  </property>
+  <property name="status" not-null="true" type="java.lang.String">
+   <column name="STATUS">
+       	<comment>状态</comment>
+   </column>
+  </property>
+  <property name="anaUser" not-null="false" type="java.lang.String">
+   <column name="ANA_USER">
+       	<comment>ANA_USER</comment>
+   </column>
+  </property>
+  <property name="revUser" not-null="false" type="java.lang.String">
+   <column name="REV_USER">
+       	<comment>REV_USER</comment>
+   </column>
+  </property>
+  <property name="endDate" not-null="false" type="java.lang.String">
+   <column name="END_DATE">
+       	<comment>完成日期</comment>
+   </column>
+  </property>
+  <property name="filePath" not-null="false" type="java.lang.String">
+   <column name="FILE_PATH">
+       	<comment>附件路径文件名</comment>
+   </column>
+  </property>
+    <property name="handleState" not-null="false" type="java.lang.String">
+   <column name="HANDLE_STATE">
+       	<comment>处理状态</comment>
+   </column>
+  </property>
+  
+  </class>
+</hibernate-mapping>

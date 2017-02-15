@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.dply.vo">
+	<class dynamic-insert="true" dynamic-update="true" name="CmnEnvironmentVo"
+		table="CMN_ENVIRONMENT">
+	<composite-id>
+		<key-property name="appsysCode" type="java.lang.String">
+			<column name="APPSYS_CODE">
+			</column>
+		</key-property>
+		<key-property name="environmentCode" type="java.lang.String">
+			<column name="ENVIRONMENT_CODE">
+			</column>
+		</key-property>
+	</composite-id>
+		<property generated="never" lazy="false" name="environmentName"
+			not-null="true" type="java.lang.String">
+			<column name="ENVIRONMENT_NAME">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="environmentType"
+			not-null="true" type="java.lang.String">
+			<column name="ENVIRONMENT_TYPE">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="describe"
+			not-null="true" type="java.lang.String">
+			<column name="DESCRIBE">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="deleteFlag"
+			not-null="true" type="java.lang.String">
+			<column name="DELETE_FLAG">
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

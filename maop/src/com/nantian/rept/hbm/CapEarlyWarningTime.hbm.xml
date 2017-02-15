@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.rept.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="CapEarlyWarningTimeVo" table="CAP_EARLY_WARNING_TIME">
+<composite-id>
+	<key-property name="aplCode" type="java.lang.String">
+		<column name="APL_CODE">
+			<comment>应用系统编号</comment>
+		</column>
+	</key-property>
+	<key-property name="busiKeyDate" type="java.lang.String">
+		<column name="BUSI_KEY_DATE">
+			<comment>业务关键日期</comment>
+		</column>
+	</key-property>
+</composite-id>
+  <property name="summaryDesc" not-null="false" type="java.lang.String">
+   <column name="SUMMARY_DESC">
+       	<comment>概要说明</comment>
+   </column>
+  </property>
+  <property name="riskDesc" not-null="false" type="java.lang.String">
+   <column name="RISK_DESC">
+       	<comment>风险点</comment>
+   </column>
+  </property>
+  <property name="handleTactics" not-null="false" type="java.lang.String">
+   <column name="HANDLE_TACTICS">
+       	<comment>应对策略</comment>
+   </column>
+  </property>
+  </class>
+</hibernate-mapping>

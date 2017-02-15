@@ -1,0 +1,193 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.toolbox.vo">
+	<class dynamic-insert="true" dynamic-update="true" name="MonitorWarninginfoVo"
+		table="MONITOR_WARNING_INFO">
+		<comment>监控告警信息表</comment>
+		<id name="event_id"  type="java.lang.String">
+			<column name="EVENT_ID">
+				<comment>事件号</comment>
+			</column>
+		</id>
+		<property generated="never" lazy="false" name="customerseverity"
+			 type="java.lang.Integer">
+			<column name="CUSTOMERSEVERITY">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="device_id"
+			 type="java.lang.String">
+			<column name="DEVICE_ID">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="device_ip"
+			 type="java.lang.String">
+			<column name="DEVICE_IP">
+			</column>
+		</property>
+		
+		<property generated="never" lazy="false" name="alarmobject"
+			 type="java.lang.String">
+			<column name="ALARM_OBJECT">
+			</column>
+		</property>
+		
+		<property generated="never" lazy="false" name="componenttype"
+			 type="java.lang.String">
+			<column name="COMPONENTTYPE">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="component"
+			type="java.lang.String">
+			<column name="COMPONENT">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="subcomponent"
+			 type="java.lang.String">
+			<column name="SUBCOMPONENT">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="summarycn"
+			 type="java.lang.String">
+			<column name="SUMMARYCN">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="eventstatus"
+			type="java.lang.Integer">
+			<column name="EVENTSTATUS">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="first_time"
+			type="java.sql.Timestamp">
+			<column name="FIRST_TIME">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="last_time"
+			type="java.sql.Timestamp">
+			<column name="LAST_TIME">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="alarminstance"
+			 type="java.lang.String">
+			<column name="ALARM_INSTANCE">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="appname"
+			 type="java.lang.String">
+			<column name="APPNAME">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="managebycenter"
+			 type="java.lang.Integer">
+			<column name="MANAGEBYCENTER">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="managebyuser"
+			type="java.lang.String">
+			<column name="MANAGEBYUSER">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="managetimeexceed"
+			type="java.lang.String">
+			<column name="MANAGETIMEEXCEED">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="managetime"
+			type="java.sql.Timestamp">
+			<column name="MANAGETIME">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="maintainstatus"
+			type="java.lang.Integer">
+			<column name="MAINTAINSTATUS">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="repeat_number"
+			type="java.lang.Integer">
+			<column name="REPEAT_NUMBER">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="mgtorg"
+			 type="java.lang.String">
+			<column name="MGTORG">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="orgname"
+			 type="java.lang.String">
+			<column name="ORGNAME">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="event_group"
+			 type="java.lang.String">
+			<column name="EVENT_GROUP">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="monitor_tool"
+			 type="java.lang.String">
+			<column name="MONITOR_TOOL">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="is_ticket"
+			type="java.lang.String">
+			<column name="IS_TICKET">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="n_ticketid"
+			type="java.lang.String">
+			<column name="N_TICKETID">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="ump_id"
+			type="java.lang.String">
+			<column name="UMP_ID">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="cause_effect"
+			type="java.lang.String">
+			<column name="CAUSE_EFFECT">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="parent_event_id"
+		type="java.lang.String">
+			<column name="PARENT_EVENT_ID">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="handle_status"
+			type="java.lang.String">
+			<column name="HANDLE_STATUS">
+			</column>
+		</property>
+		
+		<property generated="never" lazy="false" name="handle_user"
+		type="java.lang.String">
+			<column name="HANDLE_USER">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="handle_time_exceed"
+		type="java.lang.String">
+			<column name="HANDLE_TIME_EXCEED">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="close_time"
+			type="java.sql.Timestamp">
+			<column name="CLOSE_TIME">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="result_summary"
+		type="java.lang.String">
+			<column name="RESULT_SUMMARY">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="match_tools_message"
+		type="java.lang.String">
+			<column name="MATCH_TOOLS_MESSAGE">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="alarm_received_time"
+		type="java.sql.Date">
+			<column name="ALARM_RECEIVED_TIME">
+			</column>
+		</property>
+
+	</class>
+</hibernate-mapping>

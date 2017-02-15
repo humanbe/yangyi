@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.check.vo">
+	<class name="CheckJobInfoVo" table="CHECK_JOB_INFO" dynamic-update="true"
+		dynamic-insert="true">
+        <id name="job_code" column="JOB_CODE" type="java.lang.Integer">
+		  	<generator class="sequence">
+		  		<param name="sequence">CHECK_JOB_INFO_SEQ</param>
+		  	</generator>
+		</id>
+		
+		<property name="appsys_code" type="java.lang.String">
+			<column name="APPSYS_CODE">
+			</column>
+		</property>
+		<property name="check_type" type="java.lang.String">
+			<column name="CHECK_TYPE">
+			</column>
+		</property>
+		<property name="authorize_lever_type" type="java.lang.String">
+			<column name="AUTHORIZE_LEVEL_TYPE">
+			</column>
+		</property>
+		<property name="field_type" type="java.lang.String">
+			<column name="FIELD_TYPE">
+			</column>
+		</property>
+		<property name="job_name" type="java.lang.String">
+			<column name="JOB_NAME">
+			</column>
+		</property>
+		<property name="job_path" type="java.lang.String">
+			<column name="JOB_PATH">
+			</column>
+		</property>
+		<property name="job_type" type="java.lang.String">
+			<column name="JOB_TYPE">
+			</column>
+		</property>
+		<property name="job_desc" type="java.lang.String">
+			<column name="JOB_DESC">
+			</column>
+		</property>
+		<property name="tool_status" type="java.lang.String">
+			<column name="TOOL_STATUS">
+			</column>
+		</property>
+		<property name="frontline_flag" type="java.lang.String">
+			<column name="FRONTLINE_FLAG">
+			</column>
+		</property>
+		<property name="authorize_flag" type="java.lang.String">
+			<column name="AUTHORIZE_FLAG">
+			</column>
+		</property>
+		<property name="delete_flag" type="java.lang.String">
+			<column name="DELETE_FLAG">
+			</column>
+		</property>
+		<property name="tool_creator" type="java.lang.String">
+			<column name="TOOL_CREATOR">
+			</column>
+		</property>
+		
+		<property name="script_name" type="java.lang.String">
+			<column name="SCRIPT_NAME">
+			</column>
+		</property>
+		<property name="exec_path" type="java.lang.String">
+			<column name="EXEC_PATH">
+			</column>
+		</property>
+		<property name="exec_user" type="java.lang.String">
+			<column name="EXEC_USER">
+			</column>
+		</property>
+		<property name="exec_user_group" type="java.lang.String">
+			<column name="EXEC_USER_GROUP">
+			</column>
+		</property>
+		<property name="language_type" type="java.lang.String">
+			<column name="LANGUAGE_TYPE">
+			</column>
+		</property>
+		<property name="server_target_type" type="java.lang.String">
+			<column name="SERVER_TARGET_TYPE">
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>
+
+

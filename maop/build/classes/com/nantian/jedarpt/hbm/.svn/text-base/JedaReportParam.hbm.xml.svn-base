@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.jedarpt.vo">
+	<class name="JedaReportParamVo" table="JEDA_REPORT_PARAM" dynamic-update="true"
+		dynamic-insert="true">
+        <id name="param_code" column="PARAM_CODE" type="integer">
+		  	<generator class="sequence">
+		  		<param name="sequence">JEDA_PARAM_SEQ</param>
+		  	</generator>
+		</id>
+		
+		<property name="report_code" type="integer">
+			<column name="REPORT_CODE"></column>
+		</property>
+		<property name="param_en_name" type="string">
+			<column name="PARAM_EN_NAME"></column>
+		</property>
+		<property name="param_ch_name" type="string">
+			<column name="PARAM_CH_NAME"></column>
+		</property>
+		<property name="param_type" type="string">
+			<column name="PARAM_TYPE"></column>
+		</property>
+		<property name="default_value" type="string">
+			<column name="DEFAULT_VALUE"></column>
+		</property>
+		<property name="dic_code" type="string">
+			<column name="DIC_CODE"></column>
+		</property>
+		<property name="delete_flag" type="string">
+			<column name="DELETE_FLAG"></column>
+		</property>
+	</class>
+</hibernate-mapping>
+
+

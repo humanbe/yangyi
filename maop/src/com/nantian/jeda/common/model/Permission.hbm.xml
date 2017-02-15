@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.jeda.common.model">
+	<class name="Permission" table="JEDA_PERMISSION" dynamic-update="true" dynamic-insert="true">
+		<comment>数据权限表</comment>
+		<id name="id" unsaved-value="null">
+			<column name="PERMISSION_ID">
+				<comment>权限主健</comment>
+			</column>
+			<generator class="org.hibernate.id.enhanced.TableGenerator">
+				<param name="table_name">JEDA_SEQUENCES</param>
+				<param name="segment_value">PERMISSION</param>
+				<param name="initial_value">100</param>
+			</generator>
+		</id>
+		<version name="version" type="integer">
+			<column name="PERMISSION_VERSION">
+				<comment>权限数据版本</comment>
+			</column>
+		</version>
+		<property name="name">
+			<column name="PERMISSION_NAME" length="100">
+				<comment>权限名称</comment>
+			</column>
+		</property>
+		<property name="type">
+			<column name="PERMISSION_TYPE" length="50">
+				<comment>权限类型</comment>
+			</column>
+		</property>
+		<property name="expression">
+			<column name="PERMISSION_EXPRESSION" length="1000">
+				<comment>权限表达式</comment>
+			</column>
+		</property>
+		<property name="userType">
+			<column name="PERMISSION_USER_TYPE" length="50">
+				<comment>用户权限类型</comment>
+			</column>
+		</property>
+		<property name="orgType">
+			<column name="PERMISSION_ORG_TYPE" length="50">
+				<comment>机构权限类型</comment>
+			</column>
+		</property>
+		<property name="fieldValue">
+			<column name="PERMISSION_FIELD_VALUE" length="50">
+				<comment>权限字段数值</comment>
+			</column>
+		</property>
+		<property name="description">
+			<column name="PERMISSION_DESCRIPTION" length="1000">
+				<comment>权限描述</comment>
+			</column>
+		</property>
+		<many-to-one name="subitem" class="com.nantian.jeda.common.model.SubItem" fetch="join" lazy="false">
+			<column name="SUB_ITEM_ID">
+				<comment>数据项子表编码</comment>
+			</column>
+		</many-to-one>
+		<property name="order" type="integer">
+			<column name="PERMISSION_ORDER">
+				<comment>排序</comment>
+			</column>
+		</property>
+		<many-to-one name="field" class="com.nantian.jeda.common.model.Field" fetch="join" lazy="false">
+			<column name="FIELD_ID">
+				<comment>字段</comment>
+			</column>
+		</many-to-one>
+		<set name="roles" table="JEDA_ROLE_PERMISSION">
+			<key column="PERMISSION_ID" />
+			<many-to-many class="com.nantian.jeda.common.model.Role">
+				<column name="ROLE_ID">
+					<comment>角色ID</comment>
+				</column>
+			</many-to-many>
+		</set>
+		<set name="associatedOrgs" table="JEDA_PERMISSION_ORG" lazy="false">
+			<key column="PERMISSION_ID" />
+			<many-to-many class="com.nantian.jeda.common.model.Org">
+				<column name="Org_ID">
+					<comment>机构ID</comment>
+				</column>
+			</many-to-many>
+		</set>
+		<set name="associatedUsers" table="JEDA_PERMISSION_USER" inverse="false" lazy="false">
+			<key column="PERMISSION_ID" />
+			<many-to-many class="com.nantian.jeda.common.model.User">
+				<column name="USER_ID">
+					<comment>用户ID</comment>
+				</column>
+			</many-to-many>
+		</set>
+		<many-to-one name="creator" class="com.nantian.jeda.common.model.User" fetch="join" update="false">
+			<column name="PERMISSION_CREATOR">
+				<comment>权限创建者</comment>
+			</column>
+		</many-to-one>
+		<property name="created" type="date" update="false">
+			<column name="PERMISSION_CREATED">
+				<comment>权限创建时间</comment>
+			</column>
+		</property>
+		<many-to-one name="modifier" class="com.nantian.jeda.common.model.User" fetch="join">
+			<column name="PERMISSION_MODIFIER">
+				<comment>权限修改者</comment>
+			</column>
+		</many-to-one>
+		<property name="modified" type="date">
+			<column name="PERMISSION_MODIFIED">
+				<comment>权限修改时间</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

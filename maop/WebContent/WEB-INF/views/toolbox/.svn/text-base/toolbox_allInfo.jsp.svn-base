@@ -1,0 +1,390 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ include file="/include/taglibs.jsp"%>
+<script type="text/javascript">
+
+var field_type_twoStore_all;
+var field_type_threeStore_all;
+tool_box_All_Info= Ext.extend(Ext.Panel, {
+	row : 0,// Tab键顺序    form: null,
+    defaults:{bodyStyle:'padding-left:0px;padding-top:5px'},
+	constructor : function(cfg) {
+		Ext.apply(this, cfg);
+		// 设置基类属性
+		
+          //数据字典
+		this.tool_statusStore = new Ext.data.JsonStore(
+				{
+					autoDestroy : true,
+					url : '${ctx}/${frameworkPath}/item/TOOL_STATUS/sub',
+					root : 'data',
+					fields : [ 'value', 'name' ]
+				});
+		this.tool_statusStore.load();
+		this.tool_authorize_flagStore = new Ext.data.JsonStore(
+				{
+					autoDestroy : true,
+					url : '${ctx}/${frameworkPath}/item/TOOL_AUTHORIZE_FLAG/sub',
+					root : 'data',
+					fields : [ 'value', 'name' ]
+				});
+		this.tool_authorize_flagStore.load();
+		this.ServerGroupStore = new Ext.data.JsonStore(
+		{
+			autoDestroy : true,
+			url : '${ctx}/${frameworkPath}/item/SERVER_GROUP/sub',
+			root : 'data',
+			fields : [ 'value', 'name' ]
+		});
+		this.ServerGroupStore.load();
+		this.authorize_level_typeStore = new Ext.data.JsonStore(
+		{
+			autoDestroy : true,
+			url : '${ctx}/${frameworkPath}/item/AUTHORIZE_LEVEL_TYPE/sub',
+			root : 'data',
+			fields : [ 'value', 'name' ]
+		});
+		this.authorize_level_typeStore.load();
+		this.os_typeStore = new Ext.data.JsonStore(
+		{
+			autoDestroy : true,
+			url : '${ctx}/${frameworkPath}/item/OS_TYPE/sub',
+			root : 'data',
+			fields : [ 'value', 'name' ]
+		});
+		this.os_typeStore.load();
+		this.position_typeStore = new Ext.data.JsonStore(
+		{
+			autoDestroy : true,
+			url : '${ctx}/${frameworkPath}/item/TOOL_POSITION_TYPE/sub',
+			root : 'data',
+			fields : [ 'value', 'name' ]
+		});
+		this.position_typeStore.load();
+		this.tool_typeStore = new Ext.data.JsonStore(
+				{
+					autoDestroy : true,
+					url : '${ctx}/${frameworkPath}/item/TOOL_TYPE/sub',
+					root : 'data',
+					fields : [ 'value', 'name' ]
+				});
+		this.tool_typeStore.load();
+		this.tool_stausStore = new Ext.data.JsonStore(
+		{
+			autoDestroy : true,
+			url : '${ctx}/${frameworkPath}/item/TOOL_STATUS/sub',
+			root : 'data',
+			fields : [ 'value', 'name' ]
+		});
+		this.tool_stausStore.load();
+		this.os_user_flagStore = new Ext.data.JsonStore(
+		{
+			autoDestroy : true,
+			url : '${ctx}/${frameworkPath}/item/TOOLBOX_OS_USER_FLAG/sub',
+			root : 'data',
+			fields : [ 'value', 'name' ]
+		});
+		this.os_user_flagStore.load();
+		this.toolcharsetStore = new Ext.data.JsonStore(
+		{
+			autoDestroy : true,
+			url : '${ctx}/${frameworkPath}/item/TOOL_CHARSET/sub',
+			root : 'data',
+			fields : [ 'value', 'name' ]
+		});
+		this.toolcharsetStore.load();
+		
+		
+		this.appsys_Store =  new Ext.data.Store({
+			proxy: new Ext.data.HttpProxy({
+				url : '${ctx}/${managePath}/appInfo/querySystemIDAndNamesByUser',
+				method : 'GET',
+				disableCaching : true
+			}),
+			reader : new Ext.data.JsonReader({}, ['appsysCode','appsysName']),
+			listeners : {
+				load : function(store){
+					if(store.getCount() == 0){
+						Ext.Msg.show({
+							title : '<fmt:message key="message.title" />',
+							msg : '<fmt:message key="message.system.no.authorize" />',
+							minWidth : 200,
+							buttons : Ext.MessageBox.OK,
+							icon : Ext.MessageBox.WARNING
+						});
+					}
+				}
+			}
+		});
+		this.appsys_Store.load();
+		this.field_type_oneStore_all = new Ext.data.Store(
+				{
+					proxy: new Ext.data.HttpProxy({
+						url : '${ctx}/${appPath}/ToolBoxController/getFTone', 
+						method: 'POST'
+					}),
+					reader: new Ext.data.JsonReader({}, ['field_type_one'])
+					
+				});
+		this.field_type_oneStore_all.load();
+		
+		field_type_twoStore_all = new Ext.data.Store(
+				{
+					proxy: new Ext.data.HttpProxy({
+						url : '${ctx}/${appPath}/ToolBoxController/getFTtwo', 
+						method: 'POST'
+					}),
+					reader: new Ext.data.JsonReader({}, ['field_type_two'])
+					
+				});
+		field_type_twoStore_all.on('beforeload',function(){
+			field_type_twoStore_all.baseParams.field_type_one = Ext.getCmp("field_type_oneALLID").getValue();
+				},this); 
+		
+		
+		field_type_threeStore_all = new Ext.data.Store(
+				{
+					proxy: new Ext.data.HttpProxy({
+						url : '${ctx}/${appPath}/ToolBoxController/getFTthree', 
+						method: 'POST'
+					}),
+					reader: new Ext.data.JsonReader({}, ['field_type_three'])
+					
+				});
+		field_type_threeStore_all.on('beforeload',function(){
+			field_type_threeStore_all.baseParams.field_type_one = Ext.getCmp("field_type_oneALLID").getValue();
+			field_type_threeStore_all.baseParams.field_type_two = Ext.getCmp("field_type_twoALLID").getValue();
+				},this); 
+							
+		this.form = new Ext.FormPanel({
+					buttonAlign : 'center',
+					labelAlign : 'right',
+					lableWidth : 15,
+					autoHeight: false,
+					frame : true,
+					monitorValid : true,
+					defaults : {
+						anchor : '90%',
+						msgTarget : 'side',
+						bodyStyle:'padding-left:50px;padding-top:50px'
+					},
+		          	  items:[{
+		          	  columnWidth:1,
+		                layout: 'form',
+		                defaults: {anchor : '80%'},
+		                labelWidth : 160 ,
+		                border:false,
+		                labelAlign : 'right',
+		                items : [{
+						xtype : 'combo',
+						store : this.appsys_Store,
+						fieldLabel : '<font color=red>*</font>&nbsp;<fmt:message key="toolbox.appsys_code" />',
+						id:'appsys_codeALLID',
+     					name : 'appsys_code',
+						valueField : 'appsysCode',
+						displayField : 'appsysName',
+						hiddenName : 'appsys_code',
+						mode : 'local',
+						triggerAction : 'all',
+						forceSelection : true,
+						//editable : false,
+						tabIndex : this.tabIndex++,
+						allowBlank : false,
+						 listeners : {
+							
+								scope : this,
+								 beforequery : function(e){
+									var combo = e.combo;
+									combo.collapse();
+									 if(!e.forceAll){
+										var input = e.query.toUpperCase();
+										var regExp = new RegExp('.*' + input + '.*');
+										combo.store.filterBy(function(record, id){
+											var text = record.get(combo.displayField);
+											return regExp.test(text);
+										}); 
+										combo.restrictHeight();
+										combo.expand();
+										return false;
+									} 
+								
+							}
+						 } 
+				},
+				
+				
+				{
+					xtype : 'combo',
+					store : this.authorize_level_typeStore,
+					fieldLabel : '<font color=red>*</font>&nbsp;<fmt:message key="toolbox.authorize_level_type" />',
+					name : 'authorize_level_type',
+					id:'authorize_level_typeALLID',
+					valueField : 'value',
+					displayField : 'name',
+					hiddenName : 'authorize_level_type',
+					mode : 'local',
+					triggerAction : 'all',
+					forceSelection : true,
+					editable : false,
+					allowBlank : false,
+					tabIndex : this.tabIndex++
+				},{
+					xtype : 'combo',
+					store : this.field_type_oneStore_all,
+					fieldLabel : '<font color=red>*</font>&nbsp;<fmt:message key="toolbox.field_type_one" />',
+					name : 'field_type_one',
+					id:'field_type_oneALLID',
+					valueField : 'field_type_one',
+					displayField : 'field_type_one',
+					hiddenName : 'field_type_one',
+					mode : 'local',
+					triggerAction : 'all',
+					forceSelection : true,
+					editable : false,
+					tabIndex : this.tabIndex++,
+					allowBlank : false,
+					listeners : {
+						//编辑完成后处理事件
+						select : function(obj) {
+							 field_type_twoStore_all.load();
+							Ext.getCmp('field_type_twoALLID').setValue("");
+							Ext.getCmp('field_type_threeALLID').setValue("");
+							Ext.getCmp('field_type_twoALLID').el.up('.x-form-item').setDisplayed(true);
+							Ext.getCmp('field_type_threeALLID').el.up('.x-form-item').setDisplayed(false);
+						}
+					}
+				},
+				{
+					xtype : 'combo',
+					store : field_type_twoStore_all,
+					fieldLabel : '<fmt:message key="toolbox.field_type_two" />',
+					name : 'field_type_two',
+					id:'field_type_twoALLID',
+					valueField : 'field_type_two',
+					displayField : 'field_type_two',
+					hiddenName : 'field_type_two',
+					mode : 'local',
+					triggerAction : 'all',
+					forceSelection : true,
+					editable : false,
+					tabIndex : this.tabIndex++,
+					listeners : {
+						//编辑完成后处理事件
+						select : function(obj) {
+							field_type_threeStore_all.load();
+							Ext.getCmp('field_type_threeALLID').setValue("");
+							Ext.getCmp('field_type_threeALLID').el.up('.x-form-item').setDisplayed(true);
+							
+						}
+					}
+				},
+				{
+					xtype : 'combo',
+					store :field_type_threeStore_all,
+					fieldLabel : '<fmt:message key="toolbox.field_type_three" />',
+					name : 'field_type_three',
+					id:'field_type_threeALLID',
+					valueField : 'field_type_three',
+					displayField : 'field_type_three',
+					hiddenName : 'field_type_three',
+					mode : 'local',
+					triggerAction : 'all',
+					forceSelection : true,
+					editable : false,
+					tabIndex : this.tabIndex++
+				},{
+					xtype : 'combo',
+					store : this.tool_authorize_flagStore,
+					fieldLabel :'<font color=red>*</font>&nbsp;<fmt:message key="toolbox.tool_authorize_flag" />',
+					name : 'tool_authorize_flag',
+					id:'tool_authorize_flagALLID',
+					valueField : 'value',
+					displayField : 'name',
+					hiddenName : 'tool_authorize_flag',
+					mode : 'local',
+					triggerAction : 'all',
+					forceSelection : true,
+					editable : false,
+					tabIndex : this.tabIndex++,
+					allowBlank : false
+				},{
+					xtype : 'combo',
+					store : this.tool_typeStore,
+					fieldLabel :'<font color=red>*</font>&nbsp;<fmt:message key="toolbox.tool_type" />',
+					name : 'tool_type',
+					id:'tool_typeALLID',
+					valueField : 'value',
+					displayField : 'name',
+					hiddenName : 'tool_type',
+					mode : 'local',
+					triggerAction : 'all',
+					forceSelection : true,
+					editable : false,
+					tabIndex : this.tabIndex++,
+					allowBlank : false
+				}]
+            }],
+            buttons : [{
+				text : '<fmt:message key="button.create" />',
+				iconCls : 'button-add',
+				formBind:true,
+				tabIndex : this.tabIndex++,
+				scope : this,
+				handler : this.doCreate
+
+			},{
+				text : '<fmt:message key="button.reset" />',
+				iconCls : 'button-reset',
+				tabIndex : this.tabIndex++,
+				scope : this,
+				handler : this.doReset
+
+			}  ]
+		 });
+		
+		tool_box_All_Info.superclass.constructor.call(this, {
+			layout : 'fit',
+			autoScroll : true,
+			items : [this.form]
+		});
+		
+		
+	},
+	doCreate : function() {
+		
+		var params = {
+				appsys_code : Ext.getCmp('appsys_codeALLID').getValue(),
+				authorize_level_type: Ext.getCmp('authorize_level_typeALLID').getValue(),
+				field_type_one: encodeURIComponent(Ext.getCmp('field_type_oneALLID').getValue()),
+				field_type_two: encodeURIComponent(Ext.getCmp('field_type_twoALLID').getValue()),
+				field_type_three: encodeURIComponent(Ext.getCmp('field_type_threeALLID').getValue()),
+				tool_authorize_flag: Ext.getCmp('tool_authorize_flagALLID').getValue(),
+				tool_type : Ext.getCmp('tool_typeALLID').getValue()
+			};
+		if( Ext.getCmp('tool_typeALLID').getValue()==1){
+			app.loadTab('TOOLBOX_CREATE',
+					'脚本工具<fmt:message key="button.create" />',
+					'${ctx}/${appPath}/ToolBoxController/create',params);
+		}else if( Ext.getCmp('tool_typeALLID').getValue()==2){
+			app.loadTab('TOOL_BOX_DESC_INFO',
+					'描述工具<fmt:message key="button.create" />',
+					'${ctx}/${appPath}/ToolBoxController/createDesc',params);
+		}
+		
+		
+		 
+		},
+		// 重置查询表单
+		doReset : function() {
+			this.form.getForm().reset();
+		}
+
+
+});
+var tool_box_All_Info = new tool_box_All_Info();
+
+Ext.getCmp("TOOL_BOX_ALL_INFO").add(tool_box_All_Info);
+Ext.getCmp("TOOL_BOX_ALL_INFO").doLayout();
+Ext.getCmp('field_type_twoALLID').el.up('.x-form-item').setDisplayed(false);
+Ext.getCmp('field_type_threeALLID').el.up('.x-form-item').setDisplayed(false);
+</script>

@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.rept.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="RptChartConfVo" table="RPT_CHART_CONF">
+  <composite-id>
+   <key-property name="aplCode" type="java.lang.String">
+    <column name="APL_CODE" not-null="true">
+    	<comment>应用系统编号</comment>
+    </column>
+   </key-property>
+    <key-property name="reportType" type="java.lang.String">
+    <column name="REPORT_TYPE" not-null="true">
+    	<comment>报表类型</comment>
+    </column>
+   </key-property>
+   <key-property name="sheetName" type="java.lang.String">
+    <column name="SHEET_NAME" not-null="true">
+    	<comment>日报SHEET名</comment>
+    </column>
+   </key-property>
+   <key-property name="chartType" type="java.lang.String">
+    <column name="CHART_TYPE" not-null="true">
+    	<comment>图表类型</comment>
+    </column>
+   </key-property>
+   <key-property name="chartName" type="java.lang.String">
+    <column name="CHART_NAME" not-null="true">
+    	<comment>图表名称</comment>
+    </column>
+   </key-property>
+   <key-property name="chartSeq" type="java.lang.Integer">
+    <column name="CHART_SEQ" not-null="true">
+    	<comment>图表顺序号</comment>
+    </column>
+   </key-property>
+   <key-property name="chartYaxisPosition" type="java.lang.String">
+    <column name="CHART_YAXIS_POSITION" not-null="true">
+    	<comment>图表Y轴位置. 0:左; 1:右</comment>
+    </column>
+   </key-property>
+  </composite-id>
+  <property name="itemList" generated="never" lazy="false" not-null="true" type="java.lang.String">
+   <column name="ITEM_LIST">
+       	<comment>科目列表</comment>
+   </column>
+  </property>
+  <property name="chartYaxisTitle" generated="never" lazy="false" not-null="true" type="java.lang.String">
+   <column name="CHART_YAXIS_TITLE">
+       	<comment>图表Y轴标题</comment>
+   </column>
+  </property>
+  <property name="chartYaxisMinval" generated="never" lazy="false" not-null="true" type="java.lang.String">
+   <column name="CHART_YAXIS_MINVAL">
+       	<comment> 图表Y轴最小值 </comment>
+   </column>
+  </property>
+  <property name="chartYaxisMaxval" generated="never" lazy="false" not-null="true" type="java.lang.String">
+   <column name="CHART_YAXIS_MAXVAL">
+       	<comment>图表Y轴最大值 </comment>
+   </column>
+  </property>
+  <property name="chartYaxisInterval" generated="never" lazy="false" not-null="true" type="java.lang.String">
+   <column name="CHART_YAXIS_INTERVAL">
+       	<comment>图表Y轴间隔</comment>
+   </column>
+  </property>
+  <property name="chartYaxisUnit" generated="never" lazy="false" not-null="true" type="java.lang.String">
+   <column name="CHART_YAXIS_UNIT">
+       	<comment>图表Y轴单位</comment>
+   </column>
+  </property>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.demo.vo">
+	<class name="AppSystemInfoVo" table="T_APP_SYSTEM_INFO" dynamic-update="true"
+		dynamic-insert="true">
+		<comment>table</comment>
+		<id name="appsystemid" unsaved-value="null" type="java.lang.String">
+			<column name="APPSYSTEMID">
+				<comment>appsystemid</comment>
+			</column>
+			<generator class="uuid" />
+		</id>
+		<property name="appsystemname" type="java.lang.String">
+			<column name="APPSYSTEMNAME">
+				<comment>appsystemname</comment>
+			</column>
+		</property>
+		<property name="issysflag" type="java.lang.String">
+			<column name="ISSYSFLAG">
+				<comment>issysflag</comment>
+			</column>
+		</property>
+		<property name="appsystemtype" type="java.lang.String">
+			<column name="APPSYSTEMTYPE">
+				<comment>appsystemtype</comment>
+			</column>
+		</property>
+		<property name="appsystemtime" type="java.lang.String">
+			<column name="APPSYSTEMTIME">
+				<comment>appsystemtime</comment>
+			</column>
+		</property>
+		<property name="meno" type="java.lang.String">
+			<column name="MENO">
+				<comment>meno</comment>
+			</column>
+		</property>
+		<property name="appadminidA" type="java.lang.String">
+			<column name="APPADMINID_A">
+				<comment>appadminidA</comment>
+			</column>
+		</property>
+		<property name="sysadminidA" type="java.lang.String">
+			<column name="SYSADMINID_A">
+				<comment>sysadminidA</comment>
+			</column>
+		</property>
+		<property name="appadminidB" type="java.lang.String">
+			<column name="APPADMINID_B">
+				<comment>appadminidB</comment>
+			</column>
+		</property>
+		<property name="sysadminidB" type="java.lang.String">
+			<column name="SYSADMINID_B">
+				<comment>sysadminidB</comment>
+			</column>
+		</property>
+		<property name="bmanagerid" type="java.lang.String">
+			<column name="BMANAGERID">
+				<comment>bmanagerid</comment>
+			</column>
+		</property>
+		<property name="cmanagerid" type="java.lang.String">
+			<column name="CMANAGERID">
+				<comment>cmanagerid</comment>
+			</column>
+		</property>
+		<property name="busicontact1id" type="java.lang.String">
+			<column name="BUSICONTACT1ID">
+				<comment>busicontact1id</comment>
+			</column>
+		</property>
+		<property name="busicontact2id" type="java.lang.String">
+			<column name="BUSICONTACT2ID">
+				<comment>busicontact2id</comment>
+			</column>
+		</property>
+		<property name="reserve1" type="java.lang.String">
+			<column name="RESERVE1">
+				<comment>reserve1</comment>
+			</column>
+		</property>
+		<property name="reserve2" type="java.lang.String">
+			<column name="RESERVE2">
+				<comment>reserve2</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>
+
+

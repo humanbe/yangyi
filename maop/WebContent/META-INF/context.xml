@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+	<!--MAOPDEV-->
+	<!---->
+	<Resource auth="Container" description="DB Connection" 
+		name="jdbc/ds" type="javax.sql.DataSource" username="maop" password="maop"
+		driverClassName="oracle.jdbc.driver.OracleDriver" 
+		maxIdle="20" maxWait="5000" 
+		url="jdbc:oracle:thin:@10.200.36.220:1521:MAOP"
+		maxActive="10" />
+	<Resource auth="Container2" description="DB Connection 4 Report"
+		name="jdbc/brpmds" type="javax.sql.DataSource" username="brpmdba" 
+		password="brpmdba" driverClassName="oracle.jdbc.driver.OracleDriver" 
+		maxIdle="20" maxWait="5000"
+		url="jdbc:oracle:thin:@10.200.36.220:1521:MAOP" maxActive="10" />
+		
+	<Resource auth="Container2" description="DB Connection 4 Report"
+		name="jdbc/maoprptds" type="javax.sql.DataSource" username="maoprpt"
+		password="maoprpt" driverClassName="oracle.jdbc.driver.OracleDriver" 
+		maxIdle="20" maxWait="5000"
+		url="jdbc:oracle:thin:@10.200.36.220:1522:MAOPRPT" maxActive="10" />
+		
+	<Resource auth="Container3" description="DB Connection 4 Smrpt" 
+		name="jdbc/smrptds" type="javax.sql.DataSource" username="smrpt" 
+		password="smrpt" driverClassName="oracle.jdbc.driver.OracleDriver" 
+		maxIdle="20" maxWait="5000" 
+		url="jdbc:oracle:thin:@10.1.7.28:1522:SMDB" maxActive="10" />
+		
+	<!--DEV-->
+	<!-- <Resource auth="Container" description="DB Connection"
+		name="jdbc/ds" type="javax.sql.DataSource" username="maop" password="maop"
+		driverClassName="oracle.jdbc.driver.OracleDriver"
+		maxIdle="20" maxWait="5000" 
+		url="jdbc:oracle:thin:@10.200.36.222:1521:MAOP"
+		maxActive="10" />
+	<Resource auth="Container2" description="DB Connection 4 Report"
+		name="jdbc/brpmds" type="javax.sql.DataSource" username="brpmdba" password="brpmdba"
+		driverClassName="oracle.jdbc.driver.OracleDriver"
+		maxIdle="20" maxWait="5000"
+		url="jdbc:oracle:thin:@10.200.36.222:1521:MAOP" maxActive="10" />
+			
+	<Resource auth="Container3" description="DB Connection 4 BSA"
+		name="jdbc/maoprptds" type="javax.sql.DataSource" username="maoprpt" password="maoprpt" 
+		driverClassName="oracle.jdbc.driver.OracleDriver"
+		maxIdle="20" maxWait="5000"
+		url="jdbc:oracle:thin:@10.200.36.222:1522:MAOPRPT" maxActive="10" /> -->
+	<!--QA-->
+	<!--
+	<Resource auth="Container" description="DB Connection For Maop" 
+		name="jdbc/ds" type="javax.sql.DataSource" username="maop" password="maop"
+		driverClassName="oracle.jdbc.driver.OracleDriver"
+		maxIdle="20" maxWait="5000" 
+		url="jdbc:oracle:thin:@10.200.4.141:1521:MAOP"
+		maxActive="10" />
+	<Resource auth="Container2" description="DB Connection 4 BRPM"
+		name="jdbc/brpmds" type="javax.sql.DataSource" username="brpmdba" password="brpmdba" 
+		driverClassName="oracle.jdbc.driver.OracleDriver"
+		maxIdle="20" maxWait="5000"
+		url="jdbc:oracle:thin:@10.200.4.141:1521:MAOP" maxActive="10" />
+		
+	<Resource auth="Container3" description="DB Connection 4 BSA"
+		name="jdbc/maoprptds" type="javax.sql.DataSource" username="maoprpt" password="maoprpt" 
+		driverClassName="oracle.jdbc.driver.OracleDriver"
+		maxIdle="20" maxWait="5000"
+		url="jdbc:oracle:thin:@10.200.4.141:1522:MAOPRPT" maxActive="10" />
+		-->
+	<!--PROD
+	<Resource auth="Container" description="DB Connection For Maop" 
+		name="jdbc/ds" type="javax.sql.DataSource" username="maop" password="maop"
+		driverClassName="oracle.jdbc.driver.OracleDriver"
+		maxIdle="20" maxWait="5000" 
+		url="jdbc:oracle:thin:@10.1.7.135:1521:MAOP"
+		maxActive="10" />
+	<Resource auth="Container2" description="DB Connection 4 BRPM"
+		name="jdbc/brpmds" type="javax.sql.DataSource" username="brpmdba" password="brpmdba" 
+		driverClassName="oracle.jdbc.driver.OracleDriver"
+		maxIdle="20" maxWait="5000"
+		url="jdbc:oracle:thin:@10.1.7.135:1521:MAOP" maxActive="10" />
+		
+	<Resource auth="Container3" description="DB Connection 4 BSA"
+		name="jdbc/maoprptds" type="javax.sql.DataSource" username="maoprpt" password="maoprpt" 
+		driverClassName="oracle.jdbc.driver.OracleDriver"
+		maxIdle="20" maxWait="5000"
+		url="jdbc:oracle:thin:@10.1.7.135:1522:MAOPRPT" maxActive="10" />
+		-->
+</Context>

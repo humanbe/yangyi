@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.jeda.common.model">
+	<class name="TranInfo" table="T_TRAN_INFO" dynamic-update="true" dynamic-insert="true">
+		<comment>交易信息表</comment>
+		<id name="tranid" length="20">
+			<column name="TRANID">
+				<comment>交易ID</comment>
+			</column>
+		</id>
+		<property name="appsystemid">
+			<column name="APPSYSTEMID" length="10">
+				<comment>系统代码</comment>
+			</column>
+		</property>
+		<property name="chnlno">
+			<column name="CHNLNO" length="6">
+				<comment>渠道号</comment>
+			</column>
+		</property>
+		<property name="outtrancode">
+			<column name="OUTTRANCODE" length="20">
+				<comment>外部交易码</comment>
+			</column>
+		</property>
+		<property name="trancode">
+			<column name="TRANCODE" length="20">
+				<comment>内部交易码</comment>
+			</column>
+		</property>
+		<property name="tranname">
+			<column name="TRANNAME" length="50">
+				<comment>交易名称</comment>
+			</column>
+		</property>
+		<property name="trantime">
+			<column name="TRANTIME" length="10">
+				<comment>交易超时时间（秒）</comment>
+			</column>
+		</property>
+		<property name="serviceid">
+			<column name="SERVICEID" length="20">
+				<comment>内部服务代码</comment>
+			</column>
+		</property>
+		<property name="busimoduelname">
+			<column name="BUSIMODUELNAME" length="50">
+				<comment>所属模块名称</comment>
+			</column>
+		</property>
+		<property name="busimoduelcode">
+			<column name="BUSIMODUELCODE" length="20">
+				<comment>所属模块代码</comment>
+			</column>
+		</property>
+		<property name="higouttrancode" length="20">
+			<column name="HIGOUTTRANCODE">
+				<comment>上级交易代码</comment>
+			</column>
+		</property>
+		<property name="callway">
+			<column name="CALLWAY" length="2">
+				<comment>调用方式</comment>
+			</column>
+		</property>
+		<property name="callnum" type="integer">
+			<column name="CALLNUM">
+				<comment>调用序号</comment>
+			</column>
+		</property>
+		<property name="condition" length="255">
+			<column name="CONDITION">
+				<comment>条件描述（当调用方式选择T时填写）</comment>
+			</column>
+		</property>
+		
+		<property name="Deriveflag" length="1">
+			<column name="DERIVEFLAG">
+				<comment>交易派生标识</comment>
+			</column>
+		</property>
+		<property name="reserve" length="20">
+			<column name="RESERVE">
+				<comment>备用字段</comment>
+			</column>
+		</property>
+		<property name="reserve1" length="20">
+			<column name="RESERVE1">
+				<comment>备用字段1</comment>
+			</column>
+		</property>
+		<property name="reserve2" length="20">
+			<column name="RESERVE2">
+				<comment>备用字段2</comment>
+			</column>
+		</property>
+		<property name="reserve3" length="20">
+			<column name="RESERVE3">
+				<comment>备用字段3</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

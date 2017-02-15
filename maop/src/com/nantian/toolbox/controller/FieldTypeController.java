@@ -1,0 +1,297 @@
+package com.nantian.toolbox.controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.json.JSONArray;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.nantian.check.controller.JobDesignController;
+import com.nantian.jeda.Constants;
+import com.nantian.jeda.ErrorCode;
+import com.nantian.jeda.JEDAException;
+import com.nantian.jeda.security.util.SecurityUtils;
+import com.nantian.jeda.util.RequestUtil;
+import com.nantian.toolbox.service.FieldTypeService;
+import com.nantian.toolbox.vo.FieldTypeInfoVo;
+
+@Controller
+@RequestMapping("/" + Constants.APP_PATH + "/FieldTypeController")
+public class FieldTypeController {
+	/** 日志输出 */
+	final Logger logger = LoggerFactory.getLogger(JobDesignController.class);
+
+	/** 监控领域对象名称 */
+	private static final String domain = "toolbox";
+	/** 视图前缀 */
+	private static final String viewPrefix = domain + "/fieldtype/"+"fieldtype_";
+	@Autowired
+	private FieldTypeService fieldTypeService;
+
+	@Autowired
+    private SecurityUtils securityUtils; 
+	/**
+	 * 注册Editor
+	 * 
+	 * @param binder
+	 */
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		dateFormat.setLenient(false);
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(
+				dateFormat, true));
+	}
+	/**
+	 * 返回工具分类主界面
+	 * 
+	 * @param request
+	 * @return
+	 * @throws JEDAException
+	 */
+	@RequestMapping(value = "/fieldtypeindex", method = RequestMethod.GET)
+	public String fieldtypeindex() throws JEDAException {
+		
+		return  viewPrefix+ "info";
+	}
+	/**
+	 * 返回工具分类新建
+	 * 
+	 * @param request
+	 * @return
+	 * @throws JEDAException
+	 */
+	@RequestMapping(value = "/fieldtypecreate", method = RequestMethod.GET)
+	public String fieldtypecreate() throws JEDAException {
+		
+		return  viewPrefix+ "create";
+	}
+	
+	/**
+	 * 返回工具分类查看
+	 * 
+	 * @param request
+	 * @return
+	 * @throws JEDAException
+	 */
+	@RequestMapping(value = "/fieldtypeView", method = RequestMethod.GET)
+	public String fieldtypeView() throws JEDAException {
+		
+		return  viewPrefix+ "view";
+	}
+	/**
+	 * 返回工具分类修改页面
+	 * 
+	 * @param request
+	 * @return
+	 * @throws JEDAException
+	 */
+	@RequestMapping(value = "/fieldtypeEdit", method = RequestMethod.GET)
+	public String fieldtypeEdit() throws JEDAException {
+		
+		return  viewPrefix+ "edit";
+	}
+	/**
+	 * 根据分页、排序和其他条件查询记录.
+	 * 
+	 * @param start
+	 *            起始记录行
+	 * @param limit
+	 *            查询记录数
+	 * @param sort
+	 *            排序字段
+	 * @param dir
+	 *            排序方向
+	 * @param request
+	 * @param modelMap
+	 * @return
+	 * @throws JEDAException
+	 * @throws SQLException 
+	 */
+	@RequestMapping(value = "/fieldType", method = RequestMethod.POST)
+	public @ResponseBody
+	ModelMap findServerIp(
+			@RequestParam(value = "start", required = false, defaultValue = Constants.DEFAULT_PAGE_START) Integer start,
+			@RequestParam(value = "limit", required = false, defaultValue = Constants.DEFAULT_PAGE_SIZE) Integer limit,
+			@RequestParam(value = "sort", required = false, defaultValue = Constants.DEFAULT_SORT_FIELD) String sort,
+			@RequestParam(value = "dir", required = false, defaultValue = Constants.DEFAULT_SORT_DIRECTION) String dir,
+			HttpServletRequest request, ModelMap modelMap) throws JEDAException, SQLException {
+		Map<String, Object> params = RequestUtil.getQueryMap(request,
+				fieldTypeService.fields);
+		
+		try {
+			modelMap.addAttribute("data", fieldTypeService.queryFieldTypeInfo(start,
+					limit, sort, dir, params));
+			modelMap.addAttribute("count", fieldTypeService.count(params));
+			modelMap.addAttribute("success", Boolean.TRUE);			
+		} catch (Exception e) {
+			e.printStackTrace();
+			modelMap.addAttribute("success", Boolean.FALSE);
+		}
+		return modelMap;
+	}
+
+	
+	/**
+	 * 根据工具编号，应用系统获取服务器列表
+	 * @param tool_code
+	 *          工具编号
+	 * @param appsys_code
+	 *           应用系统
+	 * @param modelMap
+	 * @return 
+	 */
+	@RequestMapping(value = "/fieldtypeView", method = RequestMethod.POST)
+	public @ResponseBody
+	ModelMap view(@RequestParam("field_id") Integer field_id,
+			ModelMap modelMap,
+			HttpServletRequest request) throws JEDAException {
+		try {
+			modelMap.addAttribute("data",fieldTypeService.queryAllfieldTypeInfo(field_id));
+			modelMap.addAttribute("success", Boolean.TRUE);
+		} catch (Exception e) {
+			e.printStackTrace();
+			modelMap.addAttribute("success", Boolean.FALSE);
+			modelMap.addAttribute("error", ErrorCode.UNCAUGHT_EXCEPTION);
+		}
+		return modelMap;
+	}
+	
+	/**
+	 * 保存修改数据
+	 * 
+	 * @param osuser 数据对象
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping(value = "/fieldtypeEdit", method = RequestMethod.POST)
+	public @ResponseBody
+	ModelMap fieldtypeCreate(@ModelAttribute FieldTypeInfoVo fieldTypeInfoVo,
+			ModelMap modelMap) throws Exception {
+		modelMap.clear();
+		String filed_modifier =securityUtils.getUser().getUsername();
+		Date startDate = new Date();
+		Timestamp updateTime = Timestamp.valueOf(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(startDate));
+		fieldTypeInfoVo.setFiled_modifier(filed_modifier);
+		fieldTypeInfoVo.setFiled_modified(updateTime);
+		fieldTypeService.saveOrUpdate(fieldTypeInfoVo);
+		modelMap.addAttribute("success", Boolean.TRUE);
+		return modelMap;
+	}
+	
+	/**
+	 * 保存新建数据
+	 * 
+	 * @param osuser 数据对象
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping(value = "/fieldtypeCreate", method = RequestMethod.POST)
+	public @ResponseBody
+	ModelMap fieldtypeEdit(@ModelAttribute FieldTypeInfoVo fieldTypeInfoVo,
+			ModelMap modelMap) throws Exception {
+		modelMap.clear();
+		String createUser =securityUtils.getUser().getUsername();
+		Date startDate = new Date();
+		Timestamp updateTime = Timestamp.valueOf(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(startDate));
+		fieldTypeInfoVo.setFiled_creator(createUser);
+		fieldTypeInfoVo.setFiled_created(updateTime);
+		fieldTypeService.save(fieldTypeInfoVo);
+		modelMap.addAttribute("success", Boolean.TRUE);
+		return modelMap;
+	}
+
+
+	/**
+	 * 批量删除服务器
+	 * 
+	 * @param tool_code
+	 *           工具编号
+	 *  @param appsys_codes         
+	 *           工具编号
+	 * @param server_ips
+	 *         服务器ip           
+	 * @param modelMap
+	 * @return
+	 * @throws JEDAException
+	 */
+	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+	public @ResponseBody
+	ModelMap delete(
+			@RequestParam(value = "field_ids", required = true) Integer[] field_ids,
+			ModelMap modelMap) throws DataIntegrityViolationException,Exception,JEDAException {	
+		
+			fieldTypeService.deleteByIds(field_ids);
+			modelMap.addAttribute("success", Boolean.TRUE);		
+		    return modelMap;
+	}
+	
+	/**
+	 * 获取专业领域分类一级信息，返回[field_type_one]
+	 * 
+	 * @param response
+	 *            响应对象
+	 * @throws IOException 
+	 * @throws SQLException 
+	 * @throws JEDAException
+	 */
+
+	@RequestMapping(value = "/getFieldTypeone", method = RequestMethod.POST)
+	public @ResponseBody void getFieldTypeone(
+			@RequestParam(value = "fieldType", required =false )String fieldType,
+			ModelMap modelMap,
+			HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException
+			{
+		
+		PrintWriter out = null;
+		Object names = fieldTypeService.getFieldTypeone(fieldType);
+		response.setCharacterEncoding("utf-8");
+		out = response.getWriter();
+		out.print(JSONArray.fromObject(names));
+	}
+	/**
+	 * 获取专业领域分类二级信息，返回[field_type_two]
+	 * 
+	 * @param response
+	 *            响应对象
+	 * @throws IOException 
+	 * @throws SQLException 
+	 * @throws JEDAException
+	 */
+
+	@RequestMapping(value = "/getFieldTypetwo", method = RequestMethod.POST)
+	public @ResponseBody void getFieldTypetwo(
+			@RequestParam(value = "fieldType", required =false )String fieldType,
+			ModelMap modelMap,
+			HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException
+			{
+		
+		PrintWriter out = null;
+		Object names = fieldTypeService.getFieldTypetwo(fieldType);
+		response.setCharacterEncoding("utf-8");
+		out = response.getWriter();
+		out.print(JSONArray.fromObject(names));
+	}
+}

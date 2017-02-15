@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.rept.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="SysResrcStstcsItemsVo" table="SYS_RESRC_STSTCS_ITEMS">
+<composite-id>
+	<key-property name="aplCode" type="java.lang.String">
+		<column name="APL_CODE">
+			<comment>应用系统编号</comment>
+		</column>
+	</key-property>
+	<key-property name="hostsType" type="java.lang.String">
+		<column name="hosts_type">
+			<comment>统计的服务器类型</comment>
+		</column>
+	</key-property>
+</composite-id>
+  <property name="activeHosts" not-null="false" type="java.lang.String">
+   <column name="ACTIVE_HOSTS">
+       	<comment>当前使用的机器群</comment>
+   </column>
+  </property>
+  <property name="hosts" not-null="true" type="java.lang.String">
+   <column name="HOSTS">
+       	<comment>统计的机器群</comment>
+   </column>
+  </property>
+  </class>
+</hibernate-mapping>

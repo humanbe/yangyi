@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.toolbox.vo">
+	<class dynamic-insert="true" dynamic-update="true" name="BusinessFieldDataInfoVo"
+		table="BUSINESS_FIELD_DATA_INFO">
+		<composite-id>
+		
+			<key-property name="event_id" type="java.lang.String">
+				<column name="EVENT_ID" not-null="true">
+				</column>
+			</key-property>
+			<key-property name="business_id" type="java.lang.Integer">
+				<column name="BUSINESS_ID" not-null="true">
+				</column>
+			</key-property>
+		</composite-id>
+		<property generated="never" lazy="false" name="appsys_code"
+			 type="java.lang.String">
+			<column name="APPSYS_CODE">
+			</column>
+		</property>
+		
+		<property generated="never" lazy="false" name="business_impact_type"
+			 type="java.lang.String">
+			<column name="BUSINESS_IMPACT_TYPE">
+			</column>
+		</property>
+		
+		<property generated="never" lazy="false" name="business_impact_level"
+			 type="java.lang.String">
+			<column name="BUSINESS_IMPACT_LEVEL">
+			</column>
+		</property>
+		
+		<property generated="never" lazy="false" name="business_impact_content"
+			 type="java.lang.String">
+			<column name="BUSINESS_IMPACT_CONTENT">
+			</column>
+		</property>
+		
+		<property generated="never" lazy="false" name="diangostic_status"
+			 type="java.lang.String">
+			<column name="DIAGNOSTIC_STATUS">
+			</column>
+		</property>
+		
+	
+	</class>
+</hibernate-mapping>

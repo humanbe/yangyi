@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.toolbox.vo">
+	<class dynamic-insert="true" dynamic-update="true" name="BusinessKeyWordRelationVo"
+		table="BUSINESS_KEY_WORD_RELATION">
+		<composite-id>
+		
+			<key-property name="business_id" type="java.lang.Integer">
+				<column name="BUSINESS_ID" not-null="true">
+				</column>
+			</key-property>
+		</composite-id>
+		
+		<property generated="never" lazy="false" name="appsys_code"
+			 type="java.lang.String">
+			<column name="APPSYS_CODE">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="alarm_key_word"
+			 type="java.lang.String">
+			<column name="ALARM_KEY_WORD">
+			</column>
+		</property>
+		
+	</class>
+</hibernate-mapping>

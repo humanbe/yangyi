@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.rept.vo">
+	<class name="BusinessPersonnelVo" table="YEWU" dynamic-update="true"
+		dynamic-insert="true">
+		<comment>业务人员信息</comment>
+		<id name="sysId" type="java.lang.String">
+			<column name="SYSID">
+				<comment>系统编号</comment>
+			</column>
+		</id>
+		<property name="sequence" type="java.lang.String">
+			<column name="XH">
+				<comment>业务人员序号</comment>
+			</column>
+		</property>
+		<property name="bpName" type="java.lang.String">
+			<column name="YWNAME">
+				<comment>业务人员名</comment>
+			</column>
+		</property>
+		<property name="department" type="java.lang.String">
+			<column name="DEPT">
+				<comment>业务主管部门</comment>
+			</column>
+		</property>
+		<property name="mobile" type="java.lang.String">
+			<column name="MOBILE">
+				<comment>移动电话</comment>
+			</column>
+		</property>
+		<property name="phone" type="java.lang.String">
+			<column name="PHONE">
+				<comment>座机</comment>
+			</column>
+		</property>
+		<property name="email" type="java.lang.String">
+			<column name="EMAIL">
+				<comment>邮件</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>
+
+

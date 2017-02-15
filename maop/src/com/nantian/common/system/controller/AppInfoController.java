@@ -1,0 +1,588 @@
+package com.nantian.common.system.controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.json.JSONArray;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.context.NoSuchMessageException;
+import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.nantian.common.system.service.AppInfoService;
+import com.nantian.common.system.vo.AppConfVo;
+import com.nantian.common.system.vo.AppInfoItsmVo;
+import com.nantian.common.system.vo.ViewAppInfoVo;
+import com.nantian.common.util.ComUtil;
+import com.nantian.component.com.DataException;
+import com.nantian.component.com.FtpCmpException;
+import com.nantian.component.log.Logger;
+import com.nantian.dply.service.CmnDetailLogService;
+import com.nantian.dply.service.CmnLogService;
+import com.nantian.dply.service.ServersSynchronousService;
+import com.nantian.jeda.Constants;
+import com.nantian.jeda.JEDAException;
+import com.nantian.jeda.security.util.SecurityUtils;
+import com.nantian.jeda.util.RequestUtil;
+
+/**
+ * 系统代码信息检索
+
+ * 
+ */
+@Controller
+@RequestMapping("/" + Constants.MANAGE_PATH + "/appInfo")
+public class AppInfoController {
+	/** 日志输出 */
+	private static Logger logger =  Logger.getLogger(AppInfoController.class);
+	
+	/** 领域对象名称 */
+	private static final String domain = "appinfo";
+	
+	/** 视图前缀 */
+	private static final String viewPrefix = "system/" + domain + "/" + domain+"_";
+	
+	@Autowired
+	private AppInfoService appInfoService;
+	
+	@Autowired
+	ServersSynchronousService serversSynchronousService;
+	
+	@Autowired
+	private SecurityUtils securityUtils;
+	/** 国际化资源 */
+	@Autowired
+	private MessageSourceAccessor messages;
+	@Autowired
+	private CmnLogService cmnLogService;
+	@Autowired
+	private CmnDetailLogService cmnDetailLogService;
+	
+	/**
+	 * 注册Editor
+	 * 
+	 * @param binder
+	 */
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		dateFormat.setLenient(false);
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(
+				dateFormat, true));
+	}
+	
+	/**
+	 * 返回应用配置管理页面
+	 * 
+	 * @return 列表页面视图名称
+	 * @throws JEDAException
+	 */
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public String index() throws JEDAException {
+		return viewPrefix + "index";
+	}
+	
+	/**
+	 * 查询应用系统及管理员分配信息列表
+	 * @param start 起始记录数
+
+	 * @param limit 限制记录数
+
+	 * @param sort 排序字段
+	 * @param dir 升降序字符串
+	 * @param modelMap 响应对象
+	 * @return
+	 * @throws JEDAException
+	 * @throws SQLException 
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/index", method = RequestMethod.POST)
+	public @ResponseBody ModelMap querySystem(
+			@RequestParam(value = "start", required = false) Integer start,
+			@RequestParam(value = "limit", required = false) Integer limit,
+			@RequestParam(value = "sort", required = false) String sort,
+			@RequestParam(value = "dir", required = false) String dir,
+			HttpServletRequest request, ModelMap modelMap) throws  SQLException {
+		    Map<String, Object> params = RequestUtil.getQueryMap(request, appInfoService.fields);
+			modelMap.addAttribute("success", Boolean.TRUE);
+			modelMap.addAttribute(Constants.DEFAULT_RECORD_MODEL_KEY, appInfoService.queryAppSystemInfo(start, limit, sort, dir, params, request));
+			modelMap.addAttribute(Constants.DEFAULT_COUNT_MODEL_KEY, (
+					(List<ViewAppInfoVo>)request.getSession().getAttribute("appInfoList4Export")).size());
+		
+		return modelMap;
+	}
+	
+	/**
+	 * 查询所有未删除的应用系统编号及名称
+	 * @param response
+	 */
+	@RequestMapping(value = "/querySystemIDAndNames", method = RequestMethod.GET)
+	public @ResponseBody void querySystemIDAndNames(HttpServletResponse response){
+		PrintWriter out = null;
+		try {
+			Object sysIDs = appInfoService.querySystemIDAndNames();
+			response.setCharacterEncoding("utf-8");
+			out = response.getWriter();
+			out.print(JSONArray.fromObject(sysIDs));
+		} catch (Exception e) {
+			e.printStackTrace();
+			// 输出异常结束日志
+		if (logger.isEnableFor("Component0999")) {
+			logger.log("Component0999", ComUtil.getCurrentMethodName());
+			}
+		}finally{
+			if(out != null){
+				out.close();
+			}
+		}
+	}
+	
+	/**
+	 * 查询所有未删除、已上线的应用系统编号及名称
+	 * @param response
+	 */
+	@RequestMapping(value = "/querySystemIDAndNames4NoDelHasAop", method = RequestMethod.GET)
+	public @ResponseBody void querySystemIDAndNames4NoDelHasAop(HttpServletResponse response){
+		PrintWriter out = null;
+		try {
+			Object sysIDs = appInfoService.querySystemIDAndNames4NoDelHasAop();
+			response.setCharacterEncoding("utf-8");
+			out = response.getWriter();
+			out.print(JSONArray.fromObject(sysIDs));
+		} catch (Exception e) {
+			e.printStackTrace();
+			// 输出异常结束日志
+		if (logger.isEnableFor("Component0999")) {
+			logger.log("Component0999", ComUtil.getCurrentMethodName());
+			}
+		}finally{
+			if(out != null){
+				out.close();
+			}
+		}
+	}
+
+	/**
+	 * 查询用户关联应用系统列表
+	 * @param response
+	 */
+	@RequestMapping(value = "/querySystemIDAndNamesByUser", method = RequestMethod.GET)
+	public @ResponseBody void querySystemIDAndNamesByUser(HttpServletResponse response){
+		PrintWriter out = null;
+		try {
+			Object sysIDs = appInfoService.querySystemIDAndNamesByUser(securityUtils.getUser().getUsername());
+			response.setCharacterEncoding("utf-8");
+			out = response.getWriter();
+			out.print(JSONArray.fromObject(sysIDs));
+		} catch (Exception e) {
+			e.printStackTrace();
+			// 输出异常结束日志
+			if (logger.isEnableFor("Component0999")) {
+				logger.log("Component0999", ComUtil.getCurrentMethodName());
+				}
+		}finally{
+			if(out != null){
+				out.close();
+			}
+		}
+	}
+	
+	/**
+	 * 查询用户关联应用系统列表_巡检
+	 * @param response
+	 */
+	@RequestMapping(value = "/querySystemIDAndNamesByUserForCheck", method = RequestMethod.GET)
+	public @ResponseBody void querySystemIDAndNamesByUserForCheck(HttpServletResponse response){
+		PrintWriter out = null;
+		try {
+			Object sysIDs = appInfoService.querySystemIDAndNamesByUserForCheck(securityUtils.getUser().getUsername());
+			response.setCharacterEncoding("utf-8");
+			out = response.getWriter();
+			out.print(JSONArray.fromObject(sysIDs));
+		} catch (Exception e) {
+			e.printStackTrace();
+			// 输出异常结束日志
+			if (logger.isEnableFor("Component0999")) {
+				logger.log("Component0999", ComUtil.getCurrentMethodName());
+				}
+		}finally{
+			if(out != null){
+				out.close();
+			}
+		}
+	}
+	
+	/**
+	 * 查询用户关联应用系统列表_工具箱
+
+	 * @param response
+	 */
+	@RequestMapping(value = "/querySystemIDAndNamesByUserForTool", method = RequestMethod.GET)
+	public @ResponseBody void querySystemIDAndNamesByUserForTool(HttpServletResponse response){
+		PrintWriter out = null;
+		try {
+			Object sysIDs = appInfoService.querySystemIDAndNamesByUserForTool(securityUtils.getUser().getUsername());
+			response.setCharacterEncoding("utf-8");
+			out = response.getWriter();
+			out.print(JSONArray.fromObject(sysIDs));
+		} catch (Exception e) {
+			e.printStackTrace();
+			// 输出异常结束日志
+			if (logger.isEnableFor("Component0999")) {
+				logger.log("Component0999", ComUtil.getCurrentMethodName());
+				}
+		}finally{
+			if(out != null){
+				out.close();
+			}
+		}
+	}
+	
+	/**
+	 * 查询用户关联应用系统列表_发布
+	 * @param response
+	 */
+	@RequestMapping(value = "/querySystemIDAndNamesByUserForDply", method = RequestMethod.GET)
+	public @ResponseBody void querySystemIDAndNamesByUserForDply(HttpServletResponse response){
+		PrintWriter out = null;
+		try {
+			Object sysIDs = appInfoService.querySystemIDAndNamesByUserForDply(securityUtils.getUser().getUsername());
+			response.setCharacterEncoding("utf-8");
+			out = response.getWriter();
+			out.print(JSONArray.fromObject(sysIDs));
+		} catch (Exception e) {
+			e.printStackTrace();
+			// 输出异常结束日志
+			if (logger.isEnableFor("Component0999")) {
+				logger.log("Component0999", ComUtil.getCurrentMethodName());
+				}
+		}finally{
+			if(out != null){
+				out.close();
+			}
+		}
+	}
+	
+	/**
+	 * 查询所有系统状态
+
+	 * @param response
+	 */
+	@RequestMapping(value = "/querySystemStatus", method = RequestMethod.GET)
+	public @ResponseBody void querySystemStatus(HttpServletResponse response){
+		PrintWriter out = null;
+		try {
+			Object status = appInfoService.querySystemStatus();
+			response.setCharacterEncoding("utf-8");
+			out = response.getWriter();
+			out.print(JSONArray.fromObject(status));
+		} catch (Exception e) {
+			e.printStackTrace();
+			// 输出异常结束日志
+		if (logger.isEnableFor("Component0999")) {
+			logger.log("Component0999", ComUtil.getCurrentMethodName());
+			}
+		}finally{
+			if(out != null){
+				out.close();
+			}
+		}
+	}
+
+	/**
+	 * 上线设定
+	 * @param appsyscd 上线应用系统
+	 * @param onlineEnvs 上线环境
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping(value = "/aopflag", method = RequestMethod.POST)
+	public @ResponseBody
+	ModelMap setAopflag(
+			@RequestParam(value = "appsyscd", required = true) String appsyscd,
+			@RequestParam(value = "onlineEnvs", required = true) String onlineEnvs,
+			HttpServletRequest request, ModelMap modelMap)
+			throws Exception  {
+		appInfoService.setAopflag(appsyscd,onlineEnvs);
+		modelMap.addAttribute("success", Boolean.TRUE);
+		return modelMap;
+	}
+	
+	/**
+	 * 下线设定
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping(value = "/aopdownline", method = RequestMethod.POST)
+	public @ResponseBody
+	ModelMap setAopDownline(@RequestParam(value = "appsyscd", required = true) String appsyscd,HttpServletRequest request, ModelMap modelMap)
+			throws Exception  {
+		appInfoService.setAopDownline(appsyscd);
+		modelMap.addAttribute("success", Boolean.TRUE);
+		return modelMap;
+	}
+	/**
+	 * 路书同步
+	 * @param modelMap 相应对象
+	 * @return
+	 * @throws Exception 
+	 * @throws NoSuchMessageException 
+	 * @throws JEDAException
+	 * @throws UnsupportedEncodingException 
+	 */
+	@RequestMapping(value = "/importsystem", method = RequestMethod.POST)
+	public @ResponseBody ModelMap sycnFromSrb(HttpServletRequest request,ModelMap modelMap) throws 
+	NoSuchMessageException, DataException,Exception, FtpCmpException{
+		//开始插入日志
+	     Long logJnlNo =cmnLogService.logPaltform(0);
+		//详细日志开始
+	   	cmnDetailLogService.saveBydetailLog(logJnlNo,0,"1");
+	   	StringBuilder errNum =new StringBuilder();
+		StringBuilder Num =new StringBuilder();
+		StringBuilder Path =new StringBuilder();
+		//读取文件信息
+		List<AppInfoItsmVo> synList=appInfoService.readAppInfoVoFromFile(logJnlNo,errNum,Num,Path,request);
+		//查询数据库中所有信息
+		List<AppInfoItsmVo> existList=serversSynchronousService.queryAppinfo();
+		//执行新建或修改
+		appInfoService.syncApp(synList,existList);
+		//日志结束更新数据
+		cmnDetailLogService.updateBydetailLogSucess(logJnlNo, 1);
+		cmnLogService.updateCMNLOGPaltFormSuccess(logJnlNo);
+		
+		modelMap.addAttribute("success", Boolean.TRUE);
+		modelMap.addAttribute("error", ComUtil.encodeCNString("同步完成"+Num+"条数据<br>格式错误"+errNum.toString()+"条数据", "utf-8"));
+		modelMap.addAttribute("errNum", errNum.toString());
+		modelMap.addAttribute("Path", ComUtil.encodeCNString(Path.toString(), "utf-8"));
+		return modelMap;
+	}
+	
+	
+	/**
+	 * 导出查询服务器结果到excel文件
+	 * @param request
+	 * @param modelMap
+	 * @return
+	 * @throws JEDAException
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/app_excel", method = RequestMethod.GET)
+	public String app_excel(HttpServletRequest request, ModelMap modelMap) throws JEDAException {
+		// 定义列显示顺序以及列标题
+		Map<String, String> columns = new LinkedHashMap<String, String>();
+		columns.put("aopFlag", messages.getMessage("property.aopFlag"));
+		columns.put("onlineEnv", "上线环境");
+		columns.put("appsysCode", "MAOP系统编码");
+		columns.put("systemcode", "ITSM系统编号");
+		columns.put("appsysName", "系统名称");
+		columns.put("eapssystemname","EAPS系统名称");
+		columns.put("englishcode", "英文简称");
+		columns.put("affectsystem","受影响系统");
+		columns.put("branch","所属分行");
+		columns.put("key", "关键度");
+		columns.put("status","状态");
+		
+		columns.put("securitylevel", "安全定级");
+		columns.put("scope", "使用范围");
+		columns.put("systempro", "系统RPO");
+		columns.put("onlinedate", "系统上线时间");
+		columns.put("outlinedate","系统下线时间");
+		columns.put("serverlevel", "服务级别");
+		columns.put("systemlevel", "系统级别");
+		columns.put("isimportant", "是否重要系统");
+		columns.put("iskey", "对外关键系统");
+		columns.put("iscoresyetem", "是否核心重要系统");
+		
+		columns.put("cbrcimportantsystem", "银监会报送重要系统");
+		columns.put("applicateoperate", "是否应用接管");
+		columns.put("outsourcingmark", "应用外包参与标志");
+		columns.put("networkdomain", "所属网络域");
+		columns.put("team", "应用团队组别");
+		columns.put("operatemanager","运维经理");
+		columns.put("applicatemanagerA", "应用管理员A");
+		columns.put("applicatemanagerB","应用管理员B");
+		columns.put("systemmanagerA","系统管理员A");
+		columns.put("systemmanagerB", "系统管理员B");
+		columns.put("networkmanagerA","网络管理员A");
+		
+		columns.put("networkmanagerB", "网络管理员B");
+		columns.put("DBA", "DBA管理员");
+		columns.put("middlewaremanager", "中间件管理员");
+		columns.put("storemanager", "存储管理员");
+		columns.put("PM", "项目负责人");
+		columns.put("businessdepartment","业务主管部门");
+		columns.put("businessmanager", "业务负责人");
+		columns.put("servicesupporter","服务支持人");
+		columns.put("istestcenter","是否测试中心接管");
+		columns.put("allottestmanager", "分配测试经理");
+		columns.put("deliverytestmanager","交付测试经理");
+		
+		columns.put("qualitymanager", "质量经理");
+		columns.put("performancetestmanag", "性能测试经理");
+		columns.put("transfercoefficient", "功能表转化系数");
+		columns.put("stage", "所处阶段");
+		columns.put("businessintroduction", "业务功能介绍");
+		columns.put("updateTime","更新时间");
+		columns.put("lastScanTime", messages.getMessage("property.lastScanTime"));
+		
+		
+		modelMap.addAttribute(Constants.DEFAULT_EXCEL_COLUMNS_MODEL_KEY, columns);
+		List<Map<String,String>> list= (List<Map<String, String>>) request.getSession().getAttribute("appInfoList4Export");
+		for(Map<String, String> allmap :list){
+			if(allmap.get("aopFlag").equals("1")||allmap.get("aopFlag").equals("已上线")){
+				allmap.put("aopFlag", "已上线");
+			}else{
+				allmap.put("aopFlag", "未上线");
+			}
+		}
+		modelMap.addAttribute(Constants.DEFAULT_RECORD_MODEL_KEY, list);
+		return "excelView";
+	}
+	
+	/**
+	 * 上线设定
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping(value = "/systemAuthApply", method = RequestMethod.POST)
+	public @ResponseBody
+	ModelMap systemAuthApply(
+			@RequestParam(value = "appsyscd", required = true) String[] appsyscd,
+			@RequestParam(value = "systemAuth", required = true) String systemAuth,
+			@RequestParam(value = "application_reasons", required = true) String application_reasons,
+
+			HttpServletRequest request, ModelMap modelMap)
+			throws Exception  {
+
+		appInfoService.saveSystemAuthApply(appsyscd,systemAuth,application_reasons);
+
+		modelMap.addAttribute("success", Boolean.TRUE);
+		return modelMap;
+	}
+	
+	/**
+	 * 根据上传XML文件，判断是否执行同步
+	 * @param response
+	 * @throws FtpCmpException 
+	 * @throws IOException 
+	 */
+	@RequestMapping(value = "/getSyncFlagForXml", method = RequestMethod.POST)
+	public @ResponseBody
+	ModelMap getSyncFlagForXml(HttpServletRequest request,ModelMap modelMap) throws FtpCmpException, IOException{
+		Object synNumbers = appInfoService.getSyncFlagForXml(request);
+		modelMap.addAttribute("synNumbers", synNumbers); 
+		modelMap.addAttribute("success", Boolean.TRUE);
+		return modelMap;
+	}
+	
+	/**
+	 * 系统上线环境配置弹出窗口
+	 * @return
+	 * @throws JEDAException
+	 */
+	@RequestMapping(value = "/confOnlineEnvWindow", method = RequestMethod.GET)
+	public String addImpactConf() throws JEDAException {
+		return viewPrefix+ "onlineEnvConf";
+	}
+
+	/**
+	 * 返回查看页面
+	 */
+	@RequestMapping(value = "/view", method = RequestMethod.GET)
+	public String viewAppInfo() {
+		return viewPrefix + "view";
+	}
+
+	/**
+	 * 根据ID查询作业相关信息
+	 */
+	@RequestMapping(value = "/view/{systemcode}", method = RequestMethod.GET)
+	public @ResponseBody
+	ModelMap viewAppInfo(@PathVariable("systemcode") String systemcode, ModelMap modelMap) throws Exception {
+		modelMap.addAttribute("data", appInfoService.getAppInfoItsmById(systemcode));
+		modelMap.addAttribute("success", Boolean.TRUE);
+		return modelMap;
+	}
+	
+	/**
+	 * 返回编辑页面
+	 */
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public String editAppInfo() {
+		return viewPrefix + "edit";
+	}
+
+	/**
+	 * 更新修改数据
+     * @param 
+	 */
+	@RequestMapping(value = "/edit/{systemcode}", method = RequestMethod.POST)
+	public @ResponseBody
+	ModelMap editAppInfo(@PathVariable("systemcode") String systemcode,
+			@ModelAttribute  AppConfVo appConfVo) throws HibernateOptimisticLockingFailureException,Exception {
+		ModelMap modelMap = new ModelMap();
+		//修改系统配置信息
+		AppConfVo appConf = (AppConfVo) appInfoService.getAppConfByItsmCode(systemcode);
+		appConf.setMaopAppsysCode(appConfVo.getMaopAppsysCode());//修改MAOP平台内部码
+		appConf.setSyncType("H") ; //同步状态:手动
+		appInfoService.updateAppConf(appConf);
+		modelMap.addAttribute("success", Boolean.TRUE);
+		return modelMap;
+	}
+	
+	
+	/**
+	 * 根据系统编号和当前用户账号获取授权环境列表
+	 * @param appsysCode MAOP平台系统内部码
+	 * @param modelMap
+	 * @return
+	 * @throws JEDAException
+	 * @throws IOException 
+	 */
+	@RequestMapping(value = "/getEnvsByAppAndUser", method = RequestMethod.GET)
+	public void getEnvsByAppAndUser(
+			@RequestParam(value = "appsysCode", required = false) String appsysCode,
+			HttpServletResponse response) throws JEDAException, IOException {
+		PrintWriter out = null;
+		Object envs = appInfoService.getEnvsByAppAndUser(appsysCode);
+	    response.setCharacterEncoding("utf-8");
+	    out = response.getWriter();
+		out.print(JSONArray.fromObject(envs));
+	}
+	
+	/**
+	 * 删除应用系统信息
+	 * @param systemcodes ITSM系统编号数组
+	 */
+	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+	public @ResponseBody
+	ModelMap deleteApps(@RequestParam(value = "systemcodes", required = true) String[] systemcodes, ModelMap modelMap)
+			throws DataIntegrityViolationException,Exception {
+		appInfoService.deleteAppByIds(systemcodes);
+		modelMap.addAttribute("success", Boolean.TRUE);
+		return modelMap;
+	}
+}

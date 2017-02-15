@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.dply.vo">
+	<class dynamic-insert="true" dynamic-update="true" name="CmnEnvServerVo"
+		table="CMN_ENV_SERVER">
+	<composite-id>
+		<key-property name="appsysCode" type="java.lang.String">
+			<column name="APPSYS_CODE">
+			</column>
+		</key-property>
+		<key-property name="environmentCode" type="java.lang.String">
+			<column name="ENVIRONMENT_CODE">
+			</column>
+		</key-property>
+		<key-property name="serverIp" type="java.lang.String">
+			<column name="SERVER_IP">
+			</column>
+		</key-property>
+	</composite-id>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.rept.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="WebMemoryVo" table="WEB_MEMORY">
+   <composite-id>
+	   <key-property name="aplCode" type="java.lang.String">
+	    <column name="APL_CODE" not-null="true">
+	    	<comment>应用系统编号</comment>
+	    </column>
+	   </key-property>
+	   <key-property name="srvCode" type="java.lang.String">
+	    <column name="SRV_CODE" not-null="true">
+	    	<comment>服务器编号(IP)</comment>
+	    </column>
+	   </key-property>
+	   <key-property name="weblogicServer" type="java.lang.String">
+	    <column name="WEBLOGIC_SERVER" not-null="true">
+	    	<comment>WebLogic服务名称</comment>
+	    </column>
+	   </key-property>
+	   <key-property name="monitorDate" type="java.lang.String">
+	    <column name="MONITOR_DATE" not-null="true">
+	    	<comment>监控日期</comment>
+	    </column>
+	   </key-property>
+	   <key-property name="monitorTime" type="java.lang.String">
+	    <column name="MONITOR_TIME" not-null="true">
+	    	<comment>监控时间点</comment>
+	    </column>
+	   </key-property>
+	   <key-property name="weblogicPort" type="java.lang.String">
+	    <column name="WEBLOGIC_PORT" not-null="true">
+	    	<comment>weblogic端口</comment>
+	    </column>
+	   </key-property>
+   </composite-id>
+   <property name="totalMemory" generated="never" not-null="false" type="java.lang.String">
+   	<column name="TOTAL_MEMORY">
+   		<comment>总内存量</comment>
+   	</column>
+   </property>
+   <property name="idleMemory" generated="never" not-null="false" type="java.lang.String">
+   	<column name="IDLE_MEMORY">
+   		<comment>空闲内存量</comment>
+   	</column>
+   </property>
+   <property name="usedMemory" generated="never" not-null="false" type="java.lang.String">
+   	<column name="USED_MEMORY">
+   		<comment>使用内存量</comment>
+   	</column>
+   </property>
+   <property name="memoryRate" generated="never" not-null="false" type="java.lang.String">
+   	<column name="MEMORY_RATE">
+   		<comment>内存使用率</comment>
+   	</column>
+   </property>
+  </class>
+</hibernate-mapping>

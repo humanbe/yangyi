@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.rept.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="RptCountitemLevelConfVo" table="RPT_COUNTITEM_LEVEL_CONF">
+  <composite-id>
+    <key-property name="aplCode" type="java.lang.String">
+    <column name="APL_CODE" not-null="true">
+    	<comment>应用系统编号</comment>
+    </column>
+    </key-property>
+    <key-property name="count_item_level1" type="java.lang.String">
+    <column name="COUNT_ITEM_LEVEL1" not-null="true">
+    	<comment>科目一级分类</comment>
+    </column>
+   </key-property>
+   <key-property name="count_item_level2" type="java.lang.String">
+    <column name="COUNT_ITEM_LEVEL2" not-null="true">
+    	<comment>科目二级分类</comment>
+    </column>
+   </key-property>
+   <key-property name="count_item_level3" type="java.lang.String">
+    <column name="COUNT_ITEM_LEVEL3" not-null="true">
+    	<comment>科目三级分类</comment>
+    </column>
+   </key-property>
+  </composite-id>
+  <property name="comments" generated="never" not-null="false" type="java.lang.String">
+   <column name="COMMENTS">
+       	<comment>备注</comment>
+   </column>
+  </property>
+  <property name="count_item_creator" generated="never" not-null="false" type="java.lang.String">
+   <column name="COUNT_ITEM_CREATOR">
+       	<comment>创建人</comment>
+   </column>
+  </property>
+  <property name="count_item_created" generated="never" not-null="false" type="java.sql.Timestamp">
+   <column name="COUNT_ITEM_CREATED">
+       	<comment>创建时间</comment>
+   </column>
+  </property>
+  </class>
+</hibernate-mapping>

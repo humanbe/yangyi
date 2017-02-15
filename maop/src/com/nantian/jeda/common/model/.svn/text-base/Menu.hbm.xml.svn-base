@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.jeda.common.model">
+	<class name="Menu" table="JEDA_MENU" dynamic-update="true" dynamic-insert="true">
+		<comment>菜单表</comment>
+		<id name="id" length="50">
+			<column name="MENU_ID">
+				<comment>主健</comment>
+			</column>
+		</id>
+		<version name="version" type="integer">
+			<column name="MENU_VERSION">
+				<comment>菜单数据版本</comment>
+			</column>
+		</version>
+		<property name="name">
+			<column name="MENU_NAME" length="100">
+				<comment>菜单名称</comment>
+			</column>
+		</property>
+		<property name="url">
+			<column name="MENU_URL" length="200">
+				<comment>菜单链接</comment>
+			</column>
+		</property>
+		<property name="description">
+			<column name="MENU_DESCRIPTION" length="500">
+				<comment>菜单描述</comment>
+			</column>
+		</property>
+		<property name="icon">
+			<column name="MENU_ICON" length="50">
+				<comment>菜单图标</comment>
+			</column>
+		</property>
+		<property name="order" type="integer">
+			<column name="MENU_ORDER">
+				<comment>菜单排序</comment>
+			</column>
+		</property>
+		<property name="openInHome" type="boolean">
+			<column name="MENU_OPEN_IN_HOME">
+				<comment>是否主页中打开</comment>
+			</column>
+		</property>
+		<property name="iframe" type="boolean">
+			<column name="MENU_IFRAME">
+				<comment>使用iFrame标识</comment>
+			</column>
+		</property>
+		<set name="roles" table="JEDA_ROLE_MENU">
+			<key column="MENU_ID" />
+			<many-to-many class="Role">
+				<column name="ROLE_ID">
+					<comment>角色ID</comment>
+				</column>
+			</many-to-many>
+		</set>
+		<many-to-one name="parent" fetch="join" lazy="false">
+			<column name="PARENT_MENU_ID">
+				<comment>父级ID</comment>
+			</column>
+		</many-to-one>
+		<set name="children">
+			<key column="PARENT_MENU_ID" />
+			<one-to-many class="Menu" />
+		</set>
+		<many-to-one name="creator" class="User" fetch="join" update="false">
+			<column name="MENU_CREATOR">
+				<comment>菜单创建者</comment>
+			</column>
+		</many-to-one>
+		<property name="created" type="date" update="false">
+			<column name="MENU_CREATED">
+				<comment>菜单创建时间</comment>
+			</column>
+		</property>
+		<many-to-one name="modifier" class="User" fetch="join">
+			<column name="MENU_MODIFIER">
+				<comment>菜单修改者</comment>
+			</column>
+		</many-to-one>
+		<property name="modified" type="date">
+			<column name="MENU_MODIFIED">
+				<comment>菜单修改时间</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

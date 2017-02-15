@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.rept.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="TypicalCapaAnaVo" table="TYPICAL_CAPA_ANA">
+  	<comment>典型容量事件分析</comment>
+	<id name="sysseqnum" type="java.lang.String">
+		<column name="SYSSEQNUM">
+			<comment>流水号</comment>
+		</column>
+	</id>
+  <property name="appSysCd" not-null="false" type="java.lang.String">
+   <column name="APPSYSCD">
+       	<comment>受影响系统</comment>
+   </column>
+  </property>
+  <property name="errorTime" not-null="false" type="java.lang.String">
+   <column name="ERROR_TIME">
+       	<comment>故障发生时间</comment>
+   </column>
+  </property>
+  <property name="riskType" not-null="false" type="java.lang.String">
+   <column name="RISK_TYPE">
+       	<comment>风险分类</comment>
+   </column>
+  </property>
+  <property name="workorderSubject" not-null="false" type="java.lang.String">
+   <column name="WORKORDER_SUBJECT">
+       	<comment>工单主题</comment>
+   </column>
+  </property>
+  <property name="caseCause" not-null="false" type="java.lang.String">
+   <column name="CASE_CAUSE">
+       	<comment>事件原因</comment>
+   </column>
+  </property>
+  <property name="handleMethod" not-null="false" type="java.lang.String">
+   <column name="HANDLE_METHOD">
+       	<comment>应对方案</comment>
+   </column>
+  </property>
+  <property name="optimizePlan" not-null="false" type="java.lang.String">
+   <column name="OPTIMIZE_PLAN">
+       	<comment>优化计划</comment>
+   </column>
+  </property>
+  <property name="caseAna" not-null="false" type="java.lang.String">
+   <column name="CASE_ANA">
+       	<comment>容量事件分析</comment>
+   </column>
+  </property>
+  </class>
+</hibernate-mapping>

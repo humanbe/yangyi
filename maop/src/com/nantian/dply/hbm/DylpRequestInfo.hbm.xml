@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.dply.vo">
+	<class name="DplyRequestInfoVo" table="DPLY_REQUEST_INFO" dynamic-update="true"
+		dynamic-insert="true">
+		<comment>table</comment>
+		<composite-id>
+		   <key-property name="appSysCode" type="java.lang.String">
+		    <column name="APPSYS_CODE" not-null="true">
+		    	<comment>应用系统</comment>
+		    </column>
+		   </key-property>
+		   <key-property name="requestCode" type="java.lang.String">
+		    <column name="REQUEST_CODE" not-null="true">
+		    	<comment>请求编号</comment>
+		    </column>
+		   </key-property>
+		   <key-property name="environment" type="java.lang.String">
+		    <column name="ENVIRONMENT" not-null="true">
+		    	<comment>环境(开发、测试、验证、生产)</comment>
+		    </column>
+		   </key-property>
+	  	</composite-id>
+		<property name="planDeployDate" type="java.lang.String">
+			<column name="PLAN_DEPLOY_DATE">
+				<comment>计划发布日期(YYYYMMDD)</comment>
+			</column>
+		</property>
+		<property name="deployCode" type="java.lang.String">
+			<column name="DEPLOY_CODE">
+				<comment>投产编号（EAPS编号）</comment>
+			</column>
+		</property>
+		<property name="requestName" type="java.lang.String">
+			<column name="REQUEST_NAME">
+				<comment>请求名称</comment>
+			</column>
+		</property>
+		<!-- <property name="environment" type="java.lang.String">
+			<column name="ENVIRONMENT">
+				<comment>环境(开发、测试、验证、生产)</comment>
+			</column>
+		</property> -->
+		<property name="describe" type="java.lang.String">
+			<column name="DESCRIBE">
+				<comment>描述</comment>
+			</column>
+		</property>
+		<property name="trunSwitch" type="java.lang.String">
+			<column name="TURN_SWITCH">
+				<comment>启停开关.0:关闭、1：打开</comment>
+			</column>
+		</property>
+		<property name="execStatus" type="java.lang.String">
+			<column name="EXEC_STATUS">
+				<comment>执行状态.1：未发布、2：等待中、3：发布中、4：正常结束、5：异常结束</comment>
+			</column>
+		</property>
+		<property name="planStartTime" type="java.lang.String">
+			<column name="PLAN_START_TIME">
+				<comment>计划开始时间(HHMM)</comment>
+			</column>
+		</property>
+		<property name="planEndTime" type="java.lang.String">
+			<column name="PLAN_END_TIME">
+				<comment>计划结束时间(HHMM)</comment>
+			</column>
+		</property>
+		<property name="realStartDate" type="java.sql.Timestamp">
+			<column name="REAL_START_DATE">
+				<comment>实际开始时间</comment>
+			</column>
+		</property>
+		<property name="realEndDate" type="java.sql.Timestamp">
+			<column name="REAL_END_DATE">
+				<comment>实际结束时间</comment>
+			</column>
+		</property>
+		<property name="exportUser" type="java.lang.String">
+			<column name="EXPORT_USER">
+				<comment>导出用户</comment>
+			</column>
+		</property>
+		<property name="importUser" type="java.lang.String">
+			<column name="IMPORT_USER">
+				<comment>导入用户</comment>
+			</column>
+		</property>
+		<property name="autostart" type="java.lang.String">
+			<column name="AUTOSTART">
+				<comment>是否自动调起</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>
+
+

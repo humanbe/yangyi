@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<!-- 定义属性资源文件 -->
+	<context:property-placeholder location="classpath:application.properties,classpath:resources/component_conf.properties" ignore-unresolvable="true"/>
+	
+	<!-- 定义国际化资源文件 -->
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource" p:fallbackToSystemLocale="false" >
+		<property name="basenames">
+			<list>
+				<value>classpath:com/nantian/jeda/messages</value>
+				<value>classpath:com/nantian/jeda/config/messages</value>
+				<value>classpath:com/nantian/jeda/security/messages</value>
+				<value>classpath:com/nantian/demo/messages</value>
+				<value>classpath:com/nantian/rept/messages</value>
+				<value>classpath:resources/messages</value>
+				<value>classpath:resources/exception_message</value>
+				<value>classpath:resources/component_log</value>
+				<value>classpath:resources/component_conf</value>
+				<value>classpath:application</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean  id="message" class="org.springframework.context.support.MessageSourceAccessor" >
+		<constructor-arg ref="messageSource"/>
+	</bean>
+	
+	<!--  优先定义上下文Bean促使容器优先创建否则linux下自动扫描时无法创建，解决生产环境空指针问题--> 
+  	<bean id="MyApplicationContextUtil" class="com.nantian.common.util.MyApplicationContextUtil" /> 
+
+	<!-- <task:annotation-driven proxy-target-class="true"  executor="executor"/>
+		<task:executor queue-capacity="25" id="executor" pool-size="10"/>
+	<bean id="asyncher" class="com.nantian.toolbox.service.ToolBoxService.Asyncher"/> -->
+	
+	<!-- 线程池配置  --> 
+	<bean id="taskExcutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="45"/>
+		<property name="maxPoolSize" value="50"/>
+		<property name="queueCapacity" value="100"/>
+	</bean>
+
+	<!-- 定义Bean路径-->
+	<context:component-scan base-package="com.nantian">
+		<context:exclude-filter expression="org.springframework.stereotype.Controller" type="annotation" />
+	</context:component-scan>
+	
+	<!-- JMS监听设置 
+	<bean id="messageListener" class="com.nantian.component.mdb.ComponentMdb"></bean>
+	<bean id="listenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<property name="connectionFactory" ref="connectionFactory"></property>
+		<property name="messageListener" ref="messageListener"></property>
+		<property name="destination" ref="destination"></property>
+		<property name="maxConcurrentConsumers" value="10"></property>
+	</bean> -->
+	<!-- JMS监听设置+WEBLOGIC JMS JNDI资源（连接工厂）设定 
+	<bean id="connectionFactory" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName">
+			<value>${jms.ConnectionFactory}</value>
+		</property>
+		<property name="resourceRef">
+			<value>false</value>
+		</property>
+		<property name="jndiEnvironment">
+			<props>
+				<prop key="java.naming.provider.url">${java.naming.provider.url}</prop>
+				<prop key="java.naming.factory.initial">${java.naming.factory.initial}</prop>
+				<prop key="java.naming.security.principal">${java.naming.security.principal}</prop>
+				<prop key="java.naming.security.credentials">${java.naming.security.credentials}</prop>
+			</props>
+		</property>
+	</bean> -->
+	<!-- JMS监听设置+WEBLOGIC JMS JNDI资源（队列）设定
+	<bean id="destination" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName">
+			<value>${jms.queueJndi001}</value>
+		</property>
+		<property name="resourceRef">
+			<value>false</value>
+		</property>
+		<property name="jndiEnvironment">
+			<props>
+				<prop key="java.naming.provider.url">${java.naming.provider.url}</prop>
+				<prop key="java.naming.factory.initial">${java.naming.factory.initial}</prop>
+				<prop key="java.naming.security.principal">${java.naming.security.principal}</prop>
+				<prop key="java.naming.security.credentials">${java.naming.security.credentials}</prop>
+			</props>
+		</property>
+	</bean> -->
+	
+	<!-- 定义数据源 -->
+	<jee:jndi-lookup id="datasource" jndi-name="${datasource}" />
+	<jee:jndi-lookup id="datasource_brpm" jndi-name="${datasource_brpm}" />
+	<jee:jndi-lookup id="datasource_maoprpt" jndi-name="${datasource_maoprpt}" />
+	<jee:jndi-lookup id="datasource_smrpt" jndi-name="${datasource_smrpt}" />
+	
+	<!-- 定义LOB类型处理类 -->
+	<bean id="lobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler" lazy-init="true" />
+
+	<!-- 定义HIBERNATE参数 -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean" p:dataSource-ref="datasource" p:lobHandler-ref="lobHandler">
+		<property name="configLocations">
+			<list>
+				<value>classpath*:/hibernate.cfg.xml</value>
+			</list>
+		</property>
+		<property name="mappingLocations">
+			<list>
+				<value>classpath:com/nantian/**/*.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.temp.use_jdbc_metadata_defaults">false</prop>
+			</props>
+		</property>
+		<property name="eventListeners">
+			<map>
+				<entry key="merge">
+					<bean
+						class="org.springframework.orm.hibernate3.support.IdTransferringMergeEventListener" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+	<!-- 定义BRPM HIBERNATE参数 -->
+	<bean id="sessionFactoryBrpm" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean" p:dataSource-ref="datasource_brpm" p:lobHandler-ref="lobHandler">
+		<property name="configLocations">
+			<list>
+				<value>classpath*:/hibernate.cfg.xml</value>
+			</list>
+		</property>
+		<property name="mappingLocations">
+			<list>
+				<value>classpath:com/nantian/**/*.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.temp.use_jdbc_metadata_defaults">false</prop>
+			</props>
+		</property>
+		<property name="eventListeners">
+			<map>
+				<entry key="merge">
+					<bean
+						class="org.springframework.orm.hibernate3.support.IdTransferringMergeEventListener" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+		<!-- 定义BRPM HIBERNATE参数 -->
+	<bean id="sessionFactoryMaopRpt" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean" p:dataSource-ref="datasource_maoprpt" p:lobHandler-ref="lobHandler">
+		<property name="configLocations">
+			<list>
+				<value>classpath*:/hibernate.cfg.xml</value>
+			</list>
+		</property>
+		<property name="mappingLocations">
+			<list>
+				<value>classpath:com/nantian/**/*.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.temp.use_jdbc_metadata_defaults">false</prop>
+			</props>
+		</property>
+		<property name="eventListeners">
+			<map>
+				<entry key="merge">
+					<bean
+						class="org.springframework.orm.hibernate3.support.IdTransferringMergeEventListener" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<!-- 定义日报HIBERNATE参数 -->
+	<bean id="sessionFactorySmrpt" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean" p:dataSource-ref="datasource_smrpt" p:lobHandler-ref="lobHandler">
+		<property name="configLocations">
+			<list>
+				<value>classpath*:/hibernate.cfg.xml</value>
+			</list>
+		</property>
+		<property name="mappingLocations">
+			<list>
+				<value>classpath:com/nantian/smrpt/**/*.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.temp.use_jdbc_metadata_defaults">false</prop>
+			</props>
+		</property>
+		<property name="eventListeners">
+			<map>
+				<entry key="merge">
+					<bean
+						class="org.springframework.orm.hibernate3.support.IdTransferringMergeEventListener" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+	<!-- 定义事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+		<qualifier value="dply"/>
+	</bean>
+	<bean id="transactionManagerBrpm" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactoryBrpm" />
+		<qualifier value="brpm"/>
+	</bean>
+	<bean id="transactionManagerMaopRpt" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactoryMaopRpt" />
+		<qualifier value="maoprpt"/>
+	</bean>
+	<bean id="transactionManagerSmrpt" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactorySmrpt" />
+		<qualifier value="smrpt"/>
+	</bean>
+	
+	<!-- 使用annotation事务管理 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<tx:annotation-driven transaction-manager="transactionManagerBrpm" />
+	<tx:annotation-driven transaction-manager="transactionManagerMaopRpt" />
+	<tx:annotation-driven transaction-manager="transactionManagerSmrpt" />
+	
+	<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+	
+	<!-- 上传组件 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+	
+	<task:annotation-driven/>
+	
+	<aop:config proxy-target-class="true">
+		<aop:pointcut id="loggerPointcut" expression="execution(* com.nantian.check.service..*Service.*(..)) ||
+														execution(* com.nantian.common.system.service..*Service.*(..)) ||
+														execution(* com.nantian.dply.service..*Service.*(..)) ||
+														execution(* com.nantian.toolbox.service..*Service.*(..))"/>
+		<aop:advisor advice-ref="loggerAdvisor" pointcut-ref="loggerPointcut" />
+		<aop:advisor advice-ref="exceptionAdvisor" pointcut-ref="loggerPointcut" />
+	</aop:config>
+	
+	<bean id="loggerAdvisor" class="com.nantian.common.filter.AroundAdvisor"/>
+	<bean id="exceptionAdvisor" class="com.nantian.common.filter.ExceptionAdvisor"/>
+	
+ 	<bean id="patrolJobTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+ 		<property name="targetObject">
+ 			<ref bean="petrolService"/>
+ 		</property>
+ 		<property name="targetMethod">
+ 			<value>patrolLogging</value>
+ 		</property>
+ 	</bean>
+ 	<bean id="patrolSchedule" class="org.springframework.scheduling.quartz.CronTriggerBean">
+ 		<property name="jobDetail">
+ 			<ref bean="patrolJobTask"/>
+ 		</property>
+ 		<property name="cronExpression">
+			<value>0 0/5 0-23 * * ?</value>
+		</property>
+ 	</bean> 
+ 	
+ 	<!-- 系统巡检执行结果数据同步  begin -->
+ 	<bean id="CheckDataSynService" class="com.nantian.check.service.CheckDataSynService"></bean>
+ 	<bean id="checkJobTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+ 		<property name="targetObject">
+ 			<ref bean="CheckDataSynService"/>
+ 		</property>
+ 		<property name="targetMethod">
+ 			<value>synCheckResultData</value>
+ 		</property>
+ 	</bean>
+ 	<bean id="checkSchedule" class="org.springframework.scheduling.quartz.CronTriggerBean">
+ 		<property name="jobDetail">
+ 			<ref bean="checkJobTask"/>
+ 		</property>
+ 		<property name="cronExpression">
+			<value>0 0 6 * * ?</value>
+		</property>
+ 	</bean>  
+ 	<!-- 系统巡检执行结果数据同步  end -->
+ 	
+ 	<!-- 应用巡检报告分析数据同步  begin -->
+ 	<bean id="CheckReportService" class="com.nantian.check.service.CheckReportService"></bean>
+ 	<bean id="checkRptAnalyseTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+ 		<property name="targetObject">
+ 			<ref bean="CheckReportService"/>
+ 		</property>
+ 		<property name="targetMethod">
+ 			<value>checkDataSyn</value>
+ 		</property>
+ 	</bean>
+ 	<bean id="checkRptAnalyseSchedule" class="org.springframework.scheduling.quartz.CronTriggerBean">
+ 		<property name="jobDetail">
+ 			<ref bean="checkRptAnalyseTask"/>
+ 		</property>
+ 		<property name="cronExpression">
+			<value>0 0 7 * * ?</value>
+		</property>
+ 	</bean>  
+ 	<!-- 应用巡检报告分析数据同步  end -->
+ 	
+ 	<!-- 定时同步应用系统信息  begin  -->
+ 	<bean id="AppInfoService" class="com.nantian.common.system.service.AppInfoService"></bean>
+ 	<bean id="autoSynAppInfoTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+ 		<property name="targetObject">
+ 			<ref bean="AppInfoService"/>
+ 		</property>
+ 		<property name="targetMethod">
+ 			<value>autoSynAppInfo</value>
+ 		</property>
+ 	</bean>
+ 	<bean id="autoSynAppInfoSchedule" class="org.springframework.scheduling.quartz.CronTriggerBean">
+ 		<property name="jobDetail">
+ 			<ref bean="autoSynAppInfoTask"/>
+ 		</property>
+ 		<property name="cronExpression">
+			<value>0 0 8 * * ?</value>
+		</property>
+ 	</bean>  
+ 	<!--  定时同步应用系统信息  end -->
+ 	
+ 	<!-- 定时同步服务器信息  begin  -->
+ 	<bean id="ServersSynchronousService" class="com.nantian.dply.service.ServersSynchronousService"></bean>
+ 	<bean id="autoSynServerInfoTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+ 		<property name="targetObject">
+ 			<ref bean="ServersSynchronousService"/>
+ 		</property>
+ 		<property name="targetMethod">
+ 			<value>autoSynServerInfo</value>
+ 		</property>
+ 	</bean>
+ 	<bean id="autoSynServerInfoSchedule" class="org.springframework.scheduling.quartz.CronTriggerBean">
+ 		<property name="jobDetail">
+ 			<ref bean="autoSynServerInfoTask"/>
+ 		</property>
+ 		<property name="cronExpression">
+			<value>0 0 8 * * ?</value>
+		</property>
+ 	</bean>  
+ 	<!--  定时同步服务器信息  end -->
+ 	
+ 	<!-- 定时同步操作用户信息  begin  -->
+ 	<bean id="autoSynOsUserTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+ 		<property name="targetObject">
+ 			<ref bean="ServersSynchronousService"/>
+ 		</property>
+ 		<property name="targetMethod">
+ 			<value>autoSynOsUser</value>
+ 		</property>
+ 	</bean>
+ 	<bean id="autoSynOsUserSchedule" class="org.springframework.scheduling.quartz.CronTriggerBean">
+ 		<property name="jobDetail">
+ 			<ref bean="autoSynOsUserTask"/>
+ 		</property>
+ 		<property name="cronExpression">
+			<value>0 0 8 * * ?</value>
+		</property>
+ 	</bean>  
+ 	<!--   定时同步操作用户信息  end -->
+ 	
+ 	<!-- 发布请求应急备份  begin -->
+ 	<bean id="DplyRequestInfoService" class="com.nantian.dply.service.DplyRequestInfoService"></bean>
+ 	<bean id="requestEmergencyBakTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+ 		<property name="targetObject">
+ 			<ref bean="DplyRequestInfoService"/>
+ 		</property>
+ 		<property name="targetMethod">
+ 			<value>back</value>
+ 		</property>
+ 	</bean>
+ 	<bean id="requestEmergencyBakSchedule" class="org.springframework.scheduling.quartz.CronTriggerBean">
+ 		<property name="jobDetail">
+ 			<ref bean="requestEmergencyBakTask"/>
+ 		</property>
+ 		<property name="cronExpression">
+			<value>0 0 12 * * ?</value>
+		</property>
+ 	</bean>  
+ 	<!--发布请求应急备份   end -->
+ 	
+ 	
+ 	
+ 	<bean id="patrolBrpmJobTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+ 		<property name="targetObject">
+ 			<ref bean="petrolService"/>
+ 		</property>
+ 		<property name="targetMethod">
+ 			<value>patrolBrpmReq</value>
+ 		</property>
+ 	</bean>
+ 	<bean id="patrolBrpmSchedule" class="org.springframework.scheduling.quartz.CronTriggerBean">
+ 		<property name="jobDetail">
+ 			<ref bean="patrolBrpmJobTask"/>
+ 		</property>
+ 		<property name="cronExpression">
+			<value>0 0/60 * * * ?</value>
+		</property>
+ 	</bean> 
+ 	
+ 	<bean id="startQuertz" lazy-init="false" autowire="no"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="patrolSchedule" />
+				<ref bean="checkSchedule" />
+				<ref bean="checkRptAnalyseSchedule" />
+				<ref bean="patrolBrpmSchedule"/>
+				<ref bean="requestEmergencyBakSchedule"/>
+				<ref bean="autoSynAppInfoSchedule"/>       <!--定时同步应用系统信息 -->
+				<ref bean="autoSynServerInfoSchedule"/>    <!--定时同步服务器信息 -->
+				<ref bean="autoSynOsUserSchedule"/>        <!--定时同步操作用户信息 -->
+			</list>
+		</property>
+	</bean>
+	
+	<!-- xfire -->
+	<bean id="iamWSServiceBean" class="com.nantian.common.webservice.impl.IamWSService"/>
+	<bean id="toolWSServiceBean" class="com.nantian.common.webservice.impl.ToolWSService"/>
+	<bean id="batchWSServiceBean" class="com.nantian.common.webservice.impl.BatchWSService"/>
+ 	<import resource="classpath:xfire-servlet.xml" />
+	
+</beans>

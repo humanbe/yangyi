@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.check.vo">
+	<class name="CheckJobLogInfoVo" table="CHECK_JOB_LOG_INFO" dynamic-update="true"
+		dynamic-insert="true">
+    <composite-id>
+		<key-property name="guId" type="java.lang.String">
+			<column name="GU_ID">
+				<comment>系统代码</comment>
+			</column>
+		</key-property>
+	</composite-id>
+		<property name="jobRunId" type="java.lang.String">
+			<column name="JOB_RUN_ID">
+			</column>
+		</property>
+		<property name="scriptName" type="java.lang.String">
+			<column name="SCRIPT_NAME">
+			</column>
+		</property>
+		<property name="checkJobName" type="java.lang.String">
+			<column name="CHECK_JOB_NAME">
+			</column>
+		</property>
+		<property name="jobRunDbkey" type="java.lang.String">
+			<column name="JOB_RUN_DBKEY">
+			</column>
+		</property>
+		<property name="jobDbkey" type="java.lang.String">
+			<column name="JOB_DBKEY">
+			</column>
+		</property>
+		<property name="checkJobPath" type="java.lang.String">
+			<column name="CHECK_JOB_PATH">
+			</column>
+		</property>
+		<property name="checkJobStatus" type="java.lang.String">
+			<column name="CHECK_JOB_STATUS">
+			</column>
+		</property>
+		<property name="checkJobExecuter" type="java.lang.String">
+			<column name="CHECK_JOB_EXECUTER">
+			</column>
+		</property>
+		<property name="jobStartTime" type="java.sql.Timestamp">
+			<column name="JOB_START_TIME">
+			</column>
+		</property>
+		<property name="jobEndTime" type="java.sql.Timestamp">
+			<column name="JOB_END_TIME">
+			</column>
+		</property>
+		<property name="jobLogPath" type="java.lang.String">
+			<column name="JOB_LOG_PATH">
+			</column>
+		</property>	
+		<property name="jobType" type="java.lang.String">
+			<column name="JOB_TYPE">
+			</column>
+		</property>			
+	</class>
+</hibernate-mapping>
+
+

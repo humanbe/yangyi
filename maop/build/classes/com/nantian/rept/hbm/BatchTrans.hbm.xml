@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.rept.vo">
+	<class dynamic-insert="true" dynamic-update="true" name="BatchTransVo" table="BATCH_TRANS">
+		<composite-id>
+			<key-property name="aplCode" type="java.lang.String">
+				<column name="APL_CODE">
+					<comment>应用系统编号</comment>
+				</column>
+			</key-property>
+			<key-property name="batchDate" type="java.lang.String">
+				<column name="BATCH_DATE">
+					<comment>交易日期</comment>
+				</column>
+			</key-property>
+			<key-property name="batchName" type="java.lang.String">
+				<column name="BATCH_NAME">
+					<comment>批量名称</comment>
+				</column>
+			</key-property>
+		</composite-id>
+		<property name="batchStartTime" generated="never" not-null="false" type="java.lang.String">
+			<column name="BATCH_START_TIME">
+				<comment>批量开始时间</comment>
+			</column>
+		</property>
+		<property name="batchEndTime" generated="never" not-null="false" type="java.lang.String">
+			<column name="BATCH_END_TIME">
+				<comment>批量结束时间</comment>
+			</column>
+		</property>
+		<property name="batchExeTime" generated="never" not-null="false" type="java.lang.String">
+			<column name="BATCH_EXE_TIME">
+				<comment>批量执行时间</comment>
+			</column>
+		</property>
+		<property name="endFlag" generated="never" not-null="false" type="java.lang.String">
+			<column name="END_FLG">
+				<comment>正常结束标志</comment>
+			</column>
+		</property>
+		<property name="comments" generated="never" not-null="false" type="java.lang.String">
+			<column name="COMMENTS">
+				<comment>备注</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

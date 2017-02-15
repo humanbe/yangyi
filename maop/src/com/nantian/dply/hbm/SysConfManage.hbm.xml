@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.dply.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="SysConfManageVo" table="SYS_CONF_MANAGE">
+  <composite-id>
+			<key-property name="sys_conf_id" type="java.lang.String">
+				<column name="SYS_CONF_ID" not-null="true">
+				</column>
+			</key-property>
+ </composite-id>
+  <property generated="never" lazy="false" name="sys_conf_code" type="java.lang.String">
+   <column name="SYS_CONF_CODE" unique="true">
+    <comment>系统配置编码</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="sys_conf_name" type="java.lang.String">
+   <column name="SYS_CONF_NAME">
+    <comment>系统配置名称</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="sys_conf_value" type="java.lang.String">
+   <column name="SYS_CONF_VALUE">
+    <comment>系统配置值</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="sys_conf_type" type="java.lang.String">
+   <column name="SYS_CONF_TYPE">
+    <comment>系统配置类型</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="sys_conf_desc" type="java.lang.String">
+   <column name="SYS_CONF_DESC">
+    <comment>系统配置描述</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="creator" type="java.lang.String">
+   <column name="CREATOR">
+    <comment>创建人</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="modifier" type="java.lang.String">
+   <column name="MODIFIER">
+    <comment>修改人</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="created_time" type="java.sql.Timestamp">
+   <column name="CREATED_TIME">
+    <comment>创建时间</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="modifiled_time" type="java.sql.Timestamp">
+   <column name="MODIFIED_TIME">
+    <comment>修改时间</comment>
+   </column>
+  </property>
+ </class>
+</hibernate-mapping>

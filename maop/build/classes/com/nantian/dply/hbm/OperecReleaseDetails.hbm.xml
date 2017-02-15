@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.dply.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="OperecReleaseDetailsVo" table="DPLY_OOPEREC_RELEASE_DETAILS">
+  <composite-id>
+   <key-property name="functionId" type="java.lang.String">
+    <column name="FUNCTION_ID" not-null="true">
+    	<comment>功能ID</comment>
+    </column>
+   </key-property>
+   <key-property name="execYmdhmsf" type="java.lang.String">
+    <column name="EXEC_YMDHMSF" not-null="true">
+    	<comment>执行年月日时分毫秒</comment>
+    </column>
+   </key-property>
+   <key-property name="procomInputFile" type="java.lang.String">
+    <column name="PROCOM_INPUT_FILE" not-null="true">
+    	<comment>处理完成输入文件</comment>
+    </column>
+   </key-property>
+   <key-property name="jobCode" type="java.lang.String">
+    <column name="JOB_CODE" not-null="true">
+    	<comment>任务编号</comment>
+    </column>
+   </key-property>
+   <key-property name="execStep" type="java.lang.String">
+    <column name="EXEC_STEP" not-null="true">
+    	<comment>执行步骤</comment>
+    </column>
+   </key-property>
+  </composite-id>
+  <property name="resourceId" generated="never" lazy="false" not-null="false" type="java.lang.String">
+   <column name="RESOURCE_ID">
+       	<comment>资源ID</comment>
+   </column>
+  </property>
+  <property name="resourcePath" generated="never" lazy="false" not-null="false" type="java.lang.String">
+   <column name="RESOURCE_PATH">
+       	<comment>资源路径</comment>
+   </column>
+  </property>
+  <property name="targetIp" generated="never" lazy="false" not-null="false" type="java.lang.String">
+   <column name="TARGET_IP">
+       	<comment>操作对象IP地址</comment>
+   </column>
+  </property>
+  <property name="targetEnvId" generated="never" lazy="false" not-null="false" type="java.lang.String">
+   <column name="TARGET_ENV_ID">
+       	<comment>操作对象环境ID</comment>
+   </column>
+  </property>
+  <property name="execResultStatus" generated="never" lazy="false" type="java.lang.String">
+   <column name="EXEC_RESULT_STATUS">
+       	<comment>执行结果状态</comment>
+   </column>
+  </property>
+  <property name="execMessage" generated="never" lazy="false" type="java.lang.String">
+   <column name="EXEC_MESSAGE">
+       	<comment>执行信息</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="reserve1" type="java.lang.String">
+   <column name="RESERVE1">
+       	<comment>备用1</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="reserve2" type="java.lang.String">
+   <column name="RESERVE2">
+       	<comment>备用2</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="reserve3" type="java.lang.String">
+   <column name="RESERVE3">
+       	<comment>备用3</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="reserve4" type="java.lang.String">
+   <column name="RESERVE4">
+       	<comment>备用4</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="reserve5" type="java.lang.String">
+   <column name="RESERVE5">
+       	<comment>备用5</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="deleteFlag" type="java.lang.String">
+   <column name="DELETE_FLAG">
+       	<comment>删除标示</comment>
+   </column>
+  </property>
+ </class>
+</hibernate-mapping>

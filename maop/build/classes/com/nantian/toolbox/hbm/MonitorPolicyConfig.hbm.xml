@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.toolbox.vo">
+	<class dynamic-insert="true" dynamic-update="true" name="MonitorPolicyConfigVo"
+		table="MONITOR_POLICY_CONFIG">
+		<comment>监控事件分类配置表</comment>
+		<composite-id>
+		<key-property   name="appSysCode"  type="java.lang.String">
+			<column name="APPSYS_CODE">
+				<comment>应用系统编号</comment>
+			</column>
+		</key-property>
+			<key-property name="policyTypeOne" type="java.lang.String">
+				<column name="POLICY_TYPE_ONE">
+				<comment>策略一级分类</comment>
+			</column>
+			</key-property>
+			<key-property name="policyTypeTwo" type="java.lang.String">
+				<column name="POLICY_TYPE_TWO">
+				<comment>策略二级分类</comment>
+			</column>
+			</key-property>
+			<key-property  name="policyTypeThree"
+			 type="java.lang.String">
+			<column name="POLICY_TYPE_THREE">
+				<comment>策略三级分类</comment>
+			</column>
+			</key-property>
+			<key-property name="policyOldName"  type="java.lang.String">
+				<column name="POLICY_OLD_NAME">
+				<comment>原策略名</comment>
+			</column>
+			</key-property>
+			
+			<key-property name="policyCode" type="java.lang.String">
+				<column name="POLICY_CODE">
+				<comment>策略编号</comment>
+			</column>
+			</key-property>
+		</composite-id>
+		<property generated="never" lazy="false" name="appSysName" not-null="true"
+			 type="java.lang.String">
+			<column name="APPSYS_NAME">
+				<comment>应用系统名称</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="policyName" not-null="true"
+			 type="java.lang.String">
+			<column name="POLICY_NAME">
+				<comment>策略名称</comment>
+			</column>
+		</property>
+
+		<property generated="never" lazy="false" name="policyDataSource" not-null="true"
+			 type="java.lang.Integer">
+			<column name="POLICY_DATA_SOURCE">
+				<comment>数据来源</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

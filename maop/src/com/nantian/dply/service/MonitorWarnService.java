@@ -1,0 +1,304 @@
+package com.nantian.dply.service;
+
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.hibernate.Criteria;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.type.StringType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.nantian.jeda.FieldType;
+import com.nantian.dply.vo.MonitorWarnVo;
+
+@Service
+@Repository
+@Transactional
+public class MonitorWarnService {
+	/** 查询字段及类型 */
+	public Map<String, String> fields = new HashMap<String, String>();
+	
+	@Autowired
+	private SessionFactory sessionFactory;
+	
+	private Session getSession(){
+		return sessionFactory.getCurrentSession();
+	}
+	
+	public MonitorWarnService(){
+		fields.put("apl_code", FieldType.STRING);
+		fields.put("change_date", FieldType.STRING);
+	}
+	
+	/**
+	 * 根据主键查询
+	 * @param appChangeId
+	 * @return
+	 */
+	@Transactional(readOnly = true)
+	public MonitorWarnVo get(Serializable appChangeId){
+		return (MonitorWarnVo) getSession().get(MonitorWarnVo.class, appChangeId);
+	}
+	
+	/**
+	 * 保存数据
+	 * @param vo 数据对象
+	 */
+	@Transactional
+	public void save(MonitorWarnVo vo) {
+		getSession().save(vo);
+		
+	}
+
+	/**
+	 * 更新.
+	 * @param vo
+	 */
+	@Transactional
+	public void update(MonitorWarnVo vo) {
+		getSession().update(vo);
+		
+	}
+
+	/**
+	/**
+	 * 批量删除
+	 * @param appChangeIds 主键数组
+	 */
+	public void deleteByIds(Long[] appChangeIds) {
+		for(int i = 0; i < appChangeIds.length; i++){
+			deleteById(appChangeIds[i]);
+		}
+	}
+	
+	/**
+	 * 删除
+	 * @param appChangeId 主键
+	 */
+	@Transactional
+	public void deleteById(Long appChangeId) {
+		getSession().createQuery("delete from MonitorWarnVo t where t.appChangeId = :appChangeId")
+						  .setLong("appChangeId", appChangeId)
+						  .executeUpdate();
+		
+	}
+
+	/**
+	 * 查询监控告警信息
+	 * @param start 起始记录数
+	 * @param limit 限制记录数
+	 * @param sort 排序字段
+	 * @param dir 升降序字符串
+	 * @param params 参数对象
+	 * @param request 请求对象
+	 * @return
+	 */
+	@Transactional(readOnly = true)
+	public Object queryMonitorWarnList(Integer start, Integer limit,
+			String sort, String dir, Map<String, Object> params,
+			HttpServletRequest request) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("select ")
+			.append("	t.apl_code as \"aplCode\", ")
+			.append("	(select s.systemname from V_CMN_APP_INFO s where t.apl_code = s.appsys_code) as \"sysName\", ")
+			.append("	t.change_date as \"changeDate\", ")
+			.append("	t.monitor_effect_content as \"monitorEffectContent\", ")
+			.append("	t.device_name as \"deviceName\", ")
+			.append("	t.ip_address as \"ipAddress\", ")
+			.append("	t.explain_device as \"explainDevice\", ")
+			.append("	t.explain_monitor_platform as \"explainMonitorPlatform\", ")
+			.append("	t.explain_monitor_tool as \"explainMonitorTool\", ")
+			.append("	(case t.explain_monitor_tool when '1' then '忽略告警' when '0' then '不忽略告警' end) as \"explainMonitorToolDisplay\", ")
+			.append("	t.explain_monitor_screen as \"explainMonitorScreen\", ")
+			.append("	(case t.explain_monitor_screen when '1' then '忽略告警' when '0' then '不忽略告警' end) as \"explainMonitorScreenDisplay\", ")
+			.append("	to_char(to_date(t.effect_start_date, 'yyyyMMdd'), 'yyyy/MM/dd') as \"effectStartDate\", ")
+			.append("	to_char(to_date(t.effect_start_time, 'hh24:mi'), 'hh24:mi') as \"effectStartTime\", ")
+			.append("	to_char(to_date(t.effect_end_date, 'yyyyMMdd'), 'yyyy/MM/dd') as \"effectEndDate\", ")
+			.append("	to_char(to_date(t.effect_end_time, 'hh24:mi'), 'hh24:mi') as \"effectEndTime\" ")
+			.append("from monitor_warn t  ")
+			.append("where 1=1 ");
+		
+		for(String key : params.keySet()){
+			if(fields.get(key).equals(FieldType.STRING)){
+				sql.append(" and t." + key + " like :" + key);
+			}else{
+				sql.append(" and t." + key + " = :" + key);
+			}
+		}
+		
+		sql.append(" order by \"" + sort + "\" " + dir);
+		
+		Query query = getSession().createSQLQuery(sql.toString()).setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+		
+		if(params.size() > 0){
+			query.setProperties(params);
+		}
+		
+		request.getSession().setAttribute("monitorWarnList4Export", query.list());
+		
+		return query.setMaxResults(limit).setFirstResult(start).list();
+	}
+
+	/**
+	 * 根据主键查询
+	 * @param appChangeId 主键
+	 * @return
+	 */
+	@Transactional(readOnly = true)
+	public MonitorWarnVo queryMonitorWarnInfo(Long appChangeId) {
+		return (MonitorWarnVo) getSession().createQuery("from MonitorWarnVo t where t.appChangeId = :appChangeId")
+																		 .setLong("appChangeId", appChangeId)
+																		 .uniqueResult();
+	}
+
+	/**
+	 * 根据系统编号查询最近一次的数据
+	 * @param aplCode
+	 * @return
+	 */
+	@Transactional(readOnly = true)
+	public Object queryMonitorWarnInfo(String aplCode) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new map(")
+			.append("	t.monitorEffectContent as monitorEffectContent, ")
+			.append("	t.deviceName as deviceName, ")
+			.append("	t.ipAddress as ipAddress, ")
+			.append("	t.explainDevice as explainDevice, ")
+			.append("	t.explainMonitorPlatform as explainMonitorPlatform, ")
+			.append("	t.explainMonitorTool as explainMonitorTool, ")
+			.append("	t.explainMonitorScreen as explainMonitorScreen, ")
+			.append("	t.effectStartDate as effectStartDate, ")
+			.append("	t.effectStartTime as effectStartTime, ")
+			.append("	t.effectEndDate as effectEndDate, ")
+			.append("	t.effectEndTime as effectEndTime) ")
+			.append("from MonitorWarnVo t, ViewAppInfoVo s ")
+			.append("where t.aplCode = s.appsysCode ")
+			.append(" 	and t.aplCode = :aplCode ")
+			.append("	and to_date(t.changeDate, 'yyyymmdd') = ")
+			.append("		(select max(to_date(ta.changeDate, 'yyyymmdd')) ")
+			.append("		 from MonitorWarnVo ta where ta.aplCode = t.aplCode) ");
+		return getSession().createQuery(hql.toString()).setString("aplCode", aplCode).uniqueResult();
+	}
+
+	/**
+	 * 根据变更日期查询
+	 * @param changeMonth 变更月份
+	 * @param aplCodes 系统代码列表
+	 * @return
+	 */
+	@Transactional(readOnly = true)
+	public Object queryMonitorWarnList(String changeMonth, List<String> aplCodes) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("select ")
+			.append("	t.monitor_effect_content as \"monitorEffectContent\", ")
+			.append("	(select s.systemname from V_CMN_APP_INFO s where t.apl_code = s.appsys_code) as \"sysName\", ")
+			.append("	t.device_name as \"deviceName\", ")
+			.append("	t.ip_address as \"ipAddress\", ")
+			.append("	t.explain_device as \"explainDevice\", ")
+			.append("	t.explain_monitor_platform as \"explainMonitorPlatform\", ")
+			.append("	t.explain_monitor_tool as \"explainMonitorTool\", ")
+			.append("	(case t.explain_monitor_tool when '1' then '忽略告警' when '0' then '不忽略告警' end) as \"explainMonitorToolDisplay\", ")
+			.append("	t.explain_monitor_screen as \"explainMonitorScreen\", ")
+			.append("	(case t.explain_monitor_screen when '1' then '忽略告警' when '0' then '不忽略告警' end) as \"explainMonitorScreenDisplay\", ")
+			.append("	to_char(to_date(t.effect_start_date, 'yyyyMMdd'), 'yyyy/MM/dd') as \"effectStartDate\", ")
+			.append("	to_char(to_date(t.effect_start_time, 'hh24:mi'), 'hh24:mi') as \"effectStartTime\", ")
+			.append("	to_char(to_date(t.effect_end_date, 'yyyyMMdd'), 'yyyy/MM/dd') as \"effectEndDate\", ")
+			.append("	to_char(to_date(t.effect_end_time, 'hh24:mi'), 'hh24:mi') as \"effectEndTime\" ")
+			.append("from monitor_warn t, app_change a ")
+			.append("where a.change_date like :changeMonth ")
+			.append("	and t.app_change_id = a.app_change_id")
+			.append("	and t.apl_code in (:aplCodes) ")
+			.append("order by t.apl_code ASC ");
+		
+		return getSession().createSQLQuery(sql.toString())
+									.addScalar("monitorEffectContent", StringType.INSTANCE)
+									.addScalar("sysName", StringType.INSTANCE)
+									.addScalar("deviceName", StringType.INSTANCE)
+									.addScalar("ipAddress", StringType.INSTANCE)
+									.addScalar("explainDevice", StringType.INSTANCE)
+									.addScalar("explainMonitorPlatform", StringType.INSTANCE)
+									.addScalar("explainMonitorTool", StringType.INSTANCE)
+									.addScalar("explainMonitorToolDisplay", StringType.INSTANCE)
+									.addScalar("explainMonitorScreen", StringType.INSTANCE)
+									.addScalar("explainMonitorScreenDisplay", StringType.INSTANCE)
+									.addScalar("effectStartDate", StringType.INSTANCE)
+									.addScalar("effectStartTime", StringType.INSTANCE)
+									.addScalar("effectEndDate", StringType.INSTANCE)
+									.addScalar("effectEndTime", StringType.INSTANCE)
+									.setString("changeMonth", changeMonth + "%")
+									.setParameterList("aplCodes", aplCodes)
+									.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP)
+									.list();
+	}
+
+	
+	/**
+	 * 根据变更日期查询
+	 * @param changeMonth 变更月份
+	 * @param aplCodes 系统代码列表
+	 * @return
+	 */
+	@Transactional(readOnly = true)
+	public Object queryMonitorWarnListForUmp(String changeMonth, List<String> aplCodes) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("select ")
+			.append("	t.monitor_effect_content as \"monitorEffectContent\", ")
+			.append("	(select s.systemname from V_CMN_APP_INFO s where t.apl_code = s.appsys_code) as \"sysName\", ")
+			.append("	(select s.applicatemanagerA from V_CMN_APP_INFO s where t.apl_code = s.appsys_code) as \"monitorCreator\", ")
+			.append("	t.device_name as \"deviceName\", ")
+			.append("	t.ip_address as \"ipAddress\", ")
+			.append("	t.explain_device as \"explainDevice\", ")
+			.append("	t.explain_monitor_platform as \"explainMonitorPlatform\", ")
+			.append("	t.explain_monitor_tool as \"explainMonitorTool\", ")
+			.append("	(case t.explain_monitor_tool when '1' then '忽略告警' when '0' then '不忽略告警' end) as \"explainMonitorToolDisplay\", ")
+			.append("	t.explain_monitor_screen as \"explainMonitorScreen\", ")
+			.append("	(case t.explain_monitor_screen when '1' then '忽略告警' when '0' then '不忽略告警' end) as \"explainMonitorScreenDisplay\", ")
+			.append("	to_char(to_date(t.effect_start_date, 'yyyyMMdd'), 'yyyy/MM/dd') || ' ' || to_char(to_date(t.effect_start_time, 'hh24:mi'), 'hh24:mi') as \"monitorStartTime\", ")
+			.append("	to_char(to_date(t.effect_end_date, 'yyyyMMdd'), 'yyyy/MM/dd') || ' ' || to_char(to_date(t.effect_end_time, 'hh24:mi'), 'hh24:mi') as \"monitorEndTime\", ")
+			.append("	a.eaps_code as \"eapsCode\" ")
+			.append("from monitor_warn t, app_change a ")
+			.append("where a.change_date like :changeMonth ")
+			.append("	and t.app_change_id = a.app_change_id")
+			.append("	and t.apl_code in (:aplCodes) ")
+			.append("order by t.apl_code ASC ");
+		
+		return getSession().createSQLQuery(sql.toString())
+									.addScalar("monitorEffectContent", StringType.INSTANCE)
+									.addScalar("sysName", StringType.INSTANCE)
+									.addScalar("deviceName", StringType.INSTANCE)
+									.addScalar("ipAddress", StringType.INSTANCE)
+									.addScalar("explainDevice", StringType.INSTANCE)
+									.addScalar("explainMonitorPlatform", StringType.INSTANCE)
+									.addScalar("explainMonitorTool", StringType.INSTANCE)
+									.addScalar("explainMonitorToolDisplay", StringType.INSTANCE)
+									.addScalar("explainMonitorScreen", StringType.INSTANCE)
+									.addScalar("explainMonitorScreenDisplay", StringType.INSTANCE)
+									.addScalar("monitorStartTime", StringType.INSTANCE)
+									.addScalar("monitorEndTime", StringType.INSTANCE)
+									.addScalar("monitorCreator", StringType.INSTANCE)
+									.addScalar("eapsCode", StringType.INSTANCE)
+									.setString("changeMonth", changeMonth + "%")
+									.setParameterList("aplCodes", aplCodes)
+									.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP)
+									.list();
+	}
+	
+	/**
+	 * 查询所有应用系统编号简称
+	 * @return
+	 */
+	@Transactional(readOnly = true)
+	public Object queryAplCodes() {
+		return getSession().createQuery("select distinct new map(t.aplCode as aplCode) from MonitorWarnVo t order by t.aplCode").list();
+	}
+
+}

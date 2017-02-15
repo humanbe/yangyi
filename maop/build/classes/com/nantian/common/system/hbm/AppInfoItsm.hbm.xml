@@ -1,0 +1,237 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.common.system.vo">
+	<class name="AppInfoItsmVo" table="CMN_APP_INFO_ITSM" dynamic-update="true" dynamic-insert="true">
+		<comment>应用系统信息</comment>
+		<id name="systemcode" type="java.lang.String">
+			<column name="systemcode">
+				<comment>系统编号</comment>
+			</column>
+		</id>
+		<property name="systemname" type="java.lang.String">
+			<column name="systemname">
+				<comment>系统名称</comment>
+			</column>
+		</property>
+		<property name="eapssystemname" type="java.lang.String">
+			<column name="eapssystemname">
+				<comment>EAPS系统名称</comment>
+			</column>
+		</property>
+		<property name="englishcode" type="java.lang.String">
+			<column name="englishcode">
+				<comment>英文简称</comment>
+			</column>
+		</property>
+		<property name="affectsystem" type="java.lang.String">
+			<column name="affectsystem">
+				<comment>受影响系统</comment>
+			</column>
+		</property>
+		<property name="branch" type="java.lang.String">
+			<column name="branch">
+				<comment>所属分行</comment>
+			</column>
+		</property>
+		<property name="key" type="java.lang.String">
+			<column name="key">
+				<comment>关键度</comment>
+			</column>
+		</property>
+		<property name="status" type="java.lang.String">
+			<column name="status">
+				<comment>状态</comment>
+			</column>
+		</property>
+		<property name="securitylevel" type="java.lang.String">
+			<column name="securitylevel">
+				<comment>安全定级</comment>
+			</column>
+		</property>
+		<property name="scope" type="java.lang.String">
+			<column name="scope">
+				<comment>使用范围</comment>
+			</column>
+		</property>
+		<property name="systempro" type="java.lang.String">
+			<column name="systempro">
+				<comment>系统RPO</comment>
+			</column>
+		</property>
+		<property name="onlinedate" type="java.sql.Timestamp">
+			<column name="onlinedate">
+				<comment>系统上线时间</comment>
+			</column>
+		</property>
+		<property name="outlinedate" type="java.sql.Timestamp">
+			<column name="outlinedate">
+				<comment>系统下线时间</comment>
+			</column>
+		</property>
+		
+		<property name="serverlevel" type="java.lang.String">
+			<column name="serverlevel">
+				<comment>服务级别</comment>
+			</column>
+		</property>
+		<property name="systemlevel" type="java.lang.String">
+			<column name="systemlevel">
+				<comment>系统级别</comment>
+			</column>
+		</property>
+		<property name="isimportant" type="java.lang.String">
+			<column name="isimportant">
+				<comment>是否重要系统</comment>
+			</column>
+		</property>
+		<property name="iskey" type="java.lang.String">
+			<column name="iskey">
+				<comment>对外关键系统</comment>
+			</column>
+		</property>
+		<property name="iscoresyetem" type="java.lang.String">
+			<column name="iscoresyetem">
+				<comment>是否核心重要系统</comment>
+			</column>
+		</property>
+		<property name="cbrcimportantsystem" type="java.lang.String">
+			<column name="cbrcimportantsystem">
+				<comment>银监会报送重要系统</comment>
+			</column>
+		</property>
+		<property name="applicateoperate" type="java.lang.String">
+			<column name="applicateoperate">
+				<comment>是否应用接管</comment>
+			</column>
+		</property>
+		<property name="outsourcingmark" type="java.lang.String">
+			<column name="outsourcingmark">
+				<comment>应用外包参与标志</comment>
+			</column>
+		</property>
+		<property name="networkdomain" type="java.lang.String">
+			<column name="networkdomain">
+				<comment>所属网络域</comment>
+			</column>
+		</property>
+		<property name="team" type="java.lang.String">
+			<column name="team">
+				<comment>应用团队组别</comment>
+			</column>
+		</property>
+		<property name="operatemanager" type="java.lang.String">
+			<column name="operatemanager">
+				<comment>运维经理</comment>
+			</column>
+		</property>
+		<property name="applicatemanagerA" type="java.lang.String">
+			<column name="applicatemanagerA">
+				<comment>应用管理员A</comment>
+			</column>
+		</property>
+		<property name="applicatemanagerB" type="java.lang.String">
+			<column name="applicatemanagerB">
+				<comment>应用管理员B</comment>
+			</column>
+		</property>
+		<property name="systemmanagerA" type="java.lang.String">
+			<column name="systemmanagerA">
+				<comment>系统管理员A</comment>
+			</column>
+		</property>
+		<property name="systemmanagerB" type="java.lang.String">
+			<column name="systemmanagerB">
+				<comment>系统管理员B</comment>
+			</column>
+		</property>
+		<property name="networkmanagerA" type="java.lang.String">
+			<column name="networkmanagerA">
+				<comment>网络管理员A</comment>
+			</column>
+		</property>
+		<property name="networkmanagerB" type="java.lang.String">
+			<column name="networkmanagerB">
+				<comment>网络管理员B</comment>
+			</column>
+		</property>
+		<property name="DBA" type="java.lang.String">
+			<column name="DBA">
+				<comment>DBA管理员</comment>
+			</column>
+		</property>
+		<property name="middlewaremanager" type="java.lang.String">
+			<column name="middlewaremanager">
+				<comment>中间件管理员</comment>
+			</column>
+		</property>
+		<property name="storemanager" type="java.lang.String">
+			<column name="storemanager">
+				<comment>存储管理员</comment>
+			</column>
+		</property>
+		<property name="PM" type="java.lang.String">
+			<column name="PM">
+				<comment>项目负责人</comment>
+			</column>
+		</property>
+		<property name="businessdepartment" type="java.lang.String">
+			<column name="businessdepartment">
+				<comment>业务主管部门</comment>
+			</column>
+		</property>
+		<property name="businessmanager" type="java.lang.String">
+			<column name="businessmanager">
+				<comment>业务负责人</comment>
+			</column>
+		</property>
+		<property name="servicesupporter" type="java.lang.String">
+			<column name="servicesupporter">
+				<comment>服务支持人</comment>
+			</column>
+		</property>
+		<property name="istestcenter" type="java.lang.String">
+			<column name="istestcenter">
+				<comment>是否测试中心接管</comment>
+			</column>
+		</property>
+		<property name="allottestmanager" type="java.lang.String">
+			<column name="allottestmanager">
+				<comment>分配测试经理</comment>
+			</column>
+		</property>
+		<property name="deliverytestmanager" type="java.lang.String">
+			<column name="deliverytestmanager">
+				<comment>交付测试经理</comment>
+			</column>
+		</property>
+		<property name="qualitymanager" type="java.lang.String">
+			<column name="qualitymanager">
+				<comment>质量经理</comment>
+			</column>
+		</property>
+		<property name="performancetestmanag" type="java.lang.String">
+			<column name="performancetestmanag">
+				<comment>性能测试经理</comment>
+			</column>
+		</property>
+		<property name="transfercoefficient" type="java.lang.String">
+			<column name="transfercoefficient">
+				<comment>功能表转化系数</comment>
+			</column>
+		</property>
+		<property name="stage" type="java.lang.String">
+			<column name="stage">
+				<comment>所处阶段</comment>
+			</column>
+		</property>
+		<property name="businessintroduction" type="java.lang.String">
+			<column name="businessintroduction">
+				<comment>业务功能介绍</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>
+
+

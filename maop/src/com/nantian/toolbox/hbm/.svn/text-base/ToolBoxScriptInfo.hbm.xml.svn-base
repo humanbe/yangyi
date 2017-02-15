@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.toolbox.vo">
+	<class dynamic-insert="true" dynamic-update="true" name="ToolBoxScriptInfoVo"
+		table="TOOL_BOX_SCRIPT_INFO">
+		<composite-id>
+		
+			<key-property name="tool_code" type="java.lang.String">
+				<column name="TOOL_CODE" not-null="true">
+				</column>
+			</key-property>
+		</composite-id>
+		<property generated="never" lazy="false" name="shell_name"
+			not-null="true" type="java.lang.String">
+			<column name="SHELL_NAME">
+			</column>
+		</property>
+		
+		<property generated="never" lazy="false" name="server_group"
+			  type="java.lang.String">
+			<column name="SERVER_GROUP">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="group_server_flag"
+			 type="java.lang.String">
+			<column name="GROUP_SERVER_FLAG">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="os_user_flag"
+			not-null="true" type="java.lang.String">
+			<column name="OS_USER_FLAG">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="os_user"
+			 type="java.lang.String">
+			<column name="OS_USER">
+			</column>
+		</property>
+
+		<property generated="never" lazy="false" name="os_type"
+			not-null="true" type="java.lang.String">
+			<column name="OS_TYPE">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="position_type"
+			not-null="true" type="java.lang.String">
+			<column name="POSITION_TYPE">
+			</column>
+		</property>
+		
+		<property generated="never" lazy="false" name="tool_charset"
+			not-null="true" type="java.lang.String">
+			<column name="TOOL_CHARSET">
+			</column>
+		</property>
+		
+	
+
+	</class>
+</hibernate-mapping>

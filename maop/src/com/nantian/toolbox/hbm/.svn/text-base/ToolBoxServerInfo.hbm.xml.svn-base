@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.toolbox.vo">
+	<class dynamic-insert="true" dynamic-update="true" name="ToolBoxServerInfoVo"
+		table="TOOL_BOX_SERVER_INFO">
+		<composite-id>
+			<key-property name="tool_code" type="java.lang.String">
+				<column name="TOOL_CODE" not-null="true">
+				</column>
+			</key-property>
+			<key-property   name="appsys_code"  type="java.lang.String">
+			<column name="APPSYS_CODE" not-null="true">
+			</column>
+		</key-property>
+		<key-property name="server_ip"  type="java.lang.String">
+			<column name="SERVER_IP" not-null="true">
+			</column>
+		</key-property>
+		</composite-id>
+		
+		<property generated="never" lazy="false" name="server_route"
+			not-null="false" type="java.lang.String">
+			<column name="SERVER_ROUTE">
+			</column>
+		</property>
+			<property generated="never" lazy="false" name="os_user"
+			not-null="false" type="java.lang.String">
+			<column name="OS_USER">
+			</column>
+		</property>
+		
+	</class>
+</hibernate-mapping>

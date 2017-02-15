@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.rept.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="RptSysThresholdVo" table="RPT_SYS_THRESHOLD">
+  <composite-id>
+   <key-property name="capacityItem" type="java.lang.String">
+    <column name="CAPACITY_ITEM" not-null="true">
+    	<comment>容量科目名称</comment>
+    </column>
+   </key-property>
+    <key-property name="capacityType" type="java.lang.String">
+    <column name="CAPACITY_TYPE" not-null="true">
+    	<comment>容量管理类型</comment>
+    </column>
+   </key-property>
+   <key-property name="onlineBatchType" type="java.lang.String">
+    <column name="ONLINE_BATCH_TYPE" not-null="true">
+    	<comment>联机批量类型</comment>
+    </column>
+   </key-property>
+  </composite-id>
+  <property name="capacityThreshold" generated="never" not-null="false" type="java.lang.String">
+   <column name="CAPACITY_THRESHOLD">
+       	<comment>容量伐值</comment>
+   </column>
+  </property>
+  </class>
+</hibernate-mapping>

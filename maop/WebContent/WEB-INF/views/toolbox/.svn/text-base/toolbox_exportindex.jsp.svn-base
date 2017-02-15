@@ -1,0 +1,832 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="/include/taglibs.jsp"%>
+<script type="text/javascript">
+var mvToolsexport ;
+var miToolsexport ;
+var mvToolsexportGrid ;
+var mvToolsexportGridStore ;
+ 
+var toolboxexportmask = new Ext.LoadMask(Ext.getBody(),{
+	msg:'进行中，请稍候...',
+	removeMask :true
+});
+
+var exportToolsStore = new Ext.data.JsonStore( {
+		proxy : new Ext.data.HttpProxy(
+		{
+			method : 'POST',
+			url : '${ctx}/${appPath}/ToolBoxController/index',
+			disableCaching : false
+		}),
+		autoDestroy : true,
+		root : 'data',
+		totalProperty : 'count',
+		fields : [ 'tool_code', 'appsys_code',
+				'tool_name', 'tool_desc',
+				'server_group','authorize_level_type',
+				'field_type', 'os_type',
+				'position_type',
+				'tool_upload', 'tool_authorize_flag',
+				'frontline_flag','authorize_flag',
+				'tool_creator', 'shell_name',
+				'os_user','os_user_flag',
+				'group_server_flag','tool_charset','tool_type'
+		],
+		remoteSort : false,
+		sortInfo : {
+			field : 'appsys_code',
+			direction : 'ASC'
+		},
+		baseParams : {
+			start : 0,
+			limit : 1000
+		}
+	});
+	exportToolsStore.load();
+
+
+
+//定义新建表单
+ToolboxExportForm = Ext.extend(Ext.FormPanel, {
+	tabIndex : 0,// Tab键顺序	constructor : function(cfg) {// 构造方法		Ext.apply(this, cfg);
+		mvToolsexport = new Ext.grid.CheckboxSelectionModel();
+		miToolsexport = new Ext.grid.CheckboxSelectionModel();
+		this.appsys_Store =  new Ext.data.Store({
+			proxy: new Ext.data.HttpProxy({
+				url : '${ctx}/${managePath}/appInfo/querySystemIDAndNamesByUser',
+				method : 'GET',
+				disableCaching : true
+			}),
+			reader : new Ext.data.JsonReader({}, ['appsysCode','appsysName']),
+			listeners : {
+				load : function(store){
+					if(store.getCount() == 0){
+						Ext.Msg.show({
+							title : '<fmt:message key="message.title" />',
+							msg : '<fmt:message key="message.system.no.authorize" />',
+							minWidth : 200,
+							buttons : Ext.MessageBox.OK,
+							icon : Ext.MessageBox.WARNING
+						});
+					}
+				}
+			}
+		});
+		this.appsys_Store.load(); 
+		this.ServerGroupStore = new Ext.data.JsonStore(
+		{
+			autoDestroy : true,
+			url : '${ctx}/${frameworkPath}/item/SERVER_GROUP/sub',
+			root : 'data',
+			fields : [ 'value', 'name' ]
+		});
+		this.ServerGroupStore.load();
+		this.authorize_level_typeStore = new Ext.data.JsonStore(
+		{
+			autoDestroy : true,
+			url : '${ctx}/${frameworkPath}/item/AUTHORIZE_LEVEL_TYPE/sub',
+			root : 'data',
+			fields : [ 'value', 'name' ]
+		});
+		this.authorize_level_typeStore.load();
+		this.os_typeStore = new Ext.data.JsonStore(
+		{
+			autoDestroy : true,
+			url : '${ctx}/${frameworkPath}/item/OS_TYPE/sub',
+			root : 'data',
+			fields : [ 'value', 'name' ]
+		});
+		this.os_typeStore.load();
+		this.tool_typeStore = new Ext.data.JsonStore(
+				{
+					autoDestroy : true,
+					url : '${ctx}/${frameworkPath}/item/TOOL_TYPE/sub',
+					root : 'data',
+					fields : [ 'value', 'name' ]
+				});
+		this.tool_typeStore.load();
+		this.position_typeStore = new Ext.data.JsonStore(
+		{
+			autoDestroy : true,
+			url : '${ctx}/${frameworkPath}/item/TOOL_POSITION_TYPE/sub',
+			root : 'data',
+			fields : [ 'value', 'name' ]
+		});
+		this.position_typeStore.load();
+		this.tool_authorize_flagStore = new Ext.data.JsonStore(
+		{
+			autoDestroy : true,
+			url : '${ctx}/${frameworkPath}/item/tool_authorize_flag/sub',
+			root : 'data',
+			fields : [ 'value', 'name' ]
+		});
+		this.tool_authorize_flagStore.load();
+		
+		
+		this.os_user_flagStore = new Ext.data.JsonStore(
+		{
+			autoDestroy : true,
+			url : '${ctx}/${frameworkPath}/item/TOOLBOX_OS_USER_FLAG/sub',
+			root : 'data',
+			fields : [ 'value', 'name' ]
+		});
+		this.os_user_flagStore.load();
+		this.server_group_flag = new Ext.data.JsonStore({
+			url : '${ctx}/${frameworkPath}/item/GROUP_SERVER_FLAG/sub',
+			root : 'data',
+			fields : [ 'value', 'name' ]
+		});
+		this.server_group_flag.load();
+		this.toolcharsetStore = new Ext.data.JsonStore(
+		{
+			autoDestroy : true,
+			url : '${ctx}/${frameworkPath}/item/TOOL_CHARSET/sub',
+			root : 'data',
+			fields : [ 'value', 'name' ]
+		});
+		this.toolcharsetStore.load();
+		//可选择的请求		this.dsFromTranExport = new Ext.grid.GridPanel({
+			id : 'mvExport', 
+			height : 535 ,
+			loadMask : true,
+			frame : true,
+			title : '<fmt:message key="toolbox.tool_selections" />',
+			region : 'center',
+			border : false,
+			autoScroll : true,
+			columnLines : true,
+			viewConfig : {
+				forceFit : true
+			},
+			store : exportToolsStore,
+			autoExpandColumn : 'name',
+			sm : mvToolsexport,   
+			columns : [new Ext.grid.RowNumberer(),
+			           mvToolsexport,
+			           {
+				header :'<fmt:message key="toolbox.appsys_code" />',
+				dataIndex : 'appsys_code',
+				renderer : this.appsys_Storeone,
+				scope : this,
+				sortable : true
+			},
+           
+			{
+
+				header : '<fmt:message key="toolbox.tool_code" />',
+				dataIndex : 'tool_code',
+				//hidden: true,
+				sortable : true
+
+			},
+			{
+				header :  '<fmt:message key="toolbox.tool_name" />',
+				dataIndex : 'tool_name',
+				sortable : true
+			},
+			{
+				header : '<fmt:message key="toolbox.os_type" />',
+				dataIndex : 'os_type',
+				renderer : this.os_typeone,
+				scope : this,
+				sortable : true
+			},
+			
+			{
+				header : '<fmt:message key="toolbox.server_group" />',
+				dataIndex : 'server_group',
+				renderer : this.ServerGroupone,
+				scope : this,
+				hidden: true,
+				sortable : true
+
+			},
+			{
+				header : '<fmt:message key="toolbox.position_type" />',
+				dataIndex : 'position_type',
+				renderer : this.position_typeone,
+				scope : this,
+				hidden: true,
+				sortable : true
+			},
+			{
+				header :  '<fmt:message key="toolbox.shell_name" />',
+				dataIndex : 'shell_name',
+				sortable : true
+			},
+			{
+				header : '<fmt:message key="toolbox.authorize_level_type" />',
+				dataIndex : 'authorize_level_type',
+			//	renderer : this.authorize_level_typeone,
+				scope : this,
+				hidden: true,
+				sortable : true
+			},
+			{
+				header :  '<fmt:message key="toolbox.os_user_flag" />',
+				dataIndex : 'os_user_flag',
+				renderer : this.os_user_flagone,
+				scope : this,
+				hidden: true,
+				sortable : true
+			},
+			{
+				header :  '<fmt:message key="toolbox.group_server_flag" />',
+				dataIndex : 'group_server_flag',
+				renderer : this.server_group_flagone,
+				scope : this,
+				hidden: true,
+				sortable : true
+			},
+			{
+				header : '<fmt:message key="toolbox.os_user" />',
+				dataIndex : 'os_user',
+				hidden: true,
+				sortable : true
+			},
+			{
+				header :  '<fmt:message key="toolbox.tool_charset" />',
+				dataIndex : 'tool_charset',
+				renderer : this.tool_charsetone,
+				scope : this,
+				hidden: true,
+				sortable : true
+			},
+			{
+				header :  '<fmt:message key="toolbox.tool_type" />',
+				dataIndex : 'tool_type',
+				renderer : this.toolType_Storeone,
+				scope : this,
+				sortable : true
+			}],
+			
+			
+			// 定义数据列表监听事件
+			listeners : {
+				scope : this,
+				// 行双击移入事件
+				rowdblclick : function(row,rowIndex,e){
+					var curRow = exportToolsStore.getAt(rowIndex);
+					var appsys_code = curRow.get("appsys_code");
+					var tool_name = curRow.get("tool_name");
+					var os_type = curRow.get("os_type");
+					var shell_name = curRow.get("shell_name");
+					var notEqualFlag = true;
+					mvToolsexportGrid.getStore().each(function(rightRecord){
+						if(appsys_code==rightRecord.data.appsys_code && tool_name==rightRecord.data.tool_name
+					       && os_type==rightRecord.data.os_type && shell_name==rightRecord.data.shell_name){
+							notEqualFlag = false;
+						}
+					},this);
+					if(notEqualFlag){
+						mvToolsexportGrid.store.add(curRow);
+					}
+				}
+			}
+		});
+		//移入移出操作面板
+		this.panel = new Ext.Panel({
+			height : 535 ,
+			labelAlign : 'right',
+			buttonAlign : 'center',
+			frame : true,
+			split : true,
+			defaults:{margins:'0 0 10 0'},
+			xtype:'button',
+		    layout: {
+		    	type:'vbox',
+		    	padding:'10',
+		    	pack:'center',
+		    	align:'center' 
+		    },
+		    items:[{
+		         xtype:'button',
+		         width : 40 ,
+		         height : 25 ,
+		         text: '<fmt:message key="job.movein" />>>',
+		         scope : this,
+				 handler : this.requestShiftIn
+		     },{
+		         xtype:'button',
+		         width : 40 ,
+		         height : 25 ,
+		         text: '<<<fmt:message key="job.moveout" />',
+		         scope : this,
+		         handler : this.requestShiftOut
+		     }]
+		}); 
+		//已选择的工具		mvToolsexportGridStore=new Ext.data.JsonStore({
+			autoDestroy : true,
+			root : 'data',
+			totalProperty : 'count',
+			fields : [ 'tool_code', 'appsys_code',
+						'tool_name', 'tool_desc',
+						'server_group','authorize_level_type',
+						'field_type', 'os_type',
+						'position_type',
+						'tool_upload', 'tool_authorize_flag',
+						'frontline_flag','authorize_flag',
+						'tool_creator', 'shell_name',
+						'os_user','os_user_flag',
+						'group_server_flag','tool_charset','tool_type'
+				],
+			remoteSort : true
+		});
+		mvToolsexportGrid = new Ext.grid.GridPanel({
+			id : 'selectedTool',
+			height : 535 ,
+			loadMask : true,
+			frame : true,
+			title :'<fmt:message key="toolbox.tool_selected" />',
+			region : 'center',
+			border : false,
+			autoScroll : true,
+			columnLines : true,
+			viewConfig : {
+				forceFit : true
+			},
+			store : mvToolsexportGridStore,
+			autoExpandColumn : 'name',
+			sm : miToolsexport,   
+			columns : [new Ext.grid.RowNumberer(),
+			           miToolsexport,{
+				header :'<fmt:message key="toolbox.appsys_code" />',
+				dataIndex : 'appsys_code',
+				renderer : this.appsys_Storeone,
+				scope : this,
+				sortable : true
+			},
+			
+			{
+				header :  '<fmt:message key="toolbox.tool_name" />',
+				dataIndex : 'tool_name',
+				sortable : true
+			},
+			{
+				header : '<fmt:message key="toolbox.os_type" />',
+				dataIndex : 'os_type',
+				renderer : this.os_typeone,
+				scope : this,
+				sortable : true
+			},
+			
+			{
+				header : '<fmt:message key="toolbox.tool_code" />',
+				name:'tool_code',
+				dataIndex : 'tool_code',
+				//hidden: true,
+				sortable : true
+			},{
+				header :'<fmt:message key="toolbox.tool_type" />',
+				dataIndex : 'tool_type',
+				renderer : this.toolType_Storeone,
+				scope : this,
+				hidden: true,
+				sortable : true
+			} ,
+			{
+				header : '<fmt:message key="toolbox.server_group" />',
+				dataIndex : 'server_group',
+				renderer : this.ServerGroupone,
+				scope : this,
+				hidden: true,
+				sortable : true
+			},
+			{
+				header : '<fmt:message key="toolbox.position_type" />',
+				dataIndex : 'position_type',
+				renderer : this.position_typeone,
+				scope : this,
+				hidden: true,
+				sortable : true
+			},
+			{
+				header :  '<fmt:message key="toolbox.shell_name" />',
+				dataIndex : 'shell_name',
+				sortable : true
+			},
+			{
+				header : '<fmt:message key="toolbox.authorize_level_type" />',
+				dataIndex : 'authorize_level_type',
+				renderer : this.authorize_level_typeone,
+				scope : this,
+				hidden: true,
+				sortable : true
+			},
+			{
+				header :  '<fmt:message key="toolbox.os_user_flag" />',
+				dataIndex : 'os_user_flag',
+				renderer : this.os_user_flagone,
+				scope : this,
+				hidden: true,
+				sortable : true
+			},
+			{
+				header :  '<fmt:message key="toolbox.group_server_flag" />',
+				dataIndex : 'group_server_flag',
+				renderer : this.server_group_flagone,
+				scope : this,
+				hidden: true,
+				sortable : true
+			},
+			{
+				header : '<fmt:message key="toolbox.os_user" />',
+				dataIndex : 'os_user',
+				hidden: true,
+				sortable : true
+			},
+			{
+				header :  '<fmt:message key="toolbox.tool_charset" />',
+				dataIndex : 'tool_charset',
+				renderer : this.tool_charsetone,
+				scope : this,
+				hidden: true,
+				sortable : true
+			},
+			{
+				header :  '<fmt:message key="toolbox.tool_type" />',
+				dataIndex : 'tool_type',
+				renderer : this.toolType_Storeone,
+				scope : this,
+				sortable : true
+			}],
+			
+			
+			// 定义数据列表监听事件
+			listeners : {
+				scope : this,
+				// 行双击移出事件
+				rowdblclick : function(row,rowIndex,e){
+					var curRow = mvToolsexportGridStore.getAt(rowIndex);
+					mvToolsexportGrid.store.remove(curRow);
+				}
+			}
+		}); 
+		
+		// 设置基类属性		ToolboxExportForm.superclass.constructor.call(this, {
+			title :  '<fmt:message key="toolbox.tool_export" />',
+			labelAlign : 'right',
+			labelWidth : 150,
+			buttonAlign : 'center',
+			frame : true,
+			timeout : 300,
+			autoScroll : true,
+			url : '${ctx}/${managePath}/moveexport/export',
+			defaults : {
+				anchor : '100%',
+				msgTarget : 'side'
+			},
+			monitorValid : true,
+			// 定义表单组件
+		    items:[{
+		           /*  xtype: 'fieldset', */
+		            layout : 'form',
+		            border : true,
+					buttonAlign : 'center',
+		            autoHeight : true,
+		            items : [{
+						xtype : 'combo',
+						fieldLabel :'<fmt:message key="toolbox.appsys_code" />',
+						store : this.appsys_Store,
+						name : 'appsys_code',
+						id:'appsys_code_exportid',
+						hiddenName : 'appsys_code',
+						displayField : 'appsysName',
+						valueField : 'appsysCode',
+						typeAhead : true,
+						forceSelection  : true,
+						tabIndex : this.tabIndex++,
+						mode : 'local',
+						triggerAction : 'all',
+						editable : true,
+						allowBlank : true,
+						emptyText : '请选择系统代码...',
+						anchor : '75%',
+						 listeners:{
+							select:function(obj){
+								exportToolsStore.load(); //重新加载可选请求								//mvToolsexportGrid.store.removeAll(); //清空已选请求							} ,
+							scope : this,
+							 beforequery : function(e){
+									var combo = e.combo;
+									combo.collapse();
+									 if(!e.forceAll){
+										var input = e.query.toUpperCase();
+										var regExp = new RegExp('.*' + input + '.*');
+										combo.store.filterBy(function(record, id){
+											var text = record.get(combo.displayField);
+											return regExp.test(text);
+										}); 
+										combo.restrictHeight();
+										combo.expand();
+										return false;
+									} 
+								
+							}
+							
+						}
+		            },{
+						xtype : 'combo',
+						store : this.os_typeStore,
+						fieldLabel :  '<fmt:message key="toolbox.os_type" />',
+						name : 'os_type',
+						id:'os_type_exportid',
+						valueField : 'value',
+						displayField : 'name',
+						hiddenName : 'os_type',
+						mode : 'local',
+						triggerAction : 'all',
+						forceSelection : true,
+						editable : false,
+						tabIndex : this.tabIndex++,
+						emptyText : '请选择操作系统...',
+						anchor : '75%',
+						listeners:{
+							select:function(obj){
+								exportToolsStore.load(); //重新加载可选请求								//mvToolsexportGrid.store.removeAll(); //清空已选请求							} 
+						}
+					},
+			       {
+			            xtype: 'fieldset',
+			            title: '<fmt:message key="toolbox.tool_selection" />',
+			            items: [{
+		                    	layout:'column',
+				                border : true ,
+				                items:[{
+				                    columnWidth:.45,  
+				                    border : false,
+				                    defaults : { flex : 1 },
+				                    layoutConfig : { align : 'stretch' },
+				                    items : [this.dsFromTranExport]
+				                },{
+				                    columnWidth:.1,
+				                    border:false,
+				                    labelAlign : 'right',
+				                    items: [this.panel]
+				                } ,{
+				                    columnWidth:.45,
+				                    border:false,
+				                    defaults : { flex : 1 },
+				                    layoutConfig : { align : 'stretch' },
+				                    items: [mvToolsexportGrid] 
+				                }]
+						}]
+			        }
+           		],// 定义按钮
+       			buttons : [{
+       				text : '<fmt:message key="toolbox.export" />',
+       				iconCls : 'button-export',
+       				tabIndex : this.tabIndex++,
+       				formBind : true,
+       				scope : this,
+       				handler : this.doExport
+       			},{
+       				text : '<fmt:message key="toolbox.reset" />',
+       				iconCls : 'button-reset',
+       				formBind : true,
+       				scope : this,
+       				handler : this.doReset
+       			}] }
+			] 
+		});
+	},
+	
+	
+	appsys_Storeone : function(value) {
+
+		var index = this.appsys_Store.find('appsysCode', value);
+		if (index == -1) {
+			return value;
+		} else {
+			return this.appsys_Store.getAt(index).get('appsysName');
+		}
+	},
+	
+	ServerGroupone : function(value) {
+
+		var index = this.ServerGroupStore.find('value', value);
+		if (index == -1) {
+			return value;
+		} else {
+			return this.ServerGroupStore.getAt(index).get('name');
+		}
+	},
+	tool_authorize_flagone : function(value) {
+
+		var index = this.tool_authorize_flagStore.find('value', value);
+
+		if (index == -1) {
+			return value;
+		} else {
+			return this.tool_authorize_flagStore.getAt(index).get('name');
+		}
+	},
+	os_typeone : function(value) {
+
+		var index = this.os_typeStore.find('value', value);
+		if (index == -1) {
+			return value;
+		} else {
+			return this.os_typeStore.getAt(index).get('name');
+		}
+	},		
+	toolType_Storeone : function(value) {
+
+		var index = this.tool_typeStore.find('value', value);
+		if (index == -1) {
+			return value;
+		} else {
+			return this.tool_typeStore.getAt(index).get('name');
+		}
+	},
+	position_typeone : function(value) {
+		var index = this.position_typeStore.find('value', value);
+		if (index == -1) {
+			return value;
+		} else {
+			return this.position_typeStore.getAt(index).get('name');
+		}
+	},
+
+
+	os_user_flagone : function(value) {
+
+		var index = this.os_user_flagStore.find('value', value);
+		if (index == -1) {
+			return value;
+		} else {
+			return this.os_user_flagStore.getAt(index).get('name');
+		}
+	},
+	server_group_flagone : function(value) {
+
+		var index = this.server_group_flag.find('value', value);
+		if (index == -1) {
+			return value;
+		} else {
+			return this.server_group_flag.getAt(index).get('name');
+		}
+	},
+	
+	tool_charsetone : function(value) {
+
+		var index = this.toolcharsetStore.find('value', value);
+		if (index == -1) {
+			return value;
+		} else {
+			return this.toolcharsetStore.getAt(index).get('name');
+		}
+	},
+	
+	// 请求移入事件
+	requestShiftIn : function() {
+		var records =this.dsFromTranExport.getSelectionModel().getSelections();
+    		var notEqualFlag = true;
+    		Ext.each(records,function(leftRecord){
+    			mvToolsexportGrid.getStore().each(function(rightRecord){
+    				if(leftRecord.data.tool_code == rightRecord.data.tool_code){
+    					notEqualFlag = false;
+    				}
+    			},this);
+    			if(notEqualFlag){
+    				mvToolsexportGrid.store.add(leftRecord);
+    			}
+    			notEqualFlag = true;
+    		});
+	},
+	// 请求移出事件
+	requestShiftOut : function() {
+		var records = mvToolsexportGrid.getSelectionModel().getSelections();
+		for(var i = 0; i<records.length; i++) {
+			mvToolsexportGrid.store.remove(records[i]);
+		}
+	},
+	
+	
+	// 导出
+	doExport : function() {
+		if (mvToolsexportGrid.getStore().getCount() > 0) {
+			
+			var tool_codes = new Array();
+			var appsys_codes = new Array();
+			var server_groups= new Array();
+			var shell_names= new Array();
+			var os_types =new Array();
+			var position_types = new Array();
+			var tool_types =new Array();
+			var tool_names =new Array();
+			mvToolsexportGrid.getStore().each(function(record){
+				tool_codes.push(record.get('tool_code'));
+				appsys_codes.push(record.get('appsys_code'));
+				server_groups.push(record.get('server_group'));
+				shell_names.push(record.get('shell_name'));
+				position_types.push(record.get('position_type'));
+				os_types.push(record.get('os_type'));
+				tool_names.push(record.get('tool_name'));
+				tool_types.push(record.get('tool_type'));
+			},this);
+		
+		
+			 Ext.Msg.show({
+						title : '<fmt:message key="message.title" />',
+						msg : '<fmt:message key="toolbox.export_confirm" />',
+						buttons : Ext.MessageBox.OKCANCEL,
+						icon : Ext.MessageBox.QUESTION,
+						minWidth : 200,
+						scope : this,
+						
+						fn : function(buttonId) {
+							if (buttonId == 'ok') {
+								toolboxexportmask.show();
+
+								Ext.Ajax.request({
+									        method : 'POST',
+											url : '${ctx}/${appPath}/ToolBoxController/exporttools',
+											scope : this,
+											timeout:600000,
+											success : this.exportSuccess,
+											failure : this.exportFailure,
+											params : {
+												tool_codes : tool_codes,
+												appsys_codes : appsys_codes,
+												server_groups:server_groups,
+												shell_names : shell_names,
+												position_types :position_types,
+												os_types : os_types,
+												tool_names : tool_names,
+												tool_types : tool_types
+											}
+										});
+							}
+						}
+					});
+		} else {
+			Ext.Msg.show({
+						title : '<fmt:message key="message.title" />',
+						msg : '<fmt:message key="message.select.one.at.least" />',
+						minWidth : 200,
+						buttons : Ext.MessageBox.OK,
+						icon : Ext.MessageBox.ERROR
+					});
+		}
+	},
+	
+
+	doReset : function() {
+		this.getForm().reset();
+		exportToolsStore.load();
+	},
+	
+	exportSuccess : function(response, options) {
+		if (Ext.decode(response.responseText).success == false) {
+			toolboxexportmask.hide();
+			exportToolsStore.load();
+			var error = Ext.decode(response.responseText).error;
+			Ext.Msg.show( {
+				title : '<fmt:message key="message.title" />',
+				msg : '<fmt:message key="message.export.failed" />!<fmt:message key="error.code" />:' + error,
+				minWidth : 200,
+				buttons : Ext.MessageBox.OK,
+				icon : Ext.MessageBox.ERROR
+			});
+		}else if (Ext.decode(response.responseText).success == true) {
+			toolboxexportmask.hide();
+			exportToolsStore.load();
+			Ext.Msg.show( {
+				title : '<fmt:message key="message.title" />',
+				msg : '<fmt:message key="message.export.successful" />',
+				minWidth : 200,
+				buttons : Ext.MessageBox.OK,
+				icon : Ext.MessageBox.INFO,
+				fn:function(btn){
+					if(btn =='ok'){
+						mvToolsexportGridStore.removeAll();
+					}
+				}
+			});
+		}
+	} ,
+	exportFailure : function() {
+		toolboxexportmask.hide();
+		exportToolsStore.load();
+		Ext.Msg.show({
+					title : '<fmt:message key="message.title" />',
+					msg : '<fmt:message key="message.export.failed" />!',
+					minWidth : 200,
+					buttons : Ext.MessageBox.OK,
+					icon : Ext.MessageBox.ERROR
+				});
+	}
+});
+
+// 实例化新建表单,并加入到Tab页中
+Ext.getCmp("TOOLBOX_EXPORT").add(new ToolboxExportForm());
+// 刷新Tab页布局
+Ext.getCmp("TOOLBOX_EXPORT").doLayout();
+exportToolsStore.on('beforeload',function(){
+	this.baseParams = {
+		appsys_code:Ext.getCmp('appsys_code_exportid').getValue(),
+		os_type:Ext.getCmp('os_type_exportid').getValue(),
+		limit : 1000
+	};
+});
+</script>

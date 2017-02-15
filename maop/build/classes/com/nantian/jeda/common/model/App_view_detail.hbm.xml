@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.nantian.jeda.common.model">
+<class name="App_view_detail" table="APP_VIEW_DETAIL" dynamic-update="true"
+		dynamic-insert="true">
+		<comment>功能详情</comment>
+		<id name="avd_id" length="50" type="java.lang.String">
+			<column name="AVD_ID" >
+				<comment>主键</comment>
+			</column>
+		</id>
+		<property generated="never" lazy="false" name="avd_rel_id" type="java.lang.String">
+			<column name="AVD_REL_ID">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="avd_simpdesc" type="java.lang.String">
+			<column name="AVD_SIMPDESC">
+			</column>
+		</property>	
+		<property generated="never" lazy="false" name="avd_descdetail" type="org.springframework.orm.hibernate3.support.ClobStringType">
+			<!-- Clob的存储形式 -->
+			<column name="AVD_DESCDETAIL">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="avd_type" type="java.lang.String">
+			<column name="AVD_TYPE">
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

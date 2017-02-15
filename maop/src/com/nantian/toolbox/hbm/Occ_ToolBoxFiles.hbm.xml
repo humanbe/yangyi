@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.toolbox.vo">
+	<class name="OccToolBoxFilesVo" table="OCC_TOOL_BOX_FILES" dynamic-update="true"
+		dynamic-insert="true">
+		<composite-id>
+			<key-property name="tool_code" column="TOOL_CODE" type="java.lang.String"></key-property>
+			<key-property name="file_id" column="FILE_ID" type="java.lang.String"></key-property>
+		</composite-id>
+		<property name="file_content" generated="never" lazy="false"  type="binary">
+			<column name="FILE_CONTENT"></column>
+		</property>
+		
+		<property generated="never" lazy="false" name="file_type"
+			 type="java.lang.String">
+			<column name="FILE_TYPE">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="file_name"
+			 type="java.lang.String">
+			<column name="FILE_NAME">
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>
+
+

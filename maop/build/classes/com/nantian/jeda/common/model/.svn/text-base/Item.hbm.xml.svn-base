@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.jeda.common.model">
+	<class name="Item" table="JEDA_ITEM" dynamic-update="true" dynamic-insert="true">
+		<comment>数据项主表</comment>
+		<id name="id" length="50">
+			<column name="ITEM_ID">
+				<comment>主键</comment>
+			</column>
+		</id>
+		<version name="version" type="integer">
+			<column name="ITEM_VERSION">
+				<comment>数据版本</comment>
+			</column>
+		</version>
+		<property name="name">
+			<column name="ITEM_NAME" length="100">
+				<comment>名称</comment>
+			</column>
+		</property>
+		<property name="description">
+			<column name="ITEM_DESCRIPTION" length="1000">
+				<comment>描述</comment>
+			</column>
+		</property>
+		<property name="permission" type="boolean">
+			<column name="ITEM_IS_PERMISSION">
+				<comment>是字典权限</comment>
+			</column>
+		</property>
+		<property name="order" type="integer">
+			<column name="ITEM_ORDER">
+				<comment>排序</comment>
+			</column>
+		</property>
+		<set name="children">
+			<key column="ITEM_ID" />
+			<one-to-many class="SubItem" />
+		</set>
+		<many-to-one name="creator" class="com.nantian.jeda.common.model.User" fetch="join" update="false">
+			<column name="ITEM_CREATOR">
+				<comment>创建者</comment>
+			</column>
+		</many-to-one>
+		<property name="created" type="date" update="false">
+			<column name="ITEM_CREATED">
+				<comment>创建时间</comment>
+			</column>
+		</property>
+		<many-to-one name="modifier" class="com.nantian.jeda.common.model.User" fetch="join">
+			<column name="ITEM_MODIFIER">
+				<comment>修改者</comment>
+			</column>
+		</many-to-one>
+		<property name="modified" type="date">
+			<column name="ITEM_MODIFIED">
+				<comment>修改时间</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

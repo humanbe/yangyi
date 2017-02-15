@@ -1,0 +1,189 @@
+/**
+ * Copyright 2010 Beijing Nantian Software Co.,Ltd.
+ */
+package com.nantian.rept;
+
+/**
+ * @author <a href="mailto:donghui@nantian.com.cn">donghui</a>
+ * 
+ */
+public class ReptConstants {
+
+	/** 分组header(最近31天分钟和秒交易情况) */
+	public static final String DEFAULT_COLUMN_HEADER_KEY_TIMESTRANS = "分钟/秒钟最大交易情况";
+	
+	/**分组header(最近31天日批量执行情况)*/
+	public static final String DEFAULT_COLUMN_HEADER_KEY_START_TIME = "开始时间";
+	public static final String DEFAULT_COLUMN_HEADER_KEY_END_TIME = "结束时间";
+	public static final String DEFAULT_COLUMN_HEADER_KEY_EXCUTE_TIME = "运行时间";
+	
+	/**分组header(最近31天日网络资源使用情况)*/
+	public static final String DEFAULT_COLUMN_HEADER_KEY_NET_RESRC = "出口带宽峰值(单位:Mbps)";
+	
+	/**分组header(最近31天日weblogic使用情况)*/
+	public static final String DEFAULT_COLUMN_HEADER_KEY_PEAK_QUEUE = "WBLG_DLFZ";//"队列使用数峰值"
+	public static final String DEFAULT_COLUMN_HEADER_KEY_PEAK_JDBC = "WBLG_JDBC";//"JDBC链接使用数峰值"
+	public static final String DEFAULT_COLUMN_HEADER_KEY_PEAK_MEMORY = "WBLG_NCFZ";//"WebLogic内存使用率峰值"
+	
+	/**分组header(当日weblogic使用情况)*/
+	public static final String DEFAULT_COLUMN_HEADER_KEY_QUEUE = "WBLG_DLFZ";//队列使用数
+	public static final String DEFAULT_COLUMN_HEADER_KEY_JDBC = "WBLG_JDBC";//JDBC链接使用数
+	public static final String DEFAULT_COLUMN_HEADER_KEY_MEMORY = "WBLG_NCFZ";//WebLogic内存使用率
+	
+	/**特殊处理功能名(系统资源使用率图表)*/
+	public static final String SPECIAL_SHEETNAME_SYS_RESRC = "系统资源使用率图表";
+	/**字段列名特殊处理(系统资源使用率图表)*/
+	public static final String DEFAULT_COLUMN_KEY_BATCH_TIME = "PLTJ_PLSD";//批量处理时段
+	
+	/**特殊处理功能名(运行情况总结)*/
+	public static final String SPECIAL_SHEETNAME_RUN_SUMMARY = "运行情况总结";
+	/** 默认运行情况总结 KEY */
+	public static final String DEFAULT_RUN_STATE_SUMMARY = "runStateSummary";
+	
+	/** 默认chart图像数据KEY */
+	public static final String DEFAULT_CHART_DAT_KEY = "chartDat";
+	
+	/** 默认chart SheetName KEY */
+	public static final String DEFAULT_CHARTFILE_SHEETNAME = "sheetName";
+	
+	/** 默认chart subSheetName KEY */
+	public static final String DEFAULT_CHARTFILE_SUB_SHEETNAME = "subSheetName";
+	
+	/**关键字-成功率*/
+	public static String KW_SUCCESS_RATE = "_CGLL";
+	/**关键字-成功率预警区间值*/
+	public static String KW_SUCCESS_RATE_WARN_INTERVAL = "0.05";//10%
+	
+	/**应用变更汇总对应的sheet名称*/
+	public static final String APP_CHANGE_SHEET = "应用变更列表";
+	public static final String APP_CHANGE_RISK_EVAL_SHEET = "应用变更风险评估";
+	public static final String APP_CHANGE_SUMMARY_SHEET = "应用变更问题汇总";
+	public static final String MONITOR_WARN_SHEET = "监控告警";
+	
+	/**风险评估链接名称*/
+	public static final String APP_CHANGE_RISK_EVAL_LINK = "风险评估链接";
+	
+	/**应用变更汇总文件名前缀*/
+	public static final String APP_CHANGE_FILE_NAME_PREFIX = "应用变更完成情况汇总";
+	
+	/**容量阀值采集文件名前缀*/
+	public static final String CAPACITY_THRESHOLD_FILE_NAME_PREFIX = "42个对外关键系统容量阀值采集";
+	
+	/**科目配置表列的数量*/
+	public static final int RPT_ITEM_CONF_COLUMNS = 8;
+	
+	/**历史交易量峰值*/
+	public static final String RPT_PEAK_TRANS_ITEM_NAME = "历史交易量峰值";
+	
+	/**阀值交易量*/
+	public static final String RPT_VAVLE_TRANS_ITEM_NAME = "阀值交易量";
+	
+	/**重要系统列表*/
+	public static final String RPT_IMPORTANT_SYSTEM_LIST = "CCS,EBIP,EBMP,EBPP,ECAS,ECIF,EPAY,ESSC,FUND,GOLD,GTS,IFTS,NBANK";
+
+	/**weblogic数据采集webservice地址*/
+	//maopdev
+	public static final String DATA_COLLECT_WSDL = "http://10.200.36.221:17202/RptWSService?wsdl";
+	//dev
+//	public static final String DATA_COLLECT_WSDL = "http://10.200.36.192:17202/RptWSService?wsdl";
+	//qadev
+//	public static final String DATA_COLLECT_WSDL = "http://10.200.36.225:17202/RptWSService?wsdl";
+	//prod
+//	public static final String DATA_COLLECT_WSDL = "http://10.1.49.1:17202/RptWSService?wsdl";
+	
+	
+	/**统计科目分支列表*/
+	public static enum statisticalItem {
+		合计,平均值,最大值,历史峰值,峰值日期,other;
+		public static statisticalItem getItem(String item){
+			for (statisticalItem c : statisticalItem.values()) {
+				if(c.name().equals(item)){
+					return valueOf(item);
+				}
+			}
+			return valueOf("other");
+		}
+	}
+	
+	/**日报功能列表*/
+	public static enum sheetNameItem {
+		最近31天日交易情况,
+		最近7天分小时交易情况,
+		最近7天日批量执行情况,
+		实时分小时累计交易情况,
+		最近31天分钟和秒交易情况,
+		最近31天日批量执行情况,
+		最近31天日网络资源使用情况,
+		当日网络资源使用情况,
+		最近31天日weblogic使用情况,
+		当日weblogic使用情况,
+		系统资源使用率图表,
+		other;
+		public static sheetNameItem getSheetNameItem(String item){
+			for (sheetNameItem c : sheetNameItem.values()) {
+				if(c.name().equals(item)){
+					return valueOf(item);
+				}
+			}
+			return valueOf("other");
+		}
+	}
+	
+	/**星期列表*/
+	public static enum weekItem {
+		星期一,星期二,星期三,星期四,星期五,星期六,星期日;
+		public static weekItem getWeekItem(String item){
+			for (weekItem c : weekItem.values()) {
+				if(c.name().equals(item)){
+					return valueOf(item);
+				}
+			}
+			return valueOf("other");
+		}
+	}
+	
+	/**月报功能列表*/
+	public static enum sheetEnum {
+		当月日交易量,
+		当月日交易成功率,
+		当月日交易响应时间,
+		当月日网络资源使用情况,
+		当月日批量执行情况,
+		当月weblogic使用情况,
+		当月分钟和秒交易情况,
+		当月系统资源使用率,
+		最近13个月日交易量,
+		最近13个月月交易量,
+		最近13个月分钟交易量峰值,
+		最近13个月秒钟交易量峰值,
+		最近13个月系统资源使用率,
+		other;
+		public static sheetEnum getSheetEnum(String item){
+			for (sheetEnum c : sheetEnum.values()) {
+				if(c.name().equals(item)){
+					return valueOf(item);
+				}
+			}
+			return valueOf("other");
+		}
+	}
+	
+	/**月报功能列表*/
+	public static enum yUnitEnum{
+		百,
+		千,
+		万,
+		十万,
+		百万,
+		other;
+		public static yUnitEnum getYUnitEnum(String item){
+			for (yUnitEnum c : yUnitEnum.values()) {
+				if(c.name().equals(item)){
+					return valueOf(item);
+				}
+			}
+			return valueOf("other");
+		}
+	}
+	
+}

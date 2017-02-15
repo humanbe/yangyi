@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.rept.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="HoursTransVo" table="HOURS_TRANS">
+  <composite-id>
+   <key-property name="aplCode" type="java.lang.String">
+    <column name="APL_CODE" not-null="true">
+    	<comment>应用系统编号</comment>
+    </column>
+   </key-property>
+    <key-property name="transDate" type="java.lang.String">
+    <column name="TRANS_DATE" not-null="true">
+    	<comment>交易日期</comment>
+    </column>
+   </key-property>
+   <key-property name="countHourTime" type="java.lang.String">
+    <column name="COUNT_HOUR_TIME" not-null="true">
+    	<comment>统计小时</comment>
+    </column>
+   </key-property>
+   <key-property name="countItem" type="java.lang.String">
+    <column name="COUNT_ITEM" not-null="true">
+    	<comment>统计科目</comment>
+    </column>
+   </key-property>
+  </composite-id>
+  <property name="countAmount" generated="never" not-null="false" type="java.lang.Integer">
+   <column name="COUNT_AMOUNT">
+       	<comment>统计数值</comment>
+   </column>
+  </property>
+  </class>
+</hibernate-mapping>

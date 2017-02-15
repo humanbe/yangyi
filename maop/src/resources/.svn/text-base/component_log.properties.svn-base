@@ -1,0 +1,367 @@
+#Created by JInto - www.guh-software.de
+#Thu Nov 22 10:02:40 CST 2012
+LogAdvisor0001.loglevel=INFO
+LogAdvisor0001.message=<I> {0} \u65B9\u6CD5 {1} \u5F00\u59CB
+LogAdvisor0002.loglevel=INFO
+LogAdvisor0002.message=<I> {0} \u65B9\u6CD5 {1} \u6B63\u5E38\u7ED3\u675F
+LogAdvisor0099.loglevel=ERROR
+LogAdvisor0099.message=<E> {0} \u65B9\u6CD5 {1} \u5F02\u5E38\u7ED3\u675F
+Component0099.loglevel=ERROR
+Component0099.message=<E> {0} \u65B9\u6CD5 {1} \u5F02\u5E38\u7ED3\u675F
+Component0001.loglevel=INFO
+Component0001.message=<I> \u65B9\u6CD5 {0} \u5F00\u59CB
+Component0002.loglevel=INFO
+Component0002.message=<I> \u65B9\u6CD5 {0} \u6B63\u5E38\u7ED3\u675F
+Component0999.loglevel=ERROR
+Component0999.message=<E> \u672A\u77E5\u5F02\u5E38\u3002[{0}]
+Component0003.loglevel=INFO
+Component0003.message=Component0003<I> {0}\=[{1}]
+Component0004.loglevel=WARN
+Component0004.message=Component0004<W> \u8D44\u6E90\u6587\u4EF6\u4E2D\u672A\u8BBE\u5B9A\u3002\u4F7F\u7528\u9ED8\u8BA4\u503C\u3002  properties-factory\=[{0}]\uFF0CKEY\u540D\=[{1}]\uFF0C\u9ED8\u8BA4\u503C\=[{2}]
+Component0005.loglevel=ERROR
+Component0005.message=Component0005<E> \u8D44\u6E90\u6587\u4EF6\u4E2D\u672A\u8BBE\u5B9A\u3002\u5904\u7406\u505C\u6B62\u3002 properties-factory\=[{0}]\uFF0CKEY\u540D\=[{1}]
+Component0006.loglevel=INFO
+Component0006.message=Component0006<I> \u5C5E\u6027KEY\=[{0}]\uFF0C\u5C5E\u6027\u503C\=[{1}]
+Component0007.loglevel=ERROR
+Component0007.message=Component0007<E> \u53D1\u751F\u884C\u9501\u8D85\u65F6\u3002[{0}]
+Component0008.loglevel=ERROR
+Component0008.message=Component0008<E> \u83B7\u53D6\u8FDE\u63A5\u8D85\u65F6\u3002[{0}]
+Component0009.loglevel=ERROR
+Component0009.message=Component0009<E> \u83B7\u53D6\u53D1\u9001JMS\u6D88\u606F\u7684\u961F\u5217\u7684JNDI\u540D\u5931\u8D25\u3002\u961F\u5217\u540D\=[{0}]
+Component0010.loglevel=ERROR
+Component0010.message=Component0010<E> \u83B7\u53D6\u53D1\u9001JMS\u6D88\u606F\u7684\u961F\u5217\u540D\u9519\u8BEF\u3002\u961F\u5217\u540D\=[{0}]
+Component0011.loglevel=ERROR
+Component0011.message=Component0011<E> \u4E0A\u4F20\u6587\u4EF6\u5904\u7406\u5B8C\u6210\u540E\u5B58\u653E\u7684\u76EE\u5F55\u8BBE\u5B9A\u9519\u8BEF\u3002properties-factory\=[{0}]\u3001KEY\u540D\=[{1}]\u3001\u8BBE\u5B9A\u503C\=[{2}]
+Component0012.loglevel=ERROR
+Component0012.message=Component0012<E> \u56E0\u4E3A\u8D44\u6E90\u6587\u4EF6\u8BBE\u5B9A\u503C\u9519\u8BEF\uFF0C\u4E0D\u80FD\u7EE7\u7EED\u5904\u7406\u3002 properties-factory\=[{0}]\u3001KEY\u540D\=[{1}]\u3001\u8BBE\u5B9A\u503C\=[{2}]
+Component0013.loglevel=WARN
+Component0013.message=Component0013<W> \u8D44\u6E90\u6587\u4EF6\u7684\u8BBE\u5B9A\u503C\u9519\u8BEF\uFF0C\u8BBE\u7F6E\u9ED8\u8BA4\u503C\u3002 properties-factory\=[{0}]\u3001KEY\u540D\=[{1}]\u3001\u8BBE\u5B9A\u503C\=[{2}]\u3001\u9ED8\u8BA4\u503C\=[{3}]
+Component0014.loglevel=WARN
+Component0014.message=Component0014<W> SVN\u6570\u636E\u4EA7\u54C1\u5E93\u8DEF\u5F84\u672A\u8BBE\u5B9A\u3002 SVN\u7684\u8DEF\u5F84\=[{0}]\u3001KEY\u7684\u503C\=[{1}]\u3001properties-factory\=[{2}]\u3001KEY\u540D\=[{3}]
+Component0015.loglevel=ERROR
+Component0015.message=Component0015<E> \u53D1\u751F\u5F02\u5E38[{0}]\u3001\u53C2\u6570\=[{1}]
+Component1001.loglevel=WARN
+Component1001.message=Component1001<W> SSH\u8FDE\u63A5\u5931\u8D25\u3002\u670D\u52A1\u5668\u540D\=[{0}]\u3001\u7528\u6237ID\=[{1}]\u3001[{2}]
+Component1002.loglevel=WARN
+Component1002.message=Component1002<W> \u672A\u77E5\u4E3B\u673A\u3002\u4E3B\u673A\u540D\=[{0}]\u3001\u7528\u6237ID\=[{1}]\u3001[{2}]
+Component1003.loglevel=WARN
+Component1003.message=Component1003<W> SSH\u8BA4\u8BC1\u5931\u8D25\u3002\u670D\u52A1\u5668\u540D\=[{0}]\u3001\u7528\u6237ID\=[{1}]
+Component1004.loglevel=WARN
+Component1004.message=Component1004<W> {0}\u672A\u6307\u5B9A\u53C2\u6570\u3002
+Component1005.loglevel=WARN
+Component1005.message=Component1005<W> CMD\u6267\u884C\u5F02\u5E38\u3002CMD\u540D\=[{0}]\u3001\u6807\u51C6\u8F93\u51FA\=[{1}]\u3001\u6807\u51C6\u5F02\u5E38\u8F93\u51FA\=[{2}]
+Component1006.loglevel=WARN
+Component1006.message=Component1006<W> SCP\u64CD\u4F5C\u53D1\u751F\u672A\u77E5\u5F02\u5E38\u3002[{0}]
+Component1007.loglevel=WARN
+Component1007.message=Component1007<W> SCP\u64CD\u4F5C\u53D1\u751F\u9519\u8BEF\u3002[{0}]
+Component1008.loglevel=WARN
+Component1008.message=Component1008<W> \u672A\u8FDB\u884C\u8FDE\u63A5\u3002{0}\=[{1}]
+Component1011.loglevel=WARN
+Component1011.message=Component1011<W> \u8981\u590D\u5236\u7684\u6587\u4EF6\u6216\u8005\u76EE\u5F55\u4E0D\u5B58\u5728\u3002\u8981\u590D\u5236\u7684\u6587\u4EF6\u6216\u8005\u76EE\u5F55\=[{0}]
+Component1031.loglevel=ERROR
+Component1031.message=Component1031<I> \u5F02\u5E38\u3002[{0}]
+Component1999.loglevel=WARN
+Component1999.message=Component1999<W> \u672A\u77E5\u5F02\u5E38[{0}]\u3001\u53C2\u6570\=[{1}]\u3001\u503C\=[{2}]
+Component2001.loglevel=WARN
+Component2001.message=Component2001<W> SVN\u8FDE\u63A5\u5931\u8D25\u3002URL\=[{0}]\u3001\u7528\u6237ID\=[{1}]\u3001[{2}]
+Component2002.loglevel=WARN
+Component2002.message=Component2002<W> \u672A\u77E5\u4E3B\u673A\u3002URL\=[{0}]\u3001\u7528\u6237ID\=[{1}]\u3001[{2}]
+Component2003.loglevel=WARN
+Component2003.message=Component2003<W> SVN\u8BA4\u8BC1\u5931\u8D25\u3002URL\=[{0}]\u3001\u7528\u6237ID\=[{1}]\u3001[{2}]
+Component2004.loglevel=WARN
+Component2004.message=Component2004<W> \u53C2\u6570[{0}]\u672A\u6307\u5B9A\u3002
+Component2005.loglevel=WARN
+Component2005.message=Component2005<W> SNV\u6570\u636E\u4EA7\u54C1\u5E93\u7684\u8DEF\u5F84\u4E2D\u542B\u6709\u975E\u6CD5\u5B57\u7B26\u3002PATH\=[{0}]\u3001[{1}]
+Component2006.loglevel=WARN
+Component2006.message=Component2006<W> \u4F7F\u7528\u4E86\u4FDD\u7559\u5B57\u7684\u76EE\u5F55\u540D\u3002PATH\=[{0}]\u3001[{1}]
+Component2007.loglevel=WARN
+Component2007.message=Component2007<W> \u6307\u5B9A\u7684\u540D\u79F0\u4E0D\u662F\u8DEF\u5F84\u540D\u3002PATH\=[{0}]\u3001[{1}]
+Component2011.loglevel=WARN
+Component2011.message=Component2011<W> \u6570\u636E\u4EA7\u54C1\u5E93\u4E0D\u5B58\u5728\u3002PATH\=[{0}]
+Component2012.loglevel=WARN
+Component2012.message=Component2012<W> \u8981\u5220\u9664\u7684\u6570\u636E\u4EA7\u54C1\u5E93\u4E0D\u5B58\u5728\u3002PATH\=[{0}]\u3001[{1}]
+Component2013.loglevel=WARN
+Component2013.message=Component2013<W> checkOut\u8D44\u6E90\u4E0D\u5B58\u5728\u3002PATH\=[{0}]\u3001[{1}]
+Component2014.loglevel=WARN
+Component2014.message=Component2014<W> export\u8D44\u6E90\u4E0D\u5B58\u5728\u3002PATH\=[{0}]\u3001[{1}]
+Component2015.loglevel=WARN
+Component2015.message=Component2015<W> \u6570\u636E\u4EA7\u54C1\u5E93\u4E0D\u5B58\u5728\u3002PATH\=[{0}]\u3001[{1}]
+Component2016.loglevel=WARN
+Component2016.message=Component2016<W> \u6309\u6700\u65B0\u4FEE\u8BA2\u53F7\u83B7\u53D6\u7684\u8D44\u6E90\u4E0D\u5B58\u5728\u3002PATH\=[{0}]
+Component2017.loglevel=WARN
+Component2017.message=Component2017<W> \u6570\u636E\u4EA7\u54C1\u5E93\u9519\u8BEF\u3002PATH\=[{0}]
+Component2018.loglevel=WARN
+Component2018.message=Component2018<W> Import\u7684\u6587\u4EF6\u6216\u8005\u76EE\u5F55\u4E0D\u5B58\u5728\u3002PATH\=[{0}]\u3001[{1}
+Component2019.loglevel=WARN
+Component2019.message=Component2019<W> \u767B\u5F55\u72B6\u6001\u7684\u6587\u4EF6\u4E0D\u5B58\u5728\u3002PATH\=[{0}]\u3001[{1}]
+Component2020.loglevel=WARN
+Component2020.message=Component2020<W> \u5220\u9664\u72B6\u6001\u7684\u6587\u4EF6\u4E0D\u5B58\u5728\u3002PATH\=[{0}]\u3001[{1}]
+Component2021.loglevel=WARN
+Component2021.message=Component2021<W> \u6307\u5B9A\u7684\u6587\u4EF6\u4E0D\u5B58\u5728\u3002PATH\=[{0}]
+Component2022.loglevel=WARN
+Component2022.message=Component2022<W> \u65E0\u6CD5\u83B7\u53D6\u6587\u4EF6\u4FE1\u606F\u3002PATH\=[{0}]
+Component2026.loglevel=WARN
+Component2026.message=Component2026<W> \u8981checkout\u7684\u4FEE\u8BA2\u7248\u672C\u4E0D\u5B58\u5728\u3002PATH\=[{0}]\u3001[{1}]
+Component2027.loglevel=WARN
+Component2027.message=Component2027<W> \u8981export\u7684\u4FEE\u8BA2\u7248\u672C\u4E0D\u5B58\u5728\u3002PATH\=[{0}]\u3001[{1}]
+Component2028.loglevel=WARN
+Component2028.message=Component2028<W> \u8981\u590D\u5236\u7684\u4FEE\u8BA2\u7248\u672C\u4E0D\u5B58\u5728\u3002PATH\=[{0}]\u3001[{1}]
+Component2031.loglevel=WARN
+Component2031.message=Component2031<W> \u6570\u636E\u4EA7\u54C1\u5E93\u4E2D\u6587\u4EF6\u6216\u8005\u76EE\u5F55\u5B58\u5728\u3002PATH\=[{0}]
+Component2032.loglevel=WARN
+Component2032.message=Component2032<W> \u590D\u5236\u7684\u76EE\u5F55\u5DF2\u7ECF\u5B58\u5728\u3002PATH\=[{0}]\u3001[{1}]
+Component2033.loglevel=WARN
+Component2033.message=Component2033<W> \u65E0\u6CD5\u65B0\u5EFA\u76EE\u5F55\u3002PATH\=[{0}]\u3001[{1}]
+Component2041.loglevel=WARN
+Component2041.message=Component2041<W> \u6307\u5B9A\u7684\u6587\u4EF6\u672A\u8FDB\u884C\u7248\u672C\u7BA1\u7406\u3002PATH\=[{0}]\u3001[{1}]
+Component2042.loglevel=WARN
+Component2042.message=Component2042<W> \u6307\u5B9A\u7684\u6587\u4EF6\u5DF2\u7ECF\u8FDB\u884C\u7248\u672C\u7BA1\u7406\u3002PATH\=[{0}]\u3001[{1}]
+Component2043.loglevel=WARN
+Component2043.message=Component2043<W> \u6307\u5B9A\u7684\u76EE\u5F55\u65E0\u6CD5\u590D\u5236\u3002PATH\=[{0}]\u3001[{1}]
+Component2044.loglevel=WARN
+Component2044.message=Component2044<W> \u6307\u5B9A\u7684\u76EE\u5F55\u65E0\u6CD5\u590D\u5236\u3002PATH\=[{0}]
+Component2045.loglevel=WARN
+Component2045.message=Component2045<W> \u6307\u5B9A\u7684\u76EE\u5F55\u65E0\u6CD5\u590D\u5236\u3002PATH\=[{0}]
+Component2046.loglevel=WARN
+Component2046.message=Component2046<W> \u6307\u5B9A\u7684\u76EE\u5F55\u65E0\u6CD5\u590D\u5236\u3002PATH\=[{0}]\u3001[{1}]
+Component2047.loglevel=WARN
+Component2047.message=Component2047<W> \u76EE\u5F55\u88AB\u5176\u4ED6URL\u8BBF\u95EE\u8D44\u6E90\u5360\u7528\u3002PATH\=[{0}]\u3001[{1}]
+Component2048.loglevel=WARN
+Component2048.message=Component2048<W> \u5728\u590D\u5236\u7684\u64CD\u4F5C\u4E2D\u5B58\u5728\u672A\u8FDB\u884C\u7248\u672C\u7BA1\u7406\u7684\u6587\u4EF6\u3002PATH\=[{0}]\u3001[{1}]
+Component2049.loglevel=WARN
+Component2049.message=Component2049<W> \u590D\u5236\u7684\u6587\u4EF6\u4E0D\u5B58\u5728\u3002PATH\=[{0}]\u3001[{1}]
+Component2051.loglevel=WARN
+Component2051.message=Component2051<W> \u8D44\u6E90\u88AB\u5176\u4ED6\u7528\u6237\u5360\u7528\u3002PATH\=[{0}]\u3001[{1}]
+Component2061.loglevel=WARN
+Component2061.message=Component2061<W> \u6570\u636E\u4EA7\u54C1\u5E93\u66F4\u65B0\u5931\u8D25\u3002PATH\=[{0}]\u3001[{1}]
+Component2062.loglevel=WARN
+Component2062.message=Component2062<W> \u65E0\u6CD5\u505A\u6210\u6570\u636E\u4EA7\u54C1\u5E93\u3002PATH\=[{0}]\u3001[{1}]
+Component2063.loglevel=WARN
+Component2063.message=Component2063<W> \u65E0\u6CD5\u5220\u9664\u6570\u636E\u4EA7\u54C1\u5E93\u3002PATH\=[{0}]\u3001[{1}]
+Component2064.loglevel=WARN
+Component2064.message=Component2064<W> \u65E0\u6CD5\u521B\u5EFA\u6587\u4EF6\u3002PATH\=[{0}]\u3001[{1}]
+Component2065.loglevel=ERROR
+Component2065.message=Component2065<E> \u83B7\u53D6\u8D44\u6E90\u6587\u4EF6\u4E2D\u6570\u636E\u4EA7\u54C1\u7684\u987A\u756A\u53F7\u5931\u8D25\u3002PATH\=[{0}]\u3001\u8D44\u6E90\u6587\u4EF6\=[{1}]\u3001KEY\u540D\=[{2}]
+Component2066.loglevel=WARN
+Component2066.message=Component2066<W> Diff\u7684\u6587\u4EF6\u6216\u8005\u76EE\u5F55\u4E0D\u5B58\u5728\u3002PATH\=[{0}]\u3001[{1}
+Component2067.loglevel=WARN
+Component2067.message=Component2066<W> \u53EA\u80FD\u5BF9\u7EB3\u5165\u7248\u672C\u63A7\u5236\u7684\u8DEF\u5F84\u6267\u884C\u6B64\u64CD\u4F5C\u3002PATH\=[{0}]\u3001[{1}]
+Component2999.loglevel=WARN
+Component2999.message=Component2999<W> \u672A\u77E5\u5F02\u5E38[{0}]\u3001\u53C2\u6570\=[{1}]\u3001\u503C\=[{2}]
+Component3001.loglevel=WARN
+Component3001.message=Component3001<W> \u672A\u77E5\u4E3B\u673A\u3002\u4E3B\u673A\u540D\=[{0}]\u3001\u7528\u6237ID\=[{1}]\u3001[{2}]
+Component3002.loglevel=WARN
+Component3002.message=Component3002<W> FTP\u8FDE\u63A5\u5931\u8D25\u3002\u4E3B\u673A\u540D\=[{0}]\u3001\u7528\u6237ID\=[{1}]\u3001[{2}]
+Component3003.loglevel=WARN
+Component3003.message=Component3003<W> \u8FD4\u56DE\u9519\u8BEF\u5E94\u7B54\u7F16\u7801\u3002\u5E94\u7B54\u7F16\u7801\=[{0}]
+Component3004.loglevel=WARN
+Component3004.message=Component3004<W> FTP\u8BA4\u8BC1\u5931\u8D25\u3002\u4E3B\u673A\u540D\=[{0}]\u3001\u7528\u6237ID\=[{1}]
+Component3005.loglevel=WARN
+Component3005.message=Component3005<W> \u53C2\u6570[{0}]\u672A\u6307\u5B9A\u3002
+Component3006.loglevel=INFO
+Component3006.message=Component3006<I> \u5904\u7406\u7ED3\u679C {0}\=[{1}]
+Component3011.loglevel=WARN
+Component3011.message=Component3011<W> \u4E0A\u4F20\u7684\u6587\u4EF6\u4E0D\u5B58\u5728\u3002\u6587\u4EF6\u540D\=[{0}]\u3001[{1}]
+Component3012.loglevel=WARN
+Component3012.message=Component3012<W> \u6587\u4EF6\u65E0\u6CD5\u4E0A\u4F20\u3002\u6587\u4EF6\u540D\=[{0}]\u3001\u8FD4\u56DE\u503C\=[{1}]
+Component3013.loglevel=WARN
+Component3013.message=Component3013<W> \u65E0\u6CD5\u65B0\u5EFA\u76EE\u5F55\u3002\u76EE\u5F55\u540D\=[{0}]\u3001\u8FD4\u56DE\u503C\=[{1}]
+Component3014.loglevel=WARN
+Component3014.message=Component3014<W> \u547D\u4EE4\u6267\u884C\u5931\u8D25\u3002\u547D\u4EE4\=[{0}]\u3001\u8FD4\u56DE\u503C\=[{1}]
+Component3015.loglevel=WARN
+Component3015.message=Component3015<W> \u6587\u4EF6\u65E0\u6CD5\u4E0B\u8F7D\u3002\u6587\u4EF6\u540D\=[{0}]\u3001\u8FD4\u56DE\u503C\=[{1}]
+Component3016.loglevel=WARN
+Component3016.message=Component3016<W> \u65E0\u6CD5\u521B\u5EFA\u4E0B\u8F7D\u6587\u4EF6\u3002\u6587\u4EF6\u540D\=[{0}]\u3001[{1}]
+Component3017.loglevel=WARN
+Component3017.message=Component3017<W> \u65E5\u671F\u76EE\u5F55\u65E0\u6CD5\u53D8\u66F4\u3002\u76EE\u5F55\u540D\=[{0}]\u3001\u8FD4\u56DE\u503C\=[{1}]
+Component3018.loglevel=WARN
+Component3018.message=Component3018<W> \u672A\u8FDE\u63A5\u3002{0}\=[{1}]
+Component3019.loglevel=WARN
+Component3019.message=Component3019<W> \u4E0B\u8F7D\u7684\u6587\u4EF6\u4E0D\u5B58\u5728\u3002\u6587\u4EF6\u540D\=[{0}]\u3001[{1}]
+Component3998.loglevel=WARN
+Component3998.message=Component3998<W> \u672A\u77E5\u5F02\u5E38\u3002[{0}]
+Component3999.loglevel=WARN
+Component3999.message=Component3999<W> \u672A\u77E5\u5F02\u5E38\u3002[{0}]\u3001\u53C2\u6570\=[{1}]\u3001\u503C\=[{2}]
+Component4001.loglevel=ERROR
+Component4001.message=Component4001<E> XML\u6587\u4EF6(sql-map-config)\u672A\u6307\u5B9A\u3002
+Component4002.loglevel=ERROR
+Component4002.message=Component4002<E> XML\u6587\u4EF6(sql-map-config)\u4E0D\u5B58\u5728\u3002XML\u6587\u4EF6\=[{0}], [{1}]
+Component4999.loglevel=ERROR
+Component4999.message=Component4999<E> \u672A\u77E5\u5F02\u5E38\u3002[{0}]
+Component5001.loglevel=ERROR
+Component5001.message=Component5001<E> \u767B\u5F55ID\u4E3Anull\u3002
+Component5002.loglevel=ERROR
+Component5002.message=Component5002<E> \u767B\u5F55ID\u4E3A\u7A7A\u3002
+Component5004.loglevel=ERROR
+Component5004.message=Component5004<E> QUEUE\u4E3Anull\u3002
+Component5005.loglevel=ERROR
+Component5005.message=Component5005<E> QUEUE\u4E3A\u7A7A\u3002
+Component5006.loglevel=ERROR
+Component5006.message=Component5006<E> JNDI\u4E0D\u5B58\u5728\u3002QUEUE\u540D\=[{0}]\u3001JNDI\u540D\=[{1}]\u3001[{2}]
+Component5007.loglevel=WARN
+Component5007.message=Component5007<W> {0}\u672A\u6307\u5B9A\u53C2\u6570\u3002
+Component5008.loglevel=WARN
+Component5008.message=Component5008<W> \u9884\u5B9A\u6267\u884C\u65F6\u95F4\u9519\u8BEF\u3002\u9884\u5B9A\u6267\u884C\u65F6\u95F4\=[{0}]
+Component5009.loglevel=WARN
+Component5009.message=Component5009<W> \u5F53\u524D\u8BB0\u5F55\u4E0D\u5B58\u5728\u3002\u767B\u5F55ID\=[{0}]
+Component5010.loglevel=WARN
+Component5010.message=Component5010<W> \u5F53\u524D\u8BB0\u5F55\u4E0D\u5B58\u5728\u3002\u767B\u5F55ID\=[{0}]
+Component5011.loglevel=INFO
+Component5011.message=Component5011<I> \u4F5C\u6210\u5904\u7406\u540E\u7684\u4E0A\u4F20\u6587\u4EF6\u3002\u6587\u4EF6\u540D\=[{0}]
+Component5012.loglevel=ERROR
+Component5012.message=Component5012<E> \u4F5C\u6210\u5904\u7406\u540E\u7684\u4E0A\u4F20\u6587\u4EF6\u5F02\u5E38\u3002 (\u672A\u8BBE\u5B9A\u529F\u80FDID)
+Component5013.loglevel=ERROR
+Component5013.message=Component5013<E> \u4F5C\u6210\u5904\u7406\u540E\u7684\u4E0A\u4F20\u6587\u4EF6\u65F6\uFF0C\u53D1\u751Fjava.io.IOException\u5F02\u5E38\u3002\u6587\u4EF6\u540D\=[{0}]
+Component5999.loglevel=ERROR
+Component5999.message=Component5999<E> JMS\u672A\u77E5\u5F02\u5E38\u3002[{0}]\u3001\u53C2\u6570\=[{1}]\u3001\u503C\=[{2}]
+Component6001.loglevel=ERROR
+Component6001.message=Component6001<E> JMS\u6D88\u606F\u7684\u767B\u5F55ID\u4E3Anull\u6216\u8005\u7A7A\u3002
+
+Component6002.loglevel=INFO
+Component6002.message=Component6002<I> \u6839\u636EJMS\u63A5\u53D7\u7684\u6D88\u606F\uFF0C\u83B7\u53D6\u767B\u5F55ID\u3002\u767B\u5F55ID\=[{0}]
+Component6003.loglevel=ERROR
+Component6003.message=Component6003<E> \u672A\u627E\u5230\u6267\u884C\u670D\u52A1\u7C7B\u3002\u6267\u884C\u670D\u52A1\u7C7B\=[{0}]\u3001KEY\u540D\=[{1}]\u3001\u503C\=[{2}]
+Component6004.loglevel=ERROR
+Component6004.message=Component6004<E> \u83B7\u53D6\u6267\u884C\u670D\u52A1\u7C7B\u65B9\u6CD5\u65F6\uFF0C\u53D1\u751F\u8FDD\u53CD\u5B89\u5168\u5F02\u5E38\u3002\u6267\u884C\u670D\u52A1\u7C7B\=[{0}]\u3001\u6267\u884C\u65B9\u6CD5\=[{1}]\u3001KEY\u540D\=[{2}]\u3001\u503C\=[{3}]
+Component6005.loglevel=ERROR
+Component6005.message=Component6005<E> \u672A\u627E\u5230\u6267\u884C\u670D\u52A1\u7C7B\u65B9\u6CD5\u3002\u6267\u884C\u670D\u52A1\u7C7B\=[{0}]\u3001\u6267\u884C\u670D\u52A1\u7C7B\u65B9\u6CD5\=[{1}]\u3001KEY\u540D\=[{2}]\u3001\u503C\=[{3}]
+Component6006.loglevel=ERROR
+Component6006.message=Component6006<E> \u6267\u884C\u65B9\u6CD5\u4F20\u9012\u9519\u8BEF\u53C2\u6570\u3002\u6267\u884C\u670D\u52A1\u7C7B\=[{0}]\u3001\u6267\u884C\u65B9\u6CD5\=[{1}]\u3001KEY\u540D\=[{2}]\u3001\u503C\=[{3}]
+Component6007.loglevel=ERROR
+Component6007.message=Component6007<E> \u9519\u8BEF\u8BBF\u95EE\u6267\u884C\u65B9\u6CD5\u3002\u6267\u884C\u670D\u52A1\u7C7B\=[{0}]\u3001\u6267\u884C\u65B9\u6CD5\=[{1}]\u3001KEY\u540D\=[{2}]\u3001\u503C\=[{3}]
+Component6008.loglevel=ERROR
+Component6008.message=Component6008<E> \u6267\u884C\u65B9\u6CD5\u53D1\u751F\u5F02\u5E38\u3002\u6267\u884C\u670D\u52A1\u7C7B\=[{0}]\u3001\u6267\u884C\u65B9\u6CD5\=[{1}]\u3001KEY\u540D\=[{2}]\u3001\u503C\=[{3}]
+Component6009.loglevel=ERROR
+Component6009.message=Component6009<E> \u6267\u884C\u72B6\u6001\u7BA1\u7406\u8868\u66F4\u65B0\u5931\u8D25\u3002entry_id\=[{0}]\u3001user_id\=[{1}]\u3001team_id\=[{2}]\u3001component_id\=[{3}]\u3001methodName\=[{4}]\u3001queueName\=[{5}]\u3001Exception\=[{6}]
+Component6010.loglevel=ERROR
+Component6010.message=Component6010<E> \u67E5\u8BE2\u6267\u884C\u72B6\u6001\u7BA1\u7406\u8868\u53D1\u751FSQL Exception\u5F02\u5E38\u3002entry_id\=[{0}]\u3001user_id\=[{1}]\u3001team_id\=[{2}]\u3001component_id\=[{3}]\u3001methodName\=[{4}]\u3001queueName\=[{5}]\u3001Exception\=[{6}]
+Component6011.loglevel=ERROR
+Component6011.message=Component6011<E> \u7531\u4E8EJOB\u7684\u72B6\u6001\u4E0D\u662F[\u7B49\u5F85]\uFF0C\u6240\u4EE5\u505C\u6B62\u5904\u7406\u3002\u767B\u5F55ID\=[{0}]\u3001JOB\u72B6\u6001\=[{1}]
+Component6012.loglevel=ERROR
+Component6012.message=Component6012<E> \u5DF2\u7ECF\u8BBE\u5B9A\u5220\u9664\u6210\u529F\u6807\u793A\u3002\u767B\u5F55ID\=[{0}]\u3001JOB\u72B6\u6001\=[{1}]\u3001\u5220\u9664\u6210\u529F\u6807\u793A\=[{2}]
+Component6013.loglevel=ERROR
+Component6013.message=Component6013<E> \u4ECEJMS\u6D88\u606F\u4E2D\u65E0\u6CD5\u83B7\u53D6\u767B\u5F55ID\u3002[{0}]
+Component6014.loglevel=ERROR
+Component6014.message=Component6014<E> \u5F53\u524D\u767B\u5F55ID\u7684\u8BB0\u5F55\u4E0D\u5B58\u5728\u3002\u767B\u5F55ID\=[{0}]
+Component6021.loglevel=INFO
+Component6021.message=Component6021<I> \u8F93\u51FAdbOutDto\u7684\u4FE1\u606F {0}\=[{1}]
+Component6022.loglevel=INFO
+Component6022.message=Component6022<I> {0} \u8F93\u51FA\u6267\u884C\u65B9\u6CD5\u4FE1\u606F
+Component6031.loglevel=ERROR
+Component6031.message=Component6031<E> MDB\u83B7\u53D6\u6743\u9650\u670D\u52A1\u6267\u884C\u5F02\u5E38\u3002entry_id\=[{0}]\u3001user_id\=[{1}]\u3001team_id\=[{2}]\u3001component_id\=[{3}]\u3001methodName\=[{4}]\u3001queueName\=[{5}]\u3001Exception\=[{6}]
+Component6996.loglevel=ERROR
+Component6996.message=Component6996<E> MDB\u6267\u884C\u72B6\u6001\u8868\u767B\u5F55\u670D\u52A1\u6267\u884C\u5F02\u5E38\u3002entry_id\=[{0}]\u3001user_id\=[{1}]\u3001team_id\=[{2}]\u3001component_id\=[{3}]\u3001methodName\=[{4}]\u3001queueName\=[{5}]\u3001Exception\=[{6}]
+Component6997.loglevel=ERROR
+Component6997.message=Component6997<E> MDB\u6267\u884C\u72B6\u6001\u8868\u767B\u5F55\u670D\u52A1\u62E5\u5835\u3002entry_id\=[{0}]\u3001user_id\=[{1}]\u3001team_id\=[{2}]\u3001component_id\=[{3}]\u3001methodName\=[{4}]\u3001queueName\=[{5}]\u3001Exception\=[{6}]
+Component6998.loglevel=ERROR
+Component6998.message=Component6998<E> MDB\u53D1\u751F\u5F02\u5E38\u3002entry_id\=[{0}]\u3001user_id\=[{1}]\u3001team_id\=[{2}]\u3001component_id\=[{3}]\u3001methodName\=[{4}]\u3001queueName\=[{5}]\u3001Exception\=[{6}]
+Component6999.loglevel=ERROR
+Component6999.message=Component6999<E> MDB\u53D1\u751F\u672A\u77E5\u5F02\u5E38\u3002entry_id\=[{0}]\u3001user_id\=[{1}]\u3001team_id\=[{2}]\u3001component_id\=[{3}]\u3001methodName\=[{4}]\u3001queueName\=[{5}]\u3001Exception\=[{6}]
+Component7001.loglevel=WARN
+Component7001.message=Component7001<W> \u8BBE\u5B9A\u7684\u8BB0\u5F55\u4E2D\u5B58\u5728\u7A7A\u884C\u3002
+
+Component7002.loglevel=WARN
+Component7002.message=Component7002<W> \u82F1\u6587\u5217\u540D\u9519\u8BEF\u3002\u5217\u540D\=[{0}]
+Component7003.loglevel=WARN
+Component7003.message=Component7003<W> \u53D1\u751F\u5F02\u5E38\u3002\u5217\u540D\=[{0}]\u3001[{1}]
+Component7004.loglevel=WARN
+Component7004.message=Component7004<W> \u8BBE\u5B9A\u7684\u8BB0\u5F55\u7684\u884C\u7C7B\u522B\u9519\u8BEF\u3002\u884C\u7C7B\u522B\=[{0}]
+Component7005.loglevel=WARN
+Component7005.message=Component7005<W> \u8BBE\u5B9A\u7684\u8BB0\u5F55\u7684\u5217\u6570\u9519\u8BEF\u3002Title\u884C(\u82F1\u8BED)\u5217\u6570\=[{0}]\u3001\u660E\u7EC6\u884C\u5217\u6570\=[{1}]
+Component8001.loglevel=DEBUG
+Component8001.message=Component8001<D> RequestContentType\=[{0}]
+Component8002.loglevel=DEBUG
+Component8002.message=Component8002<D> \u4E0A\u4F20\u6587\u4EF6\u4FE1\u606F\u3002\u4E0A\u4F20\u6587\u4EF6\=[{0}]\u3001\u670D\u52A1\u5668\u4E0A\u7684TMP\u6587\u4EF6\=[{1}]
+Component8003.loglevel=INFO
+Component8003.message=Component8003<I> \u65B0\u5EFA\u4E0A\u4F20\u6587\u4EF6\u7684\u4E34\u65F6\u5B58\u653E\u76EE\u5F55\u3002\u4E34\u65F6\u76EE\u5F55\=[{0}]
+Component8004.loglevel=DEBUG
+Component8004.message=Component8004<D> \u672A\u8BBE\u5B9A\u4E0A\u4F20\u6587\u4EF6\u3002
+
+Component8999.loglevel=ERROR
+Component8999.message=Component8999<E> \u4E0A\u4F20\u5904\u7406\u53D1\u751F\u672A\u77E5\u5F02\u5E38\u3002[{0}]
+Component9001.loglevel=DEBUG
+Component9001.message=Component9001<D> aina\u72B6\u6001\u4FE1\u606F\u3002aina\u72B6\u6001\u503C\=[{0}]\u3001\u8BBE\u5B9A\u6587\u4EF6\u72B6\u6001\=[{1}]
+Component9002.loglevel=DEBUG
+Component9002.message=Component9002<D> \u4E0B\u8F7D\u6587\u4EF6\u4FE1\u606F\u3002\u4E0B\u8F7D\u6587\u4EF6\=[{0}]\u3001\u4E0B\u8F7D\u6587\u4EF6\u8DEF\u5F84\=[{1}]
+Component9003.loglevel=ERROR
+Component9003.message=Component9003<E> \u4E0B\u8F7D\u6587\u4EF6\u4E0D\u5B58\u5728\u6216\u8005\u65E0\u6CD5\u8BFB\u53D6\u3002\u4E0B\u8F7D\u6587\u4EF6\=[{0}]\u3001\u4E0B\u8F7D\u6587\u4EF6\u8DEF\u5F84\=[{1}]
+Component9004.loglevel=DEBUG
+Component9004.message=Component9004<D> \u4E0B\u8F7D\u6587\u4EF6\u4FE1\u606F\u3002\u4E0B\u8F7D\u6587\u4EF6\=[{0}]\u3001\u4E0B\u8F7D\u6587\u4EF6\u8DEF\u5F84\=[{1}]
+Component9999.loglevel=ERROR
+Component9999.message=Component9999<E> \u4E0B\u8F7D\u6587\u4EF6\u5904\u7406\u53D1\u751F\u672A\u77E5\u5F02\u5E38\u3002[{0}]
+Component3000001.loglevel=INFO
+Component3000001.message=FKBXX3000001<I> \u6267\u884C\u72B6\u6001\u7BA1\u7406\u8868\u4E2D\u83B7\u53D6\u9884\u5B9A\u65F6\u95F4[{0}]\u5904\u7406\u7684\u8BB0\u5F55\u3002
+
+Component3000002.loglevel=INFO
+Component3000002.message=Component3000002<I> \u6267\u884C\u72B6\u6001\u7BA1\u7406\u8868\u4E2D\u83B7\u53D6\u7684\u8BB0\u5F55\u6570\=[{0}]
+Component3000003.loglevel=INFO
+Component3000003.message=Component3000003<I> \u6267\u884C\u72B6\u6001\u7BA1\u7406\u8868\u4E2D\u83B7\u53D6\u767B\u5F55ID\=[{0}]
+Component3000004.loglevel=INFO
+Component3000004.message=Component3000004<I> JMS\u53D1\u9001\u6D88\u606F\u3002\u767B\u5F55ID\=[{0}]
+Component3000005.loglevel=WARN
+Component3000005.message=Component3000005<W> JMS\u9001\u4FE1\u5931\u8D25\u3002\u767B\u5F55ID\=[{0}]
+Component3000006.loglevel=WARN
+Component3000006.message=Component3000006<W> \u6267\u884C\u72B6\u6001\u7BA1\u7406\u8868\u4E2D\u6570\u636E\u4E0D\u5B58\u5728\u3002\u767B\u5F55ID\=[{0}]
+Component3000999.loglevel=WARN
+Component3000999.message=Component3000999<W> \u9884\u5B9A\u65F6\u95F4\u6267\u884C\u7684\u540E\u53F0\u5904\u7406\u53D1\u751F\u5F02\u5E38\u3002[{0}]
+Component3001001.loglevel=WARN
+Component3001001.message=Component3001001<W> \u53C2\u6570{0}\u672A\u6307\u5B9A\u3002
+
+Component3001002.loglevel=INFO
+Component3001002.message=Component3001002<I> \u6267\u884C\u72B6\u6001\u8868INSERT\u3002\u767B\u5F55ID\=[{0}]
+Component3001999.loglevel=WARN
+Component3001999.message=Component3001999<W> \u540C\u6B65\u6267\u884C\u7684\u540E\u53F0\u5904\u7406\u53D1\u751F\u5F02\u5E38\u3002[{0}]
+
+#\u5171\u901a
+Common0001.message=Common<I> {0}
+Common0001.loglevel=INFO
+Common0002.message=Common<D> {0}
+Common0002.loglevel=DEBUG
+Common0003.message=Common<W> {0}
+Common0003.loglevel=WARN
+Common0004.message=Common<E> {0}
+Common0004.loglevel=ERROR
+
+#BRPM
+BRPM0001.message=BRPM Request<D> {0}
+BRPM0001.loglevel=DEBUG
+BRPM0002.message=BRPM Response<D> {0}
+BRPM0002.loglevel=DEBUG
+
+#BBSA
+BBSA0001.message=BSA SOAP API<D> {0}
+BBSA0001.loglevel=DEBUG
+
+#\u5e94\u7528\u53d1\u5e03
+Deploy0001.message=Deploy<I> {0}
+Deploy0001.loglevel=INFO
+Deploy0002.message=Deploy<D> {0}
+Deploy0002.loglevel=DEBUG
+Deploy0003.message=Deploy<W> {0}
+Deploy0003.loglevel=WARN
+Deploy0004.message=Deploy<E> {0}
+Deploy0004.loglevel=ERROR
+
+#\u5de5\u5177\u7bb1
+Toolbox0001.message=Toolbox<I> {0}
+Toolbox0001.loglevel=INFO
+Toolbox0002.message=Toolbox<D> {0}
+Toolbox0002.loglevel=DEBUG
+Toolbox0003.message=Toolbox<W> {0}
+Toolbox0003.loglevel=WARN
+Toolbox0004.message=Toolbox<E> {0}
+Toolbox0004.loglevel=ERROR
+
+#\u5de1\u68c0
+Check0001.message=Check<I> {0}
+Check0001.loglevel=INFO
+Check0002.message=Check<D> {0}
+Check0002.loglevel=DEBUG
+Check0003.message=Check<W> {0}
+Check0003.loglevel=WARN
+Check0004.message=Check<E> {0}
+Check0004.loglevel=ERROR
+
+#\u5176\u4ed6
+Component9005.loglevel=ERROR
+Component9005.message=Component9006<E> \u6570\u636E\u5E93\u5F02\u5E38

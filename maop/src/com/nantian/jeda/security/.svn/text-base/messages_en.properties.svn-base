@@ -1,0 +1,138 @@
+#####################################
+#Function							#
+#####################################
+
+#------------------------------------
+#Organization						|
+#------------------------------------
+org=Organization
+org.id=ID
+org.code=Code
+org.name=Name
+org.path=Path
+org.rank=Rank
+org.description=Description
+org.contact=Contact
+org.address=Address
+org.tel=Tel
+org.category=Category
+org.property=Property
+org.enabled=Enabled
+org.root=Unipost Bank
+org.error.duplicate.id=The same id already exists.
+
+#------------------------------------
+#Menu								|
+#------------------------------------
+menu=Menu
+menu.list=Menu List
+menu.id=ID
+menu.name=Name
+menu.url=URL
+menu.parent=Parent
+menu.description=Description
+menu.iframe=Use IFrame
+menu.open.in.home=Open In Home Page
+menu.error.duplicate.identity=The same menu id already exists.
+
+#------------------------------------
+#Permission							|
+#------------------------------------
+permission=Permission
+permission.id=ID
+permission.name=Name
+permission.function=Function
+permission.type=Type
+permission.expression=Expression
+permission.description=Description
+permission.field.variable=User Field Variable
+permission.field.value=Field Value
+permission.item=Item
+permission.subitem=SubItem
+permission.user.type=User Type
+permission.org.type=Org Type
+permission.error.select.function=Please select function first!
+
+#------------------------------------
+#Function							|
+#------------------------------------
+function=Function
+function.list=Function List
+function.id=ID
+function.name=Name
+function.url=URL
+function.method=Method
+function.category=Category
+function.field=Field
+function.module=Module
+function.has.permission=Has Permission
+function.error.duplicate.id=The same function id already exists.
+
+#------------------------------------
+#Role								|
+#------------------------------------
+role=Role
+role.list=Role List
+role.id=ID
+role.name=Name
+role.type=Type
+role.description=Description
+role.error.duplicate.id=The same role id already exists.
+
+#------------------------------------
+#User								|
+#------------------------------------
+user=User
+user.list=User List
+user.username=Username
+user.password=Password
+user.defaultPassword=Default Password
+user.name=Name
+user.gender=Gender
+user.identity=Identity
+user.address=Address
+user.post=Post
+user.employment.form=Employment Form
+user.email=Email
+user.tel=TEL
+user.mobile=Mobile
+user.description=Description
+user.birthday=Birthday
+user.employment.date=Employment Date
+user.account.nonexpired=Account NonExpired
+user.account.nonlocked=Account NonLocked
+user.credentials.nonexpired=Credentials NonExpired
+user.enabled=Enabled
+user.position=Position
+user.org=Organization
+user.error.duplicate.identity=The same identity already exists.
+
+#------------------------------------
+#Module								|
+#------------------------------------
+module=Module
+module.list=Module List
+module.id=ID
+module.name=Name
+
+#------------------------------------
+#Position									|
+#------------------------------------
+position=Position
+position.list=Position List
+position.id=ID
+position.name=Name
+position.description=Description
+position.level=Level
+position.org=Org
+position.type=Type
+
+#------------------------------------
+#Field								|
+#------------------------------------
+field=Field
+field.list=Field List
+field.id=ID
+field.code=Code
+field.name=Name
+field.type=Type

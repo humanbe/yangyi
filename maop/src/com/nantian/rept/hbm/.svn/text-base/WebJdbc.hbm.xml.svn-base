@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.rept.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="WebJdbcVo" table="WEB_JDBC">
+   <composite-id>
+	   <key-property name="aplCode" type="java.lang.String">
+	    <column name="APL_CODE" not-null="true">
+	    	<comment>应用系统编号</comment>
+	    </column>
+	   </key-property>
+	   <key-property name="srvCode" type="java.lang.String">
+	    <column name="SRV_CODE" not-null="true">
+	    	<comment>服务器编号(IP)</comment>
+	    </column>
+	   </key-property>
+	   <key-property name="weblogicServer" type="java.lang.String">
+	    <column name="WEBLOGIC_SERVER" not-null="true">
+	    	<comment>WebLogic服务名称</comment>
+	    </column>
+	   </key-property>
+	   <key-property name="monitorDate" type="java.lang.String">
+	    <column name="MONITOR_DATE" not-null="true">
+	    	<comment>监控日期</comment>
+	    </column>
+	   </key-property>
+	   <key-property name="monitorTime" type="java.lang.String">
+	    <column name="MONITOR_TIME" not-null="true">
+	    	<comment>监控时间点</comment>
+	    </column>
+	   </key-property>
+	   <key-property name="jdbcName" type="java.lang.String">
+	    <column name="JDBC_NAME" not-null="true">
+	    	<comment>连接池名称</comment>
+	    </column>
+	   </key-property>
+	   <key-property name="weblogicPort" type="java.lang.String">
+	    <column name="WEBLOGIC_PORT" not-null="true">
+	    	<comment>weblogic端口</comment>
+	    </column>
+	   </key-property>
+   </composite-id>
+   <property name="capacity" generated="never" not-null="false" type="java.lang.String">
+   	<column name="CAPACITY">
+   		<comment>总连接数</comment>
+   	</column>
+   </property>
+   <property name="activeHigh" generated="never" not-null="false" type="java.lang.String">
+   	<column name="ACTIVE_HIGH">
+   		<comment>最大连接数</comment>
+   	</column>
+   </property>
+   <property name="waitingHigh" generated="never" not-null="false" type="java.lang.String">
+   	<column name="WAITING_HIGH">
+   		<comment>最大等待连接数</comment>
+   	</column>
+   </property>
+   <property name="currentActive" generated="never" not-null="false" type="java.lang.String">
+   	<column name="CURRENT_ACTIVE">
+   		<comment>当前连接数</comment>
+   	</column>
+   </property>
+   <property name="currentWaiting" generated="never" not-null="false" type="java.lang.String">
+   	<column name="CURRENT_WAITING">
+   		<comment>当前等待连接数</comment>
+   	</column>
+   </property>
+  </class>
+</hibernate-mapping>

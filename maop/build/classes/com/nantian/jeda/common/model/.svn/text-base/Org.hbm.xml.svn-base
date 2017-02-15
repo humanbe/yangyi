@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.jeda.common.model">
+	<class name="Org" table="JEDA_ORG" dynamic-update="true" dynamic-insert="true">
+		<comment>组织机构表</comment>
+		<id name="id" unsaved-value="null" length="10">
+			<column name="ORG_ID">
+				<comment>机构主健</comment>
+			</column>
+		</id>
+		<version name="version" type="integer">
+			<column name="ORG_VERSION">
+				<comment>机构数据版本</comment>
+			</column>
+		</version>
+		<property name="name">
+			<column name="ORG_NAME" length="100">
+				<comment>机构名称</comment>
+			</column>
+		</property>
+		<property name="description">
+			<column name="ORG_DESCRIPTION" length="1000">
+				<comment>机构描述</comment>
+			</column>
+		</property>
+		<property name="contact">
+			<column name="ORG_CONTACT" length="50">
+				<comment>机构联系人</comment>
+			</column>
+		</property>
+		<property name="address">
+			<column name="ORG_ADDRESS" length="500">
+				<comment>机构地址</comment>
+			</column>
+		</property>
+		<property name="tel">
+			<column name="ORG_TEL" length="50">
+				<comment>机构电话</comment>
+			</column>
+		</property>
+		<property name="category">
+			<column name="ORG_TYPE" length="10">
+				<comment>机构分类</comment>
+			</column>
+		</property>
+		<property name="property">
+			<column name="ORG_PROPERTY" length="10">
+				<comment>机构属性</comment>
+			</column>
+		</property>
+		<property name="level" type="integer">
+			<column name="ORG_LEVEL">
+				<comment>机构等级</comment>
+			</column>
+		</property>
+		<property name="path">
+			<column name="ORG_PATH" length="500">
+				<comment>机构路径</comment>
+			</column>
+		</property>
+		<property name="enabled" type="boolean">
+			<column name="ORG_ENABLED">
+				<comment>机构启用标志</comment>
+			</column>
+		</property>
+		<property name="order" type="integer" unique="true">
+			<column name="ORG_ORDER">
+				<comment>机构排序</comment>
+			</column>
+		</property>
+		<many-to-one name="parent" fetch="join" lazy="false">
+			<column name="PARENT_ORG_ID">
+				<comment>父级ID</comment>
+			</column>
+		</many-to-one>
+		<set name="users" inverse="true" lazy="false">
+			<key column="ORG_ID" on-delete="cascade" />
+			<one-to-many class="User" />
+		</set>
+		<set name="children">
+			<key column="PARENT_ORG_ID" />
+			<one-to-many class="Org" />
+		</set>
+		<many-to-one name="creator" class="User" fetch="join" update="false">
+			<column name="ORG_CREATOR">
+				<comment>机构创建者</comment>
+			</column>
+		</many-to-one>
+		<property name="created" type="date" update="false">
+			<column name="ORG_CREATED">
+				<comment>机构创建时间</comment>
+			</column>
+		</property>
+		<many-to-one name="modifier" class="User" fetch="join">
+			<column name="ORG_MODIFIER">
+				<comment>机构修改者</comment>
+			</column>
+		</many-to-one>
+		<property name="modified" type="date">
+			<column name="ORG_MODIFIED">
+				<comment>机构修改时间</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.demo.vo">
+	<class name="ServeInfoVo" table="T_SERVE_INFO" dynamic-update="true"
+		dynamic-insert="true">
+		<comment>table</comment>
+		<id name="serveid" unsaved-value="null" type="java.lang.String">
+			<column name="SERVEID">
+				<comment>serveid</comment>
+			</column>
+			<generator class="uuid" />
+		</id>
+		<property name="appsystemcd" type="java.lang.String">
+			<column name="APPSYSTEMCD">
+				<comment>appsystemcd</comment>
+			</column>
+		</property>
+		<property name="servecd" type="java.lang.String">
+			<column name="SERVECD">
+				<comment>servecd</comment>
+			</column>
+		</property>
+		<property name="servename" type="java.lang.String">
+			<column name="SERVENAME">
+				<comment>servename</comment>
+			</column>
+		</property>
+		<property name="servenum" type="java.lang.String">
+			<column name="SERVENUM">
+				<comment>servenum</comment>
+			</column>
+		</property>
+		<property name="queuenum" type="java.lang.String">
+			<column name="QUEUENUM">
+				<comment>queuenum</comment>
+			</column>
+		</property>
+		<property name="busimodule" type="java.lang.String">
+			<column name="BUSIMODULE">
+				<comment>busimodule</comment>
+			</column>
+		</property>
+		<property name="higserviceid" type="java.lang.String">
+			<column name="HIGSERVICEID">
+				<comment>higserviceid</comment>
+			</column>
+		</property>
+		<property name="isload" type="java.lang.String">
+			<column name="ISLOAD">
+				<comment>isload</comment>
+			</column>
+		</property>
+		<property name="reserve" type="java.lang.String">
+			<column name="RESERVE">
+				<comment>reserve</comment>
+			</column>
+		</property>
+		<property name="reserve1" type="java.lang.String">
+			<column name="RESERVE1">
+				<comment>reserve1</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>
+
+

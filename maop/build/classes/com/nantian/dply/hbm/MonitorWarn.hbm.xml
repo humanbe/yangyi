@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.dply.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="MonitorWarnVo" table="MONITOR_WARN">
+	<id name="appChangeId" column="app_change_id" type="long" unsaved-value="0">
+		<generator class="foreign">
+  			<param name="property">appChange</param>
+  		</generator>
+	</id>
+	<property name="aplCode" not-null="true" type="java.lang.String">
+   		<column name="APL_CODE">
+       		<comment>系统编号</comment>
+   		</column>
+  	</property> 		
+  	<property name="monitorEffectContent" not-null="false" type="java.lang.String">
+   		<column name="MONITOR_EFFECT_CONTENT">
+       		<comment>监控影响事由</comment>
+   		</column>
+  	</property>
+  	<property name="deviceName" not-null="false" type="java.lang.String">
+   		<column name="DEVICE_NAME">
+       		<comment>设备名称</comment>
+   		</column>
+  	</property>
+  	<property name="ipAddress" not-null="false" type="java.lang.String">
+   		<column name="IP_ADDRESS">
+       		<comment>IP地址</comment>
+   		</column>
+  	</property>
+  	<property name="explainDevice" not-null="false" type="java.lang.String">
+   		<column name="EXPLAIN_DEVICE">
+       		<comment>网络设备、线路影响说明</comment>
+   		</column>
+  	</property>
+  	<property name="explainMonitorPlatform" not-null="false" type="java.lang.String">
+   		<column name="EXPLAIN_MONITOR_PLATFORM">
+       		<comment>统一监控平台影响说明</comment>
+   		</column>
+  	</property>
+  	<property name="explainMonitorTool" not-null="false" type="java.lang.String">
+   		<column name="EXPLAIN_MONITOR_TOOL">
+       		<comment>专用监控工具影响说明.1:忽略告警,0:不忽略告警</comment>
+   		</column>
+  	</property>
+  	<property name="explainMonitorScreen" not-null="false" type="java.lang.String">
+   		<column name="EXPLAIN_MONITOR_SCREEN">
+       		<comment>监控大屏影响说明.1:忽略告警,0:不忽略告警</comment>
+   		</column>
+  	</property>
+  	<property name="effectStartDate" not-null="false" type="java.lang.String">
+   		<column name="EFFECT_START_DATE">
+       		<comment>影响开始日期</comment>
+   		</column>
+  	</property>
+  	<property name="effectStartTime" not-null="false" type="java.lang.String">
+   		<column name="EFFECT_START_TIME">
+       		<comment>影响开始时间</comment>
+   		</column>
+  	</property>
+  	<property name="effectEndDate" not-null="false" type="java.lang.String">
+   		<column name="EFFECT_END_DATE">
+       		<comment>影响结束日期</comment>
+   		</column>
+  	</property>
+  	<property name="effectEndTime" not-null="false" type="java.lang.String">
+   		<column name="EFFECT_END_TIME">
+       		<comment>影响结束时间</comment>
+   		</column>
+  	</property>
+  	<one-to-one name="appChange" class="AppChangeVo" cascade="all"></one-to-one>
+  </class>
+</hibernate-mapping>

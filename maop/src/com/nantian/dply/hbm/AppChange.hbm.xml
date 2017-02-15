@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.dply.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="AppChangeVo" table="APP_CHANGE">
+  <id column="app_change_id" name="appChangeId" type="long">
+  	<generator class="sequence">
+  		<param name="sequence">app_change_id</param>
+  	</generator>
+  </id>
+  	<property name="aplCode" not-null="true" type="java.lang.String">
+   		<column name="APL_CODE">
+       		<comment>系统编号</comment>
+   		</column>
+  	</property>
+  	<property name="changeMonth" not-null="true" type="java.lang.String">
+   		<column name="CHANGE_MONTH">
+       		<comment>变更月份</comment>
+   		</column>
+  	</property>
+  	<property name="changeDate" not-null="true" type="java.lang.String">
+   		<column name="CHANGE_DATE">
+       		<comment>变更日期</comment>
+   		</column>
+  	</property>
+  	<property name="eapsCode" not-null="false" type="java.lang.String">
+   		<column name="EAPS_CODE">
+       		<comment>EAPS编号</comment>
+   		</column>
+  	</property>
+  	<property name="changeName" not-null="false" type="java.lang.String">
+   		<column name="CHANGE_NAME">
+       		<comment>变更名称</comment>
+   		</column>
+  	</property>
+  	<property name="changeGrantNo" not-null="false" type="java.lang.String">
+   		<column name="CHANGE_GRANT_NO">
+       		<comment>变更牌号</comment>
+   		</column>
+  	</property>
+  	<property name="dplyLocation" not-null="false" type="java.lang.String">
+   		<column name="DPLY_LOCATION">
+       		<comment>投产地点</comment>
+   		</column>
+  	</property>
+  	<property name="planStartDate" not-null="false" type="java.lang.String">
+   		<column name="PLAN_START_DATE">
+       		<comment>计划投产开始日期</comment>
+   		</column>
+  	</property>
+  	<property name="planStartTime" not-null="false" type="java.lang.String">
+   		<column name="PLAN_START_TIME">
+       		<comment>计划投产开始时间</comment>
+   		</column>
+  	</property>
+  	<property name="actualStartTime" not-null="false" type="java.lang.String">
+   		<column name="ACTUAL_START_TIME">
+       		<comment>实际投产开始时间</comment>
+   		</column>
+  	</property>
+  	<property name="planEndDate" not-null="false" type="java.lang.String">
+   		<column name="PLAN_END_DATE">
+       		<comment>计划完成日期</comment>
+   		</column>
+  	</property>
+  	<property name="planEndTime" not-null="false" type="java.lang.String">
+   		<column name="PLAN_END_TIME">
+       		<comment>计划完成时间</comment>
+   		</column>
+  	</property>
+  	<property name="actualEndDate" not-null="false" type="java.lang.String">
+   		<column name="ACTUAL_END_DATE">
+       		<comment>实际完成日期</comment>
+   		</column>
+  	</property>
+  	<property name="actualEndTime" not-null="false" type="java.lang.String">
+   		<column name="ACTUAL_END_TIME">
+       		<comment>实际投产完成时间</comment>
+   		</column>
+  	</property>
+  	<property name="endFlag" not-null="false" type="java.lang.String">
+   		<column name="END_FLAG">
+       		<comment>是否完成投产.0:否;1:是</comment>
+   		</column>
+  	</property>
+  	<property name="develop" not-null="false" type="java.lang.String">
+   		<column name="DEVELOP">
+       		<comment>项目组变更负责人</comment>
+   		</column>
+  	</property>
+  	<property name="changeType" not-null="false" type="java.lang.String">
+   		<column name="CHANGE_TYPE">
+       		<comment>变更类型.1:常规投产,2:临时投产,3:临时操作,4:紧急修复</comment>
+   		</column>
+  	</property>
+  	<property name="changeTable" not-null="false" type="java.lang.String">
+   		<column name="CHANGE_TABLE">
+       		<comment>变更表格.0:否;1:是;2:已归档</comment>
+   		</column>
+  	</property>
+  	<property name="lastRebootDate" not-null="false" type="java.lang.String">
+   		<column name="LAST_REBOOT_DATE">
+       		<comment>上次重启日期</comment>
+   		</column>
+  	</property>
+  	<property name="nowRebootTime" not-null="false" type="java.lang.String">
+   		<column name="NOW_REBOOT_TIME">
+       		<comment>本次重启时间安排</comment>
+   		</column>
+  	</property>
+  	<property name="rebootExecInfo" not-null="false" type="java.lang.String">
+   		<column name="REBOOT_EXEC_INFO">
+       		<comment>重启执行情况</comment>
+   		</column>
+  	</property>
+  	<property name="verifyInfo" not-null="false" type="java.lang.String">
+   		<column name="VERIFY_INFO">
+       		<comment>验证结果</comment>
+   		</column>
+  	</property>
+  	<property name="operationId" not-null="false" type="java.lang.String">
+   		<column name="OPERATION_ID">
+       		<comment>计划实施人工号</comment>
+   		</column>
+  	</property>
+  	<property name="operation" not-null="false" type="java.lang.String">
+   		<column name="OPERATION">
+       		<comment>计划实施人</comment>
+   		</column>
+  	</property>
+  	<property name="operationTel" not-null="false" type="java.lang.String">
+   		<column name="OPERATION_TEL">
+       		<comment>计划实施人联系方式</comment>
+   		</column>
+  	</property>
+  	<property name="maintainTomo" not-null="false" type="java.lang.String">
+   		<column name="MAINTAIN_TOMO">
+       		<comment>次日维护人员</comment>
+   		</column>
+  	</property>
+  	<property name="reviewerId" not-null="false" type="java.lang.String">
+   		<column name="REVIEWER_ID">
+       		<comment>计划复核人工号</comment>
+   		</column>
+  	</property>
+  	<property name="reviewer" not-null="false" type="java.lang.String">
+   		<column name="REVIEWER">
+       		<comment>计划复核人</comment>
+   		</column>
+  	</property>
+  	<property name="reviewerTel" not-null="false" type="java.lang.String">
+   		<column name="REVIEWER_TEL">
+       		<comment>计划复核人联系方式</comment>
+   		</column>
+  	</property>
+  	<one-to-one name="riskEval" cascade="all" > </one-to-one>
+  	<one-to-one name="summary" cascade="all"  ></one-to-one>
+  	<one-to-one name="monitorWarn" cascade="all" ></one-to-one>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,969 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="/include/taglibs.jsp"%>
+<script type="text/javascript">
+var pageSize = 100;
+var rptItemConfGridStore;
+var rptItemConfColumnModel;
+var rptItemConfform;
+
+
+//var 		aplCodes=[];
+//var 		reportTypes=[];
+//var 		sheetSeqForSetVals=[];
+//var 		sheetNames=[];
+var Recount=1;
+
+
+//报表类型列表
+var rptItemConfReportType = new Ext.data.ArrayStore({
+    fields: ['valueField', 'displayField'],
+    data : [['1', '日报']
+    //,
+        //    	['2', '周报'],
+       //     	['3', '月报']
+            ]
+});
+//日报功能列表
+var rptItemConfSheetNames = new Ext.data.ArrayStore({});
+/* var rptItemConfSheetNames = new Ext.data.ArrayStore({
+    fields: ['valueField', 'displayField'],
+    data : [['0', '运行情况总结'],
+            	['1', '当日weblogic使用情况'],
+            	['2', '当日网络资源使用情况'],
+            	['3', '系统资源使用率图表'],
+            	['4', '最近7天分小时交易情况'],
+				['5', '最近7天日批量执行情况'],
+            	['6', '最近31天日交易情况'],
+            	['7', '最近31天分钟和秒交易情况'],
+            	['8', '最近31天日weblogic使用情况'],
+            	['9', '最近31天日网络资源使用情况'],
+            	['10', '最近31天日批量执行情况']
+            ]
+}); */
+var rptItemConfSheetNamesUseCheck = new Ext.data.ArrayStore({
+    fields: ['valueField', 'displayField'],
+    data : [//['0', '运行情况总结'],
+               ['0', '当日情况统计'], 
+            	['1', '当日weblogic使用情况'],
+            	['2', '当日网络资源使用情况'],
+            	['3', '系统资源使用率图表'],
+            	['4', '最近7天分小时交易情况'],
+				['5', '最近7天日批量执行情况'],
+            	['6', '最近31天日交易情况'],
+            	['7', '最近31天分钟和秒交易情况'],
+            	['8', '最近31天日weblogic使用情况'],
+            	['9', '最近31天日网络资源使用情况'],
+            	['10', '最近31天日批量执行情况'],
+            	['11', '实时分小时累计交易情况']
+            ]
+});
+//最近31天日weblogic使用情况分组列表
+var rptItemConf31DayWGroupPeakNames = new Ext.data.ArrayStore({
+    fields: ['valueField', 'displayField'],
+    data : [['0', '队列使用数峰值'],
+        	['1', 'JDBC链接使用数峰值'],
+        	['2', 'WebLogic内存使用率峰值']
+        ]
+});
+//当日weblogic资源分组列表
+var rptItemConfCDayWGroupNames = new Ext.data.ArrayStore({
+    fields: ['valueField', 'displayField'],
+	data : [['0', '队列使用数'],
+	    	['1', 'JDBC链接使用数'],
+	    	['2', 'WebLogic内存使用率']
+	    ]
+});
+//当日网络资源分组列表
+var rptItemConfCDayNGroupNames = new Ext.data.ArrayStore({
+    fields: ['valueField', 'displayField'],
+	data : [['0', 'web链接数']
+	    ]
+});
+//配置固定科目方法
+function rptItemConfIndexFixedItemEdit(sheetName,dynamicCount){
+function setItemsVisible(visibleFlag){
+	Ext.getCmp("RptItemConfIndexHostName").setValue('');
+	Ext.getCmp("RptItemConfIndexHostName").setVisible(visibleFlag);
+	if(visibleFlag){
+		Ext.getCmp("RptItemConfIndexHostName").enable();
+	}else{
+		Ext.getCmp("RptItemConfIndexHostName").disable();
+	}
+}
+}
+//查看填写说明信息
+function viewShuoMing(){
+	var shuomingForm = new Ext.FormPanel({
+		layout : 'form',
+		labelAlign : 'right',
+		buttonAlign : 'center',
+		labelWidth: 55,
+		//autoHeight : true,
+		height : 500,
+		frame : true,
+		border : false,
+		width : 600,
+		minSize : 600,
+		maxSize : 600,
+		defaults: {
+        	anchor: '100%',
+        	msgTarget: 'qtip'
+    	},
+     	items : [{
+			xtype : 'label',
+			html:'<p><span style="position:relative ;top:0px;font-size: 11pt;font-weight:bold">'+
+				'1.子名称(以下功能可使用子名称)</span></p>'
+		},{
+			xtype : 'label',
+			html:'<p><span style="position:relative ;top:0px;font-size: 10pt;color:black">'+
+				'&nbsp;&nbsp;A.功能描述</span></br>'+
+				'<span style="position:relative ;top:0px;font-size: 9pt;color:black">&nbsp;&nbsp;&nbsp;&nbsp;例如：</br>'+
+				'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最近31天日交易情况</br>'+
+				'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最近31天日交易情况(按渠道分)</br></br>' +
+				'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最近31天日网络资源使用情况</br>' +
+				'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最近31天日网络资源使用情况(SSL链接数)</br></br>' +
+				'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最近31天日Weblogic使用情况</br>' +
+				'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最近31天日Weblogic使用情况(北京)</span></p>' +
+				'<p><span style="position:relative ;top:0px;font-size: 10pt;color:black">'+
+				'&nbsp;&nbsp;B.指定主机地址</span></br>'+
+				'<span style="position:relative ;top:0px;font-size: 9pt;color:black">&nbsp;&nbsp;&nbsp;&nbsp;例如：</span>'+
+				'<span style="position:relative ;top:0px;font-size: 9pt;color:blue">(若指定主机地址，则统计指定主机资源信息；若未指定，则统计负载服务的最大值)</span></br>'+
+				'<span style="position:relative ;top:0px;font-size: 9pt;color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当日Weblogic使用情况</br>'+
+				'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当日Weblogic使用情况(SD10pp5)</br></br>' +
+				'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当日网络资源使用情况</br>' +
+				'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当日网络资源使用情况(10.1.88.40)</span></p>'
+		},{
+			xtype : 'label',
+			html:'<p><span style="position:relative ;top:0px;font-size: 11pt;font-weight:bold">'+
+				'2.计算式</span></p>'
+		},{
+			xtype : 'label',
+			html:'<p><span style="position:relative ;top:0px;font-size: 10pt;color:black">'+
+				'&nbsp;&nbsp;支持加、减、乘、除及括号运算</span></p>'+
+				'<span style="position:relative ;top:0px;font-size: 9pt;color:black">&nbsp;&nbsp;&nbsp;&nbsp;例如：</br>' +
+				'<span style="position:relative ;top:0px;font-size: 9pt;color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1-系统失败笔数/总交易量</span></p></br>'
+		}]
+	});
+	//构造Window
+	var exportTranWin = new Ext.Window({
+		title  :'填写说明',
+		animCollapse:true,
+		modal : true,
+		width : 600,
+		collapsible : false,
+		resizable : false,
+		draggable : true,
+		//closable : false,
+		closeAction :'close',
+		items:[shuomingForm]
+	});
+	exportTranWin.show();
+};
+//获取系统代码列表数据
+var rptItemConfAplCodeStore =  new Ext.data.Store({
+	proxy: new Ext.data.HttpProxy({
+		url : '${ctx}/${managePath}/appInfo/querySystemIDAndNamesByUserForCheck',
+		method : 'GET',
+		disableCaching : true
+	}),
+	reader : new Ext.data.JsonReader({}, ['appsysCode','appsysName']),
+	listeners : {
+		load : function(store){
+			if(store.getCount() == 0){
+				Ext.Msg.show({
+					title : '<fmt:message key="message.title" />',
+					msg : '<fmt:message key="message.system.no.authorize" />',
+					minWidth : 200,
+					buttons : Ext.MessageBox.OK,
+					icon : Ext.MessageBox.WARNING
+				});
+			}
+		}
+	}
+});
+
+//科目一级分类
+var RptItemConfIndexItemLevel1Store = new Ext.data.Store({
+	proxy: new Ext.data.HttpProxy({
+		url: '${ctx}/${managePath}/dayrptmanage/browseDayRptItemLevel1',
+		method : 'GET'
+	}),
+	reader: new Ext.data.JsonReader({}, ['valueField', 'displayField'])
+});
+//科目二级分类
+var RptItemConfIndexItemLevel2Store = new Ext.data.Store({
+	proxy: new Ext.data.HttpProxy({
+		url: '${ctx}/${managePath}/dayrptmanage/browseDayRptItemLevel2',
+		method : 'GET'
+	}),
+	reader: new Ext.data.JsonReader({}, ['valueField', 'displayField'])
+});
+//科目三级分类
+var RptItemConfIndexItemLevel3Store = new Ext.data.Store({
+	proxy: new Ext.data.HttpProxy({
+		url: '${ctx}/${managePath}/dayrptmanage/browseDayRptItemLevel3',
+		method : 'GET'
+	}),
+	reader: new Ext.data.JsonReader({}, ['valueField', 'displayField'])
+});
+
+//定义列表
+RptItemConfList = Ext.extend(Ext.Panel, {
+	id:'RptItemConfList',
+	gridStore : null,// 数据列表数据源	grid : null,// 数据列表组件
+	form : null,// 查询表单组件
+	tabIndex : 0,// 查询表单组件Tab键顺序	csm : null,// 数据列表选择框组件
+	window : null,
+	constructor : function(cfg) {// 构造方法		Ext.apply(this, cfg);
+	
+	
+		this.window=new Jeda.ui.Window({
+			
+			plain : true,
+			 modal:false,
+			 resizable : true,
+			 closeAction : 'close',
+			 closable : true,
+			 height : document.body.clientHeight * 0.8,
+			 width : document.body.clientWidth * 0.7,
+			 doLoad : function(cfg) {
+					this.removeAll();
+					this.add({
+						id : "window",
+						autoScroll : true,
+						layout : 'fit',
+						border : false,
+						autoLoad : {
+							url : cfg.url,
+							params : cfg.params,
+							discardUrl : false,
+							nocache : true,
+							timeout : 3000,
+							method : 'GET',
+							scripts : true
+						}
+					});
+					this.doLayout();
+					if (!this.isVisible()) {
+						this.show();
+					}
+				}
+			 
+		});
+		
+		//加载系统代码数据
+		rptItemConfAplCodeStore.load();
+	
+		/*
+		var data = [
+	    			{"combine":"CCS(Call-Center)","itemSeq":null,"expression":0.06,"expressionUnit":0.09,"groupParent":null,"_id":1,"_parent":null,"_level":1,"_is_leaf":false},
+	    			{"combine":"运行情况总结","itemSeq":null,"expression":0.31,"expressionUnit":0.49,"groupParent":null,"_id":2,"_parent":1,"_level":2,"_is_leaf":true},
+	    			{"combine":"当日weblogic使用情况","itemSeq":null,"expression":null,"expressionUnit":null,"groupParent":null,"_id":3,"_parent":1,"_level":2,"_is_leaf":false},
+	    			{"combine":"监控时间点","itemSeq":29.01,"expression":0.42,"expressionUnit":1.47,"groupParent":"11111","_id":4,"_parent":3,"_level":3,"_is_leaf":true},
+	    			{"combine":"BL680-156","itemSeq":29.01,"expression":0.42,"expressionUnit":1.47,"groupParent":"22222","_id":5,"_parent":3,"_level":3,"_is_leaf":true},
+	    			{"combine":"SD10pp6","itemSeq":29.01,"expression":0.42,"expressionUnit":1.47,"groupParent":"333333","_id":6,"_parent":3,"_level":3,"_is_leaf":true},
+	    			{"combine":"BL680-156(cebcsr_jndi)","itemSeq":29.01,"expression":0.42,"expressionUnit":1.47,"groupParent":"44444","_id":7,"_parent":3,"_level":3,"_is_leaf":true},
+	    			{"combine":"SD10pp6(cebcc)","itemSeq":29.01,"expression":0.42,"expressionUnit":1.47,"groupParent":"55555","_id":8,"_parent":3,"_level":3,"_is_leaf":true},
+	    			{"combine":"系统资源使用率图表","itemSeq":null,"expression":0.26,"expressionUnit":0.58,"groupParent":null,"_id":9,"_parent":1,"_level":2,"_is_leaf":true},
+	    			{"combine":"NBANK(网银)","itemSeq":null,"expression":0.02,"expressionUnit":0.04,"groupParent":null,"_id":10,"_parent":null,"_level":1,"_is_leaf":true}
+	  			];
+		*/
+	    // create the data store
+	    var record = Ext.data.Record.create([
+	   		{name: 'combine'},
+	     	{name: 'itemSeq', type: 'int'},
+	     	{name: 'sheetSeq', type: 'int'},
+	     	{name: 'sheetSeqForSetVal', type: 'string'},
+	     	{name: 'expression', type: 'string'},
+	     	{name: 'expressionUnit', type: 'string'},
+	     	{name: 'groupParent', type: 'string'},
+	     	{name: '_id', type: 'int'},
+	     	{name: '_parent', type: 'auto'},
+	     	{name: '_is_leaf', type: 'bool'},
+	     	{name: 'dataGroupFlag', type: 'string'},
+	     	{name: 'aplCode', type: 'string'},
+	     	{name: 'reportType', type: 'string'},
+	     	{name: 'sheetName', type: 'string'},
+	     	{name: 'itemNameOne', type: 'string'},
+	     	{name: 'itemNameTwo', type: 'string'},
+	     	{name: 'itemNameOneNAME', type: 'string'},
+	     	{name: 'itemNameTwoNAME', type: 'string'},
+	     	{name: 'itemName', type: 'string'}
+	   	]);
+	    //远程
+	    rptItemConfGridStore = new Ext.ux.maximgb.tg.AdjacencyListStore({
+	    	//autoLoad : true,
+	    	url : '${ctx}/${managePath}/rptitemconf/index',
+			reader: new Ext.data.JsonReader(
+					{
+						id: '_id',
+						root: 'data',
+						totalProperty: 'count',
+						successProperty: 'success'
+					},
+					record
+				),
+			baseParams : {
+				start : 0,
+				limit : pageSize
+			}
+	    });
+	    /*
+	    //本地
+	    this.gridStore = new Ext.ux.maximgb.tg.AdjacencyListStore({
+	    	autoLoad : true,
+				reader: new Ext.data.JsonReader({id: '_id'}, record),
+				proxy: new Ext.data.MemoryProxy(data)
+	    });
+	    */
+	    /*
+	    //全部展开treegrid
+	    rptItemConfGridStore.on("load",function(e){
+	    	e.expandAll();
+	    });*/
+		// 实例化服务数据列表组件列标题
+		rptItemConfColumnModel = new Ext.grid.ColumnModel([new Ext.grid.RowNumberer(), 
+		                                             {id:'combine',header: "配置项(系统->报表类型->功能->科目)", width: 350, sortable: false, dataIndex: 'combine'},
+			                             	        {header: "功能序号", width: 70, sortable: false, renderer: this.sheetChange, dataIndex: 'sheetSeq'},
+		                             	        	{header: "科目序号", width: 70, sortable: false, renderer: this.change, dataIndex: 'itemSeq'},
+		                             	        	{header: "计算式", width: 280, sortable: false, dataIndex: 'expression'},
+		                             	        	{header: "计算式单位", width: 80, sortable: false, dataIndex: 'expressionUnit'},
+		                             	        	{header: "分组名称", width: 300, sortable: false, dataIndex: 'groupParent'},
+		                            	        	{header: "同组标识", width: 280, sortable: false, dataIndex: 'dataGroupFlag', hidden : true}
+		                             	      	]);
+	    // create the Grid
+	    this.grid = new Ext.ux.maximgb.tg.GridPanel({
+	    	id : 'RptItemConfIndexGridPanel',
+			region:'center',
+	      	store: rptItemConfGridStore,
+			collapsible : true,
+			animCollapse : true,
+			collapseMode : 'mini',
+	      	master_column_id : 'combine',
+	      
+	      	autoHeight : true,
+	    	//height : 500,
+	      	columnLines : true,
+			viewConfig : {
+				forceFit : true
+			},
+	      	columns: [ new Ext.grid.RowNumberer(),
+				{id:'combine',header: "配置项(系统->报表类型->功能->科目)", width: 350, sortable: false, dataIndex: 'combine'},
+	        	{header: "功能序号", width: 70, sortable: false, renderer: this.sheetChange, dataIndex: 'sheetSeq'},
+	        	{header: "科目序号", width: 70, sortable: false, renderer: this.change, dataIndex: 'itemSeq'},
+	        	{header: "计算式", width: 280, sortable: false, dataIndex: 'expression'},
+	        	{header: "计算式单位", width: 80, sortable: false, renderer: this.pctChange, dataIndex: 'expressionUnit'},
+	        	{header: "分组名称", width: 300, sortable: false, dataIndex: 'groupParent'},
+	        	{header: "同组标识", width: 280, sortable: false, dataIndex: 'dataGroupFlag', hidden : true}
+	      	],
+	      	stripeRows: true,
+	      	autoExpandColumn: 'combine',
+	      	title: '列表',
+	      	/*
+	      	bbar: new Ext.ux.maximgb.tg.PagingToolbar({
+	      		store: this.gridStore,
+	      		displayInfo: true,
+	      		pageSize: pageSize
+	      	}),
+	      	*/
+			listeners : {
+				scope : this,
+				celldblclick : function(grid, rowIndex, columnIndex, e) { 
+					
+					var 		itemNameOnesi=[];
+    		   		var 	    itemNameTwosi=[];
+    		   		var 		itemNameOnesNAMEi=[];
+    		   		var 	    itemNameTwosNAMEi=[];
+    		   		var 		itemNamesi=[];
+    		   		var         combinesi=[];
+    		   		var 		itemSeqsi=[];
+    		   		var 		expressionsi=[];
+    		   		var 		expressionUnitsi=[];
+    		   		var 		groupParentsi=[];
+    		    	var store = grid.getStore();
+    		    	var record = store.getAt(rowIndex);  // 返回Record对象 Get the Record
+					var total = store.getCount();
+    		   		var dataGroupFlag = record.get("dataGroupFlag");
+    		   		if(dataGroupFlag != ''){
+	    		   		var count = 0;
+						for(var i = 0 ;i < total ;i++ ){
+							if(dataGroupFlag == store.getAt(i).get('dataGroupFlag') && store.getAt(i).get('_is_leaf') == true){
+								count++;
+							}
+						 }
+	    		   		
+	    		   		 Recount = 1;
+	    		   		var sheetName = '';
+	    		   		var subSheetName = '';
+	    		   		
+	    		   		
+						for(var i = 0 ;i < total ;i++ ){
+							if(dataGroupFlag == store.getAt(i).get('dataGroupFlag') && store.getAt(i).get('_is_leaf') == true){
+							Ext.getCmp("RptItemConfIndexAplCode").setValue(store.getAt(i).get('aplCode'));
+								Ext.getCmp("RptItemConfIndexReportType").setValue(store.getAt(i).get('reportType'));
+								Ext.getCmp("RptItemConfIndexSheetSeq").setValue(store.getAt(i).get('sheetSeqForSetVal')); 
+								
+								itemNameOnesi.push(store.getAt(i).get('itemNameOne'));
+								itemNameTwosi.push(store.getAt(i).get('itemNameTwo'));
+								itemNamesi.push(encodeURIComponent(store.getAt(i).get('itemName')));
+								
+								itemNameOnesNAMEi.push(encodeURIComponent(store.getAt(i).get('itemNameOneNAME')));
+								itemNameTwosNAMEi.push(encodeURIComponent(store.getAt(i).get('itemNameTwoNAME')));
+								combinesi.push(encodeURIComponent(store.getAt(i).get('combine')));
+								
+								itemSeqsi.push(store.getAt(i).get('itemSeq'));
+								expressionsi.push(store.getAt(i).get('expression'));
+								expressionUnitsi.push(store.getAt(i).get('expressionUnit'));
+								groupParentsi.push(store.getAt(i).get('groupParent'));
+								
+								if(store.getAt(i).get('sheetName').indexOf("(") != -1){
+									sheetName = store.getAt(i).get('sheetName').split("(")[0];
+									subSheetName = store.getAt(i).get('sheetName').split("(")[1].split(")")[0];
+									//sheetNames.push(sheetName);
+									Ext.getCmp("RptItemConfIndexSheetName").setValue(sheetName);
+								}else{
+									Ext.getCmp("RptItemConfIndexSheetName").setValue(store.getAt(i).get('sheetName'));
+								}
+								Recount++;
+							}
+						 }
+						if(subSheetName != ''){
+							switch (sheetName) {
+							case '当日网络资源使用情况':
+							case '当日weblogic使用情况':
+								if(subSheetName.indexOf("_") != -1){
+									Ext.getCmp("RptItemConfIndexHostName").setValue(subSheetName.split("_")[0]);
+									Ext.getCmp("RptItemConfIndexSubSheetNameV").setValue(subSheetName.split("_")[1]);
+								}else{
+									Ext.getCmp("RptItemConfIndexHostName").setValue(subSheetName);
+									Ext.getCmp("RptItemConfIndexSubSheetNameV").setValue("");
+								}
+								break;
+							default :
+								Ext.getCmp("RptItemConfIndexSubSheetNameV").setValue(subSheetName);
+								break; 
+							}
+						}else{
+							Ext.getCmp("RptItemConfIndexHostName").setValue("");
+							Ext.getCmp("RptItemConfIndexSubSheetNameV").setValue("");
+						}
+    		   		}
+    		   		var itemNameOnes=Ext.util.JSON.encode(itemNameOnesi);
+    		   		var itemNameTwos=Ext.util.JSON.encode(itemNameTwosi);
+    		   		var combines =Ext.util.JSON.encode(combinesi);
+    		   		var itemNameOnesNAME=Ext.util.JSON.encode(itemNameOnesNAMEi);
+    		   		var itemNameTwosNAME=Ext.util.JSON.encode(itemNameTwosNAMEi);
+    		   		
+    		   		var itemNames=Ext.util.JSON.encode(itemNamesi);
+    		   		var itemSeqs=Ext.util.JSON.encode(itemSeqsi);
+    		   		var expressions=Ext.util.JSON.encode(expressionsi);
+    		   		var expressionUnits= Ext.util.JSON.encode(expressionUnitsi);
+    		   		var groupParents=Ext.util.JSON.encode(groupParentsi);
+    		   		var params = {
+    		   			 sheetName : Ext.getCmp('RptItemConfIndexSheetName').getRawValue(),
+    		   	    	itemNameOnes : itemNameOnes,
+    		   		    itemNameTwos : itemNameTwos,
+    		   		    itemNameOnesNAME :itemNameOnesNAME,
+    		   	        itemNameTwosNAME : itemNameTwosNAME,
+    		   			itemNames : itemNames,
+    		   			combines:combines,
+    		   			itemSeqs : itemSeqs,
+    		   			expressions : expressions,
+    		   			expressionUnits : expressionUnits,
+    		   			groupParents : groupParents,
+    		   			Recount: Recount
+    		   			
+    		   		};
+    		   		
+    		   		
+
+    		   		
+    				var sheetName=record.get("combine");
+    				if(sheetName.indexOf("(") != -1){
+						sheetName = sheetName.split("(")[0];
+    				}
+    				switch (sheetName) {
+    				case '当日情况统计':
+    				case '最近31天日交易情况':
+    				case '最近31天日批量执行情况':
+    					this.window.doLoad({
+    						url : '${ctx}/${managePath}/rptitemconf/Day_Trans_Conf',
+    						params : params
+    					});
+    					break;
+    				case '最近7天分小时交易情况':
+    				case '实时分小时累计交易情况':
+    					this.window.doLoad({
+    						url : '${ctx}/${managePath}/rptitemconf/Hour_Minute_Trans_Conf',
+    						params : params
+    					});
+    					break;
+    				case '最近7天日批量执行情况':
+    					this.window.doLoad({
+    						url : '${ctx}/${managePath}/rptitemconf/Day_Batch_Conf',
+    						params : params
+    					});
+    					break;
+    				
+    				case '最近31天分钟和秒交易情况':
+    					this.window.doLoad({
+    						url : '${ctx}/${managePath}/rptitemconf/Minute_Second_Trans_Conf',
+    						params : params
+    					});
+    					break;
+    					
+    				case '当日网络资源使用情况':
+    					this.window.doLoad({
+    						url : '${ctx}/${managePath}/rptitemconf/Network_ToDay_Use_Conf',
+    						params : params
+    					});
+    					break;
+    				case '系统资源使用率图表':
+    					this.window.doLoad({
+    						url : '${ctx}/${managePath}/rptitemconf/System_resource_Conf',
+    						params : params
+    					});
+    					break;
+    				case '当日weblogic使用情况':
+    					this.window.doLoad({
+    						url : '${ctx}/${managePath}/rptitemconf/Weblogic_ToDay_Use_Conf',
+    						params : params
+    					});
+    					break;
+    				case '最近31天日网络资源使用情况':
+    				
+    					this.window.doLoad({
+    						url : '${ctx}/${managePath}/rptitemconf/Network_Days_Use_Conf',
+    						params : params
+    					});
+    					break;
+    					
+    				case '最近31天日weblogic使用情况':
+    					this.window.doLoad({
+    						url : '${ctx}/${managePath}/rptitemconf/Weblogic_Days_Use_Conf',
+    						params : params
+    					});
+    					break;
+    				default :
+    					break;
+    				}
+    		   		//app.loadWindow('${ctx}/${managePath}/rptitemconf/RptItemConfEdit',params);
+    		   		
+    			 }
+			}
+	    });
+	    rptItemConfform = new Ext.FormPanel({
+			id : 'RptItemConfIndexFormPanel',
+			title : '配置',
+			region:'north',
+			frame : true,
+			split : true,
+			autoHeight: true,
+			//bodyStyle : 'overflow-x:scroll',
+			bodyStyle : 'padding-left:0px;padding-bottom:0px;padding-top:0px;padding-right:0px;',
+			labelAlign : 'right',
+			buttonAlign : 'center',
+			labelWidth: 60,
+			/* width : 270,
+			minSize : 270,
+			maxSize : 270, */
+			defaults: {
+            	anchor: '100%',
+            	msgTarget: 'qtip'
+        	},
+			monitorValid : true,
+	     	autoScroll : true,
+			items : [{
+				xtype : "fieldset",
+		        border : false,
+				layout : 'column', 
+				labelAlign : 'right',
+				columnWidth : 1,
+	            items:[{
+		            	columnWidth : .5,
+		                xtype: 'fieldset',
+		                layout : 'form',
+		                border : false,
+						labelWidth : 60,
+		                autoHeight : true,
+		                items : [ {
+		  					xtype : 'combo',
+							fieldLabel : '系统代码',
+							id : 'RptItemConfIndexAplCode',
+							hiddenName : 'aplCode',
+							displayField : 'appsysName',
+							valueField : 'appsysCode',
+							typeAhead : true,
+							store : rptItemConfAplCodeStore,
+							tabIndex : this.tabIndex++,
+							mode : 'local',
+							triggerAction : 'all',
+							editable : true,
+							allowBlank : false,
+							emptyText : '请选择系统代码...',
+							forceSelection : true,
+							anchor : '80%',
+							listeners : {
+								beforequery : function(e){
+									var combo = e.combo;
+									combo.collapse();
+									 if(!e.forceAll){
+										var input = e.query.toUpperCase();
+										var regExp = new RegExp('.*' + input + '.*');
+										combo.store.filterBy(function(record, id){
+											var text = record.get(combo.displayField);
+											return regExp.test(text);
+										}); 
+										combo.restrictHeight();
+										combo.expand();
+										return false;
+									} 
+								},
+								beforeselect : function(combo, record, index){
+									//清空表单数据
+									//doAdd();
+								},
+								select : function(combo, record, index){
+									rptItemConfGridStore.baseParams={
+			            					start : 0,
+			            					limit : pageSize,
+						 					aplCode : Ext.getCmp('RptItemConfIndexAplCode').getValue()
+									};
+			            			//重新配置列的信息
+			            			Ext.getCmp("RptItemConfIndexGridPanel").reconfigure(rptItemConfGridStore,rptItemConfColumnModel);
+			            			rptItemConfGridStore.removeAll();
+			            			rptItemConfGridStore.load();
+			            			//科目一级分类
+			            			RptItemConfIndexItemLevel1Store.baseParams={
+		            					appsysCode : encodeURIComponent(Ext.getCmp('RptItemConfIndexAplCode').getValue())
+									};
+			            			RptItemConfIndexItemLevel1Store.load();
+								}
+							}
+		                },{
+		  					xtype : 'combo',
+							fieldLabel : '功能名称',
+							id : 'RptItemConfIndexSheetName',
+							hiddenName : 'sheetName',
+							displayField : 'displayField',
+							valueField : 'valueField',
+							typeAhead : true,
+							forceSelection  : true, 
+							store : rptItemConfSheetNames,
+							tabIndex : this.tabIndex++,
+							mode : 'local',
+							triggerAction : 'all',
+							editable : false,
+							allowBlank : false,
+							regex : /^\\*[^\\(\\)\\（\\）]*$/,
+							regexText : '输入值非法，不允许输入括号字符',
+							emptyText : '请选择功能名称...',
+							maxLength : 50,
+							anchor : '80%',
+							listeners : {
+								
+								select : function(combo, record, index){
+								//rtpItemConfList.doDynamicConfigItem(initItemNum);
+									
+									//rptItemConfIndexFixedItemEdit(Ext.getCmp('RptItemConfIndexSheetName').getRawValue(),0);
+								},
+								keyup : function(combo,record,index){
+									var total = rptItemConfSheetNamesUseCheck.getCount();
+									var writeSheetName = Ext.getCmp('RptItemConfIndexSheetName').getRawValue();
+									var equalFlag = false;
+									for(var i = 0 ;i < total ;i++ ){
+										if(writeSheetName == rptItemConfSheetNamesUseCheck.getAt(i).get('displayField')){
+											equalFlag = true;
+											break;
+										}
+									 }
+									if(!equalFlag){//多科目功能录入部分
+										//rtpItemConfList.doDynamicConfigItem(initItemNum);
+										rptItemConfIndexFixedItemEdit(writeSheetName,0);
+									}
+		                		}
+							}
+                    	},{
+		  					xtype : 'textfield',
+							fieldLabel : '功能描述',
+							id : 'RptItemConfIndexSubSheetNameV',
+							name : 'subSheetName',
+							editable : true,
+							allowBlank : true,
+							emptyText : '可选',
+							maxLength : 30,
+							width : 90,
+							anchor : '80%',
+							hidden : false
+	        			}]
+		            },{
+		            	columnWidth : .5,
+		                xtype: 'fieldset',
+		                layout : 'form',
+		                border : false,
+						labelWidth : 65,
+		                autoHeight : true,
+		                items : [{
+		  						xtype : 'combo',
+								fieldLabel : '报表类型',
+								id : 'RptItemConfIndexReportType',
+								hiddenName : 'reportType',
+								displayField : 'displayField',
+								valueField : 'valueField',
+								typeAhead : true,
+								forceSelection  : true,
+								store : rptItemConfReportType,
+								tabIndex : this.tabIndex++,
+								mode : 'local',
+								triggerAction : 'all',
+								editable : true,
+								allowBlank : false,
+								emptyText : '必填',
+								anchor : '80%',
+								listeners : {
+									scope : this,
+									select : function(combo, record, index){
+										switch(combo.value){
+											case '1' : 
+												rptItemConfSheetNames = new Ext.data.ArrayStore({
+											    fields: ['valueField', 'displayField'],
+											    data : [//['0', '运行情况总结'], 
+											            ['0', '当日情况统计'], 
+											            	['1', '当日weblogic使用情况'],
+											            	['2', '当日网络资源使用情况'],
+											            	['3', '系统资源使用率图表'],
+											            	['4', '最近7天分小时交易情况'],
+															['5', '最近7天日批量执行情况'],
+											            	['6', '最近31天日交易情况'],
+											            	['7', '最近31天分钟和秒交易情况'],
+											            	['8', '最近31天日weblogic使用情况'],
+											            	['9', '最近31天日网络资源使用情况'],
+											            	['10', '最近31天日批量执行情况'],
+											            	['11', '实时分小时累计交易情况']
+											            ]
+											});
+											break;
+											case '2' : 
+												rptItemConfSheetNames = new Ext.data.ArrayStore({
+											    fields: ['valueField', 'displayField'],
+											    data : [['0', '系统资源使用率图表']]
+											});
+											break;
+											case '3' : 
+												rptItemConfSheetNames = new Ext.data.ArrayStore({
+											    fields: ['valueField', 'displayField'],
+											    data : [
+											            ['0', '当月日交易量'],
+											            ['1', '当月日交易成功率'],
+											            ['2', '当月日交易响应时间'],
+											            ['3', '当月日网络资源使用情况'],
+											            ['4', '当月日批量执行情况'],
+											            ['5', '当月weblogic使用情况'],
+											            ['6', '当月分钟和秒交易情况'],
+											            ['7', '当月系统资源使用率'],
+											            ['8', '最近13个月日交易量'],
+											            ['9', '最近13个月月交易量'],
+											            ['10', '最近13个月分钟交易量峰值'],
+											            ['11', '最近13个月秒钟交易量峰值'],
+											            ['12', '最近13个月系统资源使用率']
+											            ]
+											});
+											break;
+										}
+										
+										
+										Ext.getCmp('RptItemConfIndexSheetName').clearValue();
+										Ext.getCmp('RptItemConfIndexSheetName').store = rptItemConfSheetNames;
+										Ext.getCmp('RptItemConfIndexSheetName').bindStore(rptItemConfSheetNames);
+										//rptItemConfform.getForm().findField('sheetName').clearValue();
+										//rptItemConfform.getForm().findField('sheetName').store = rptItemConfSheetNames;
+										//rptItemConfform.getForm().findField('sheetName').bindStore(rptItemConfSheetNames);
+									}
+								}
+							},{
+								xtype : 'textfield',
+								fieldLabel: '功能序号',
+								id : 'RptItemConfIndexSheetSeq',
+								name : 'sheetSeq',
+								maxLength : 2,
+								vtype : 'alphanum',
+								//maskRe : /[0-9]/,
+								regex : /^[1-9]\d{0,1}$/,
+								regexText   : '请输入非0开头的整数',
+								emptyText : '可选',
+								anchor : '80%'
+			     			},{
+			  					xtype : 'textfield',
+								fieldLabel : '主机名/IP',
+								id : 'RptItemConfIndexHostName',
+								name : 'hostName',
+								editable : true,
+								//allowBlank : false,
+								emptyText : '可选',
+								maxLength : 30,
+								anchor : '80%',
+								hidden : true
+		        			}]
+			            }/* ,{
+			            	columnWidth : .2,
+			                xtype: 'fieldset',
+			                layout : 'form',
+			                border : false,
+			                autoHeight : true,
+			                items : [{
+				                xtype: 'displayfield',
+				                value: '<table border="0" width="140"><tr><td align="right"><a href="javascript:viewShuoMing()"><font style="color:red;align:right">填写说明</font></a></td></tr></table>',
+								anchor : '100%'
+								
+				            }]} */
+		        		]}
+			],
+			// 定义按钮
+			buttons : [  {
+				text : '编辑科目配置',
+				iconCls : 'button-add',
+				formBind : true,
+				scope : this,
+				handler : this.doAdd
+			} ]
+		});
+		// 设置基类属性		RptItemConfList.superclass.constructor.call(this, {
+			layout : 'border',
+			autoScroll : true,
+			border : false,
+			items : [ rptItemConfform,this.grid]
+		});
+	},
+	// 重置查询表单
+	doAdd : function() {
+		var params = {
+			 sheetName : Ext.getCmp('RptItemConfIndexSheetName').getRawValue(),
+			 
+	    	itemNameOnes:[],
+		    itemNameTwos:[],
+		    itemNameOnesNAME:[],
+		    itemNameTwosNAME:[],
+			itemNames:[],
+			combines:[],
+			itemSeqs:[],
+			expressions:[],
+			expressionUnits:[],
+			groupParents:[],
+			Recount: Recount
+			
+		};
+		
+		var sheetName=Ext.getCmp('RptItemConfIndexSheetName').getRawValue();
+		switch (sheetName) {
+		/* case '运行情况总结':
+			rptItemConfFixedItemNames = ['运行情况总结'];
+			rptItemConfIndexSetVal(1,rptItemConfFixedItemNames);
+			rptItemConfIndexSetStatus(1,true);
+			setItemsVisible(false);		//主机名是否可见
+			break; */
+		case '当日情况统计':
+		case '最近31天日交易情况':
+		case '最近31天日批量执行情况':
+			this.window.doLoad({
+				url : '${ctx}/${managePath}/rptitemconf/Day_Trans_Conf',
+				params : params
+			});
+			break;
+		case '最近7天分小时交易情况':
+		case '实时分小时累计交易情况':
+			this.window.doLoad({
+				url : '${ctx}/${managePath}/rptitemconf/Hour_Minute_Trans_Conf',
+				params : params
+			});
+			break;
+		case '最近7天日批量执行情况':
+			this.window.doLoad({
+				url : '${ctx}/${managePath}/rptitemconf/Day_Batch_Conf',
+				params : params
+			});
+			break;
+		
+		case '最近31天分钟和秒交易情况':
+			this.window.doLoad({
+				url : '${ctx}/${managePath}/rptitemconf/Minute_Second_Trans_Conf',
+				params : params
+			});
+			break;
+			
+		case '当日网络资源使用情况':
+			this.window.doLoad({
+				url : '${ctx}/${managePath}/rptitemconf/Network_ToDay_Use_Conf',
+				params : params
+			});
+			break;
+		case '系统资源使用率图表':
+			this.window.doLoad({
+				url : '${ctx}/${managePath}/rptitemconf/System_resource_Conf',
+				params : params
+			});
+			break;
+		case '当日weblogic使用情况':
+			this.window.doLoad({
+				url : '${ctx}/${managePath}/rptitemconf/Weblogic_ToDay_Use_Conf',
+				params : params
+			});
+			break;
+		case '最近31天日网络资源使用情况':
+			this.window.doLoad({
+				url : '${ctx}/${managePath}/rptitemconf/Network_Days_Use_Conf',
+				params : params
+			});
+			break;
+		case '最近31天日weblogic使用情况':
+			this.window.doLoad({
+				url : '${ctx}/${managePath}/rptitemconf/Weblogic_Days_Use_Conf',
+				params : params
+			});
+			break;
+		default :
+			break;
+		}
+		
+		//app.loadWindow('${ctx}/${managePath}/rptitemconf/RptItemConfEdit',params);
+	},
+
+	sheetChange : function(val)
+	{
+		if(val==0){
+			return '';
+		}else{
+			return'<span style="color:red;">' + val + '</span>';
+		}
+	},
+	// example of custom renderer function
+	change : function(val)
+	{
+		if (val == 0) {
+			val = '';
+		}else if (val > 0) {
+	    val = '<span style="color:green;">' + val + '</span>';
+	  }else if(val < 0) {
+		val = '<span style="color:red;">' + val + '</span>';
+	  }
+	  return val;
+	},
+	  // example of custom renderer function
+	 pctChange : function(val)
+	 {
+	    if (val > 0) {
+	      val = '<span style="color:green;">' + val + '%</span>';
+	    } 
+	    else if(val < 0) {
+	      val = '<span style="color:red;">' + val + '%</span>';
+	    }
+	    return val;
+	}
+	
+});
+								
+var rtpItemConfList = new RptItemConfList();
+
+							
+Ext.getCmp("REP_ITEM_CONF").add(rtpItemConfList);
+Ext.getCmp("REP_ITEM_CONF").doLayout();
+</script>

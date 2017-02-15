@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.toolbox.vo">
+	<class dynamic-insert="true" dynamic-update="true" name="ToolBoxEventGroupInfoVo"
+		table="TOOL_BOX_EVENT_GROUP_INFO">
+		<composite-id>
+		
+			<key-property name="tool_code" type="java.lang.String">
+				<column name="TOOL_CODE" not-null="true">
+				</column>
+			</key-property>
+		</composite-id>
+		
+		
+		<property generated="never" lazy="false" name="event_group"
+			 type="java.lang.String">
+			<column name="EVENT_GROUP">
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

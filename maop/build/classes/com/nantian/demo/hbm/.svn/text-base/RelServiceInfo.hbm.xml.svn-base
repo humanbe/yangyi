@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.demo.vo">
+	<class name="RelServiceInfoVo" table="T_REL_SERVICE_INFO" dynamic-update="true"
+		dynamic-insert="true">
+		<comment>table</comment>
+		<id name="tranid" unsaved-value="null" type="java.lang.String">
+			<column name="TRANID">
+				<comment>tranid</comment>
+			</column>
+			<generator class="uuid" />
+		</id>
+		<property name="appsystemid" type="java.lang.String">
+			<column name="APPSYSTEMID">
+				<comment>appsystemid</comment>
+			</column>
+		</property>
+		<property name="outappsystemid" type="java.lang.String">
+			<column name="OUTAPPSYSTEMID">
+				<comment>outappsystemid</comment>
+			</column>
+		</property>
+		<property name="outserivcesid" type="java.lang.String">
+			<column name="OUTSERIVCESID">
+				<comment>outserivcesid</comment>
+			</column>
+		</property>
+		<property name="outtrancode" type="java.lang.String">
+			<column name="OUTTRANCODE">
+				<comment>outtrancode</comment>
+			</column>
+		</property>
+		<property name="commprotocol" type="java.lang.String">
+			<column name="COMMPROTOCOL">
+				<comment>commprotocol</comment>
+			</column>
+		</property>
+		<property name="callway" type="java.lang.String">
+			<column name="CALLWAY">
+				<comment>callway</comment>
+			</column>
+		</property>
+		<property name="callnum" type="java.lang.String">
+			<column name="CALLNUM">
+				<comment>callnum</comment>
+			</column>
+		</property>
+		<property name="condition" type="java.lang.String">
+			<column name="CONDITION">
+				<comment>condition</comment>
+			</column>
+		</property>
+		<property name="reserve" type="java.lang.String">
+			<column name="RESERVE">
+				<comment>reserve</comment>
+			</column>
+		</property>
+		<property name="reserve1" type="java.lang.String">
+			<column name="RESERVE1">
+				<comment>reserve1</comment>
+			</column>
+		</property>
+		<property name="reserve2" type="java.lang.String">
+			<column name="RESERVE2">
+				<comment>reserve2</comment>
+			</column>
+		</property>
+		<property name="isnode" type="java.lang.String">
+			<column name="ISNODE">
+				<comment>isnode</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>
+
+

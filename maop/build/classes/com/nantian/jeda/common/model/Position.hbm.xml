@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.jeda.common.model">
+	<class name="Position" table="JEDA_POSITION">
+		<comment>岗位表</comment>
+		<id name="id" unsaved-value="null">
+			<column name="POSITION_ID">
+				<comment>岗位主健</comment>
+			</column>
+			<generator class="org.hibernate.id.enhanced.TableGenerator">
+				<param name="table_name">JEDA_SEQUENCES</param>
+				<param name="segment_value">POSITION</param>
+				<param name="initial_value">114</param>
+			</generator>
+		</id>
+		<version name="version" type="integer">
+			<column name="POSITION_VERSION">
+				<comment>岗位数据版本</comment>
+			</column>
+		</version>
+		<property name="name">
+			<column name="POSITION_NAME" length="100">
+				<comment>岗位名称</comment>
+			</column>
+		</property>
+		<property name="description">
+			<column name="POSITION_DESCRIPTION" length="100">
+				<comment>岗位描述</comment>
+			</column>
+		</property>
+		<property name="type">
+			<column name="POSITION_TYPE" length="100">
+				<comment>岗位类型</comment>
+			</column>
+		</property>
+		<property name="order" type="integer">
+			<column name="POSITION_ORDER">
+				<comment>岗位排序</comment>
+			</column>
+		</property>
+		<set name="levels" table="JEDA_POSITION_PL">
+			<key column="POSITION_ID" />
+			<many-to-many class="PositionLevel">
+				<column name="PL_ID">
+					<comment>岗位级别ID</comment>
+				</column>
+			</many-to-many>
+		</set>
+		<set name="orgs" table="JEDA_POSITION_ORG">
+			<key column="POSITION_ID" />
+			<many-to-many class="Org">
+				<column name="ORG_ID">
+					<comment>所属机构ID</comment>
+				</column>
+			</many-to-many>
+		</set>
+		<set name="roles" table="JEDA_ROLE_POSITION">
+			<key column="POSITION_ID" />
+			<many-to-many class="Role">
+				<column name="ROLE_ID">
+					<comment>角色ID</comment>
+				</column>
+			</many-to-many>
+		</set>
+		<set name="users" inverse="true">
+			<key column="POSITION_ID" />
+			<one-to-many class="User" />
+		</set>
+		<many-to-one name="creator" class="com.nantian.jeda.common.model.User" fetch="join" update="false">
+			<column name="POSITION_CREATOR">
+				<comment>岗位创建者</comment>
+			</column>
+		</many-to-one>
+		<property name="created" type="date" update="false">
+			<column name="POSITION_CREATED">
+				<comment>岗位创建时间</comment>
+			</column>
+		</property>
+		<many-to-one name="modifier" class="com.nantian.jeda.common.model.User" fetch="join">
+			<column name="POSITION_MODIFIER">
+				<comment>岗位修改者</comment>
+			</column>
+		</many-to-one>
+		<property name="modified" type="date">
+			<column name="POSITION_MODIFIED">
+				<comment>岗位修改时间</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

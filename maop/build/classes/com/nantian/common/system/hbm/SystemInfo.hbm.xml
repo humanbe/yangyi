@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.common.system.vo">
+	<class name="SystemInfoVo" table="CMN_LIEBIAO" dynamic-update="true" dynamic-insert="true">
+		<comment>应用系统信息</comment>
+		<id name="sysId" type="java.lang.String">
+			<column name="ID">
+				<comment>系统编号</comment>
+			</column>
+		</id>
+		<property name="sysName" type="java.lang.String">
+			<column name="SYSNAME">
+				<comment>系统名称</comment>
+			</column>
+		</property>
+		<property name="operationsManager" type="java.lang.String">
+			<column name="MANAGER">
+				<comment>运维经理</comment>
+			</column>
+		</property>
+		<property name="sysA" type="java.lang.String">
+			<column name="SYSA">
+				<comment>系统管理员A</comment>
+			</column>
+		</property>
+		<property name="sysB" type="java.lang.String">
+			<column name="SYSB">
+				<comment>系统管理员B</comment>
+			</column>
+		</property>
+		<property name="appA" type="java.lang.String"> 
+			<column name="APPA">
+				<comment>应用管理员A</comment>
+			</column>
+		</property>
+		<property name="appB" type="java.lang.String">
+			<column name="APPB">
+				<comment>应用管理员B</comment>
+			</column>
+		</property>
+		<property name="projectLeader" type="java.lang.String">
+			<column name="DEVELOP">
+				<comment>项目组负责人</comment>
+			</column>
+		</property>
+		<property name="sysStatus" type="java.lang.String">
+			<column name="FLAG">
+				<comment>系统状态. (未下线;使用中;已下线;未上线)</comment>
+			</column>
+		</property>
+		<property name="department" type="java.lang.String">
+			<column name="DEPART">
+				<comment>业务主管部门(多部门以逗号分隔)</comment>
+			</column>
+		</property>
+		<property name="serviceTime" type="java.lang.String">
+			<column name="FUWU">
+				<comment>服务级别</comment>
+			</column>
+		</property>
+		<property name="disasterRecoverPriority" type="java.lang.String">
+			<column name="ANQUAN">
+				<comment>灾备优先级(A:最高 B:中等 C:最低)</comment>
+			</column>
+		</property>
+		<property name="securityRank" type="java.lang.String">
+			<column name="JIBIE">
+				<comment>安全定级,1-4(4为最高，以此类推)</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>
+
+

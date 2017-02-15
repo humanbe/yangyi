@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<weblogic-web-app xmlns="http://www.bea.com/ns/weblogic/weblogic-web-app"
+	xmlns:javaee="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.bea.com/ns/weblogic/weblogic-web-app http://www.bea.com/ns/weblogic/weblogic-web-app/1.0/weblogic-web-app.xsd">
+
+	<jsp-descriptor>
+		<page-check-seconds>-1</page-check-seconds>
+		<precompile>false</precompile>
+	</jsp-descriptor>
+
+	<container-descriptor>
+		<index-directory-enabled>true</index-directory-enabled>
+		<prefer-web-inf-classes>false</prefer-web-inf-classes>
+		<servlet-reload-check-secs>-1</servlet-reload-check-secs>
+		<show-archived-real-path-enabled>true
+		</show-archived-real-path-enabled>
+		<prefer-application-packages>
+			<package-name>antlr.*</package-name>
+			<package-name>com.ctc.wstx.*</package-name>
+			<package-name>org.apache.commons.lang.*</package-name>
+		</prefer-application-packages>
+	</container-descriptor>
+
+	<charset-params>
+		<input-charset>
+			<resource-path>/*</resource-path>
+			<java-charset-name>UTF-8</java-charset-name>
+		</input-charset>
+	</charset-params>
+	<context-root>maop</context-root>
+</weblogic-web-app>

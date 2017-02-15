@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.rept.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="AplSystemVo" table="APL_SYSTEM">
+  <id name="aplCode" type="java.lang.String">
+    <column name="APL_CODE" not-null="true">
+    	<comment>应用系统编号</comment>
+    </column>
+  </id>
+  <property name="aplName" not-null="false" type="java.lang.String">
+   <column name="APL_NAME">
+       	<comment>应用系统简称</comment>
+   </column>
+  </property>
+  <property name="aplAllName" not-null="false" type="java.lang.String">
+   <column name="APL_ALL_NAME">
+       	<comment>应用系统全称</comment>
+   </column>
+  </property>
+  <property name="aplBusiness" not-null="false" type="java.lang.String">
+   <column name="APL_BUSINESS">
+       	<comment>应用系统业务描述</comment>
+   </column>
+  </property>
+  <property name="userId" not-null="false" type="java.lang.String">
+   <column name="USER_ID">
+       	<comment>管理员ID, 可用逗号分隔多个ID</comment>
+   </column>
+  </property>
+  <property name="mailSendToList" not-null="false" type="java.lang.String">
+   <column name="MAIL_SEND_TO_LIST">
+       	<comment>邮件发送列表</comment>
+   </column>
+  </property>
+  <property name="mailSendCCList" not-null="false" type="java.lang.String">
+   <column name="MAIL_SEND_CC_LIST">
+       	<comment>邮件抄送列表</comment>
+   </column>
+  </property>
+  <property name="mailSendFlag" not-null="false" type="java.lang.String">
+   <column name="MAIL_SEND_FLAG">
+       	<comment>是否发送邮件标识</comment>
+   </column>
+  </property>
+  <property name="mailSendTime" not-null="false" type="java.lang.String">
+   <column name="MAIL_SEND_TIME">
+       	<comment>邮件发送时间</comment>
+   </column>
+  </property>
+  </class>
+</hibernate-mapping>

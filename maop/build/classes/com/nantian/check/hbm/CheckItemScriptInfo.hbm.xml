@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.check.vo">
+	<class name="CheckItemScriptInfoVo" table="CHECK_ITEM_SCRIPT_INFO" dynamic-update="true"
+		dynamic-insert="true">
+    <composite-id>
+		<key-property name="checkItemCode" type="java.lang.String">
+			<column name="CHECK_ITEM_CODE">
+				<comment>系统代码</comment>
+			</column>
+		</key-property>
+		<key-property name="scriptType" type="java.lang.String">
+			<column name="SCRIPT_TYPE">
+				<comment>系统代码</comment>
+			</column>
+		</key-property>
+	</composite-id>
+		<property name="scriptName" type="java.lang.String">
+			<column name="SCRIPT_NAME">
+			</column>
+		</property>
+		<property name="scriptPath" type="java.lang.String">
+			<column name="SCRIPT_PATH">
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>
+
+

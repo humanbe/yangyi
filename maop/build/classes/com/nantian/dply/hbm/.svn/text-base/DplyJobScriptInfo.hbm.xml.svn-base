@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.dply.vo">
+	<class dynamic-insert="true" dynamic-update="true" name="DplyJobScriptInfoVo"
+		table="DPLY_JOB_SCRIPT_INFO">
+	<composite-id>
+		<key-property name="appsysCode" type="java.lang.String">
+			<column name="APPSYS_CODE">
+			</column>
+		</key-property>
+		<key-property name="scriptBlpackageName" type="java.lang.String">
+			<column name="NSH_SCRIPT_NAME">
+			</column>
+		</key-property>
+		<key-property name="jobParentGroup" type="java.lang.String">
+			<column name="JOB_PARENT_GROUP">
+			</column>
+		</key-property>
+		<key-property name="scriptName" type="java.lang.String">
+			<column name="SCRIPT_NAME">
+			</column>
+		</key-property>
+		<key-property name="paramName" type="java.lang.String">
+			<column name="PARAM_NAME">
+			</column>
+		</key-property>
+	</composite-id>
+		<property generated="never" lazy="false" name="scriptBlpackagePath"
+			not-null="true" type="java.lang.String">
+			<column name="NSH_SCRIPT_PATH">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="scriptPath"
+			not-null="true" type="java.lang.String">
+			<column name="SCRIPT_PATH">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="paramType"
+			not-null="true" type="java.lang.Integer">
+			<column name="PARAM_TYPE">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="paramValue"
+			not-null="true" type="java.lang.String">
+			<column name="PARAM_VALUE">
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

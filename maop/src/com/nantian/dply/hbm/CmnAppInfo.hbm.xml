@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.dply.vo">
+ <class name="CmnAppInfoVo" table="CMN_APP_INFO" 
+    dynamic-update="true" dynamic-insert="true">
+    <id name="appsysCode" type="java.lang.String">
+        <column name="APPSYS_CODE">
+        </column>
+    </id>
+    <property generated="never" lazy="false" name="appsysName"
+   not-null="true" type="java.lang.String">
+   <column name="APPSYS_NAME">
+   </column>
+  </property>
+    <property generated="never" lazy="false" name="sysA"
+   not-null="true" type="java.lang.String">
+   <column name="SYSA">
+   </column>
+  </property>
+    <property generated="never" lazy="false" name="sysB"
+   not-null="true" type="java.lang.String">
+   <column name="SYSB">
+   </column>
+  </property>
+     <property generated="never" lazy="false" name="appA"
+   not-null="true" type="java.lang.String">
+   <column name="APPA">
+   </column>
+  </property>
+     <property generated="never" lazy="false" name="appB"
+   not-null="true" type="java.lang.String">
+   <column name="APPB">
+   </column>
+  </property>
+    <property generated="never" lazy="false" name="develop"
+   not-null="true" type="java.lang.String">
+   <column name="DEVELOP">
+   </column>
+  </property>
+    <property generated="never" lazy="false" name="flag"
+   not-null="true" type="java.lang.String">
+   <column name="FLAG">
+   </column>
+  </property>
+    <property generated="never" lazy="false" name="depart"
+   not-null="true" type="java.lang.String">
+   <column name="DEPART">
+   </column>
+  </property>
+    <property generated="never" lazy="false" name="fuWu"
+   not-null="true" type="java.lang.String">
+   <column name="FUWU">
+   </column>
+  </property>
+    <property generated="never" lazy="false" name="anQuan"
+   not-null="true" type="java.lang.String">
+   <column name="ANQUAN">
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="jiBie"
+   not-null="true" type="java.lang.String">
+   <column name="JIBIE">
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="manager"
+   not-null="true" type="java.lang.String">
+   <column name="MANAGER">
+   </column>
+  </property>
+   <property generated="never" lazy="false" name="appOutline"
+   not-null="true" type="java.lang.String">
+   <column name="APP_OUTLINE">
+   </column>
+  </property>
+   <property generated="never" lazy="false" name="appType"
+   not-null="true" type="java.lang.String">
+   <column name="APP_TYPE">
+   </column>
+  </property>
+  </class>
+</hibernate-mapping>

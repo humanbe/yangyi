@@ -1,0 +1,58 @@
+10
+
+dir
+23
+svn://10.200.36.87:3690/baseline/trunk/maop/src/com/nantian
+svn://10.200.36.87:3690/baseline
+
+
+
+2015-03-09T06:16:36.359389Z
+23
+zhengwenjie
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+cb17eb1e-d9a4-11e3-b9c8-e5fd65ecf62a
+
+component
+dir
+
+jeda
+dir
+
+demo
+dir
+
+smrpt
+dir
+
+toolbox
+dir
+
+common
+dir
+
+dply
+dir
+
+jedarpt
+dir
+
+rept
+dir
+
+check
+dir
+

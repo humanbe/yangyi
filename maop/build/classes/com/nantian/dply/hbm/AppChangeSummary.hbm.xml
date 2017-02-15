@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.dply.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="AppChangeSummaryVo" table="APP_CHANGE_SUMMARY">
+  	<id name="appChangeId" column="app_change_id" type="long" unsaved-value="0">
+		<generator class="foreign">
+  			<param name="property">appChange</param>
+  		</generator>
+	</id>
+  	<property name="aplCode" not-null="true" type="java.lang.String">
+   		<column name="APL_CODE">
+       		<comment>系统编号</comment>
+   		</column>
+  	</property>
+  	<property name="time" not-null="false" type="java.lang.String">
+   		<column name="TIME">
+       		<comment>时间 YYYYMMDD HH:MM:SS</comment>
+   		</column>
+  	</property>
+  	<property name="type" not-null="false" type="java.lang.String">
+   		<column name="TYPE">
+       		<comment>类型</comment>
+   		</column>
+  	</property>
+  	<property name="phenomenon" not-null="false" type="org.springframework.orm.hibernate3.support.ClobStringType" length="4000">
+   		<column name="PHENOMENON">
+       		<comment>现象</comment>
+   		</column>
+  	</property>
+  	<property name="cause" not-null="false" type="org.springframework.orm.hibernate3.support.ClobStringType" length="4000">
+   		<column name="CAUSE">
+       		<comment>原因</comment>
+   		</column>
+  	</property>
+  	<property name="handleMethod" not-null="false" type="org.springframework.orm.hibernate3.support.ClobStringType" length="4000">
+   		<column name="HANDLE_METHOD">
+       		<comment>处理方法</comment>
+   		</column>
+  	</property>
+  	<property name="improveMethod" not-null="false" type="org.springframework.orm.hibernate3.support.ClobStringType" length="4000">
+   		<column name="IMPROVE_METHOD">
+       		<comment>后续改进</comment>
+   		</column>
+  	</property>
+  	<one-to-one name="appChange" class="AppChangeVo" cascade="all"></one-to-one>
+  </class>
+</hibernate-mapping>

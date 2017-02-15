@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.jedarpt.vo">
+	<class name="JedaReportColumnVo" table="JEDA_REPORT_COLUMN" dynamic-update="true"
+		dynamic-insert="true">
+        <composite-id>
+			<key-property name="column_code" column="COLUMN_CODE" type="integer"></key-property>
+			<key-property name="report_code" column="REPORT_CODE" type="integer"></key-property>
+		</composite-id>
+		
+		<property name="is_visible" type="string">
+			<column name="IS_VISIBLE"></column>
+		</property>
+		<property name="default_value" type="string">
+			<column name="DEFAULT_VALUE"></column>
+		</property>
+		<property name="column_width" type="string">
+			<column name="COLUMN_WIDTH"></column>
+		</property>
+		<property name="column_sort" type="string">
+			<column name="COLUMN_SORT"></column>
+		</property>
+	</class>
+</hibernate-mapping>
+
+

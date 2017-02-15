@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.common.system.vo">
+	<class name="IamStatusVo" table="IAM_STATUS" 
+	dynamic-update="true" dynamic-insert="true">
+		<comment>table</comment>
+		<id name="status" type="java.lang.Integer">
+			<column name="status">
+				<comment>IAM健康状态</comment>
+			</column>
+		</id>
+	</class>
+</hibernate-mapping>
+

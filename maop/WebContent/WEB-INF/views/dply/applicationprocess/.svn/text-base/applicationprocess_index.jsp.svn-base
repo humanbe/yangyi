@@ -1,0 +1,1028 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="/include/taglibs.jsp"%>
+<script type="text/javascript">
+
+var Loaduser2;
+var Back_record_ids;
+var mask = new Ext.LoadMask(Ext.getBody(),{
+	msg:'进行中，请稍候...',
+	removeMask :true
+	
+});
+ 
+//定义列表
+ApplicationProcess = Ext.extend(Ext.Panel, {
+	//gridStore : null,// 数据列表数据源
+	grid : null,// 数据列表组件
+	form : null,// 查询表单组件
+	gridStore:null,
+	tabIndex : 0,// 查询表单组件Tab键顺序
+	csm : null,// 数据列表选择框组件
+	constructor : function(cfg) {// 构造方法
+		Ext.apply(this, cfg);
+		// 实例化数据列表选择框组件
+		csm = new Ext.grid.CheckboxSelectionModel();
+		
+		
+		this.subject_info = new Ext.data.JsonStore(
+				{
+					autoDestroy : true,
+					url : '${ctx}/${frameworkPath}/item/SUBJECT_INFO/sub',
+					root : 'data',
+					fields : [ 'value', 'name' ]
+				});
+		this.subject_info.load();
+		this.process_status = new Ext.data.JsonStore(
+				{
+					autoDestroy : true,
+					url : '${ctx}/${frameworkPath}/item/PROCESS_STATUS/sub',
+					root : 'data',
+					fields : [ 'value', 'name' ]
+				});
+		this.process_status.load();
+		
+		this.OsUserUserIdStore = new Ext.data.Store(
+				{
+					proxy : new Ext.data.HttpProxy(
+							{
+								method : 'POST',
+								url : '${ctx}/${managePath}/ApplicationProcess/findUserId'
+							}),
+							reader: new Ext.data.JsonReader({}, ['userId','name'])
+				});
+		this.OsUserUserIdStore.load();
+		
+		
+		//登录用户
+		var userNameStore2 =  new Ext.data.Store({
+				proxy: new Ext.data.HttpProxy({
+					method : 'POST',
+					url : '${ctx}/${managePath}/ApplicationProcess/getUserName',
+					disableCaching : false
+				}),
+				reader: new Ext.data.JsonReader({}, ['UName','RoleName','UId'])
+				
+			});
+			userNameStore2.load();
+			userNameStore2.on('load',function(){
+				//当前用户
+				 Loaduser2= userNameStore2.data.items[0].data.UName; 
+			},this);
+		
+		// 实例化数据列表数据源
+		this.gridStore = new Ext.data.JsonStore( {
+			proxy : new Ext.data.HttpProxy({
+				method : 'POST',
+				url : '${ctx}/${managePath}/ApplicationProcess/index',
+				disableCaching : false
+			}),
+			autoDestroy : true,
+			root : 'data',
+			totalProperty : 'count',
+			fields : [ 'record_id','subject_info','handled_user','application_user','current_state',
+			           'order_consuming_time','completed_time','application_time','application_reasons',
+			           'handled_time','completed_user', 'process_description'],
+			remoteSort : true,
+			sortInfo : {
+				field : 'application_time',
+				direction : 'DESC'
+			},
+			baseParams : {
+				start : 0,
+				limit : 100
+				//,status: '1'
+			}
+		});
+		//加载数据源
+		this.gridStore.load();
+		// 实例化数据列表组件
+
+		this.grid = new Ext.grid.GridPanel( {
+			//id : '',
+			region : 'center',
+			border : false,
+			viewConfig:{
+				forceFit : false
+			},
+			loadMask : true,
+			title : '<fmt:message key="title.list" />',
+			columnLines : true,
+			store : this.gridStore,
+			sm : csm,
+			// 列定义			columns : [ new Ext.grid.RowNumberer(), csm, 
+				{header : '<fmt:message key="application.record_id" />', dataIndex : 'record_id', sortable : true,width: 200},
+				{header : '<fmt:message key="application.subject_info" />', dataIndex : 'subject_info',width: 150, sortable : true,renderer:this.subject_infoone,scope : this},
+					
+				{header : '<fmt:message key="application.current_state" />', dataIndex : 'current_state', sortable : true,renderer:this.process_statusone,scope : this},
+				{header : '<fmt:message key="application.order_consuming_time" />', dataIndex : 'order_consuming_time', sortable : true },
+				{header : '<fmt:message key="application.application_user" />', dataIndex : 'application_user', sortable : true ,scope : this, renderer:this.OsUserUserIdStoreone },
+				{header : '<fmt:message key="application.application_reasons" />', dataIndex : 'application_reasons', sortable : true,width: 200 ,
+					renderer : function (data, metadata, record, rowIndex, columnIndex, store) {
+					    //build the qtip:    
+					    var title = '<fmt:message key="application.application_reasons" />';
+					    var tip = record.get('application_reasons');    
+					    metadata.attr = 'ext:qtitle="' + title + '"' + ' ext:qtip="' + tip + '"';    
+
+					    //return the display text:    
+					    var displayText =  record.get('application_reasons') ;    
+					    return displayText;    
+
+					}},
+				{header : '<fmt:message key="application.handled_user" />', dataIndex : 'handled_user', sortable : true ,scope : this},
+				{header : '<fmt:message key="application.completed_user" />', dataIndex : 'completed_user', sortable : true ,scope : this},
+				{header : '<fmt:message key="application.application_time" />', dataIndex : 'application_time', sortable : true,width: 130 },
+				{header : '<fmt:message key="application.handled_time" />', dataIndex : 'handled_time', sortable : true ,width: 130},
+				{header : '<fmt:message key="application.completed_time" />', dataIndex : 'completed_time', sortable : true ,width: 130},
+				{header : '<fmt:message key="application.process_description" />', dataIndex : 'process_description', sortable : true,width: 250, hidden:true,
+					renderer : function (data, metadata, record, rowIndex, columnIndex, store) {
+					    //build the qtip:    
+					    var title ='<fmt:message key="application.process_description" />';
+					    var tip = record.get('process_description');
+					    metadata.attr = 'ext:qtitle="' + title + '"' + ' ext:qtip="' + tip + '"';    
+
+					    //return the display text:    
+					    var displayText =  record.get('process_description') ;    
+					    return displayText;    
+					}
+				}],
+	  		
+			// 定义按钮工具条
+			tbar : new Ext.Toolbar( {
+				items : [ '-' ]
+			}),
+			// 定义分页工具条
+			bbar : new Ext.PagingToolbar( {
+				store : this.gridStore,
+				displayInfo : true,
+				pageSize : 100,
+				buttons : [ '-'/* , {
+					iconCls : 'button-excel',
+					tooltip : '<fmt:message key="button.excel" />',
+					scope : this,
+					handler :this.doExcel
+				} */ ]
+			}),
+			// 定义数据列表监听事件
+			listeners : {
+				scope : this,
+				// 行双击事件：打开数据查看页面
+				rowdblclick : this.doView
+
+			}
+		
+		});
+
+		// 实例化查询表单
+		this.form = new Ext.FormPanel( {
+		//	id :,
+			region : 'east',
+			title : '<fmt:message key="button.find" />',
+			labelAlign : 'right',
+			labelWidth : 70,
+			buttonAlign : 'center',
+			frame : true,
+			split : true,
+			width : 250,
+			minSize : 230,
+			maxSize : 280,
+			autoScroll : true,
+			collapsible : true,
+			collapseMode : 'mini',
+			border : false,
+			defaults : {
+				anchor : '95%',
+				msgTarget : 'side'
+			},
+			// 定义查询表单组件
+			items : [ 
+				{
+				    xtype : 'textfield',
+					fieldLabel : '<fmt:message key="application.record_id" />',
+					name : 'record_id'
+				},{
+				    xtype : 'textfield',
+					fieldLabel : '<fmt:message key="application.application_user" />',
+					name : 'application_user'
+				},
+				{
+				    xtype : 'textfield',
+					fieldLabel : '<fmt:message key="application.handled_user" />',
+					name : 'handled_user'
+				},{
+					xtype : 'combo',
+					fieldLabel : '<fmt:message key="application.current_state" />',
+					store : this.process_status,
+					valueField : 'value',
+					displayField : 'name',
+					hiddenName :'current_state',
+					mode: 'local',
+					typeAhead: true,
+                    triggerAction: 'all',
+                    tabIndex : this.tabIndex++
+				},{
+					xtype : 'combo',
+					fieldLabel : '<fmt:message key="application.subject_info" />',
+					store : this.subject_info,
+					valueField : 'value',
+					displayField : 'name',
+					hiddenName :'subject_info',
+					mode: 'local',
+					typeAhead: true,
+                    triggerAction: 'all',
+                    tabIndex : this.tabIndex++
+				}
+			],
+			// 定义查询表单按钮
+			buttons : [ {
+				text : '<fmt:message key="button.ok" />',
+				iconCls : 'button-ok',
+				scope : this,
+				handler : this.doFind
+			}, {
+				text : '<fmt:message key="button.reset" />',
+				iconCls : 'button-reset',
+				scope : this,
+				handler : this.doReset
+			} ]
+		});
+
+		// 设置基类属性
+		ApplicationProcess.superclass.constructor.call(this, {
+			layout : 'border',
+			border : false,
+			items : [ this.form, this.grid ]
+		});
+	},
+	
+	// 查询事件
+	doFind : function() {
+		Ext.apply(this.grid.getStore().baseParams, this.form.getForm().getValues());
+		//this.grid.getStore().baseParams.status='0';
+		this.grid.getStore().load();
+	},
+	// 重置查询表单
+	doReset : function() {
+		this.form.getForm().reset();
+	},
+	
+	
+	subject_infoone : function(value) {
+
+		var index = this.subject_info.find('value', value);
+		if (index == -1) {
+			return value;
+		} else {
+			return this.subject_info.getAt(index).get('name');
+		}
+	},
+	process_statusone : function(value) {
+
+		var index = this.process_status.find('value', value);
+		if (index == -1) {
+			return value;
+		} else {
+			return this.process_status.getAt(index).get('name');
+		}
+	},
+	
+	OsUserUserIdStoreone : function(userId) {
+
+		var index = this.OsUserUserIdStore.find('userId', userId);
+		if (index == -1) {
+			return userId;
+		} else {
+			return this.OsUserUserIdStore.getAt(index).get('name');
+		}
+	},
+	//删除-------------------------------------------------------------------------
+	doDelete :function() {
+		if (this.grid.getSelectionModel().getCount() > 0) {
+			var records = this.grid.getSelectionModel()
+					.getSelections();
+			var record_ids = new Array();
+			var subject_infos = new Array();
+
+			var dflag =true;
+			var dflag2 =true;
+			for ( var i = 0; i < records.length; i++) {
+				record_ids[i] = records[i].get('record_id');
+				subject_infos[i] = records[i].get('subject_info');
+
+				if(records[i].get('current_state')!='1'){
+					dflag =false;
+				};
+				
+				if(records[i].get('application_user')!=Loaduser2){
+					dflag2 =false;
+				};
+				
+				if(records[i].get('subject_info')=="4"){
+					dflag3 =false;
+				};
+			}
+			
+		
+		
+
+			if(dflag){
+				
+				if(dflag2){
+					if(dflag3){
+						
+			Ext.Msg.show({
+						title : '<fmt:message key="message.title" />',
+						msg : '<fmt:message key="message.confirm.to.delete" />',
+						buttons : Ext.MessageBox.OKCANCEL,
+						icon : Ext.MessageBox.QUESTION,
+						minWidth : 200,
+						scope : this,
+						fn : function(buttonId) {
+							if (buttonId == 'ok') {
+								app.mask.show();
+								Ext.Ajax.request({
+											url : '${ctx}/${managePath}/ApplicationProcess/delete',
+											scope : this,
+											success : this.deleteSuccess,
+											failure : this.deleteFailure,
+											params : {
+												record_ids : record_ids,
+												subject_infos : subject_infos,
+												_method : 'delete'
+											}
+										});
+							}
+						}
+					});
+					
+					}else{
+						Ext.Msg.show({
+							title : '<fmt:message key="message.title" />',
+							msg : '发布请求电话授权的记录不可以被删除!',
+							minWidth : 200,
+							buttons : Ext.MessageBox.OK,
+							icon : Ext.MessageBox.INFO
+						});
+					}
+			}else{
+				Ext.Msg.show({
+					title : '<fmt:message key="message.title" />',
+					msg : '只有申请人可以删除当前数据!',
+					minWidth : 200,
+					buttons : Ext.MessageBox.OK,
+					icon : Ext.MessageBox.INFO
+				});
+			}
+			}else{
+				Ext.Msg.show({
+					title : '<fmt:message key="message.title" />',
+					msg : '只有当前状态为【待审批】的数据可以删除!',
+					minWidth : 200,
+					buttons : Ext.MessageBox.OK,
+					icon : Ext.MessageBox.INFO
+				});
+			}
+		} else {
+			Ext.Msg.show({
+						title : '<fmt:message key="message.title" />',
+						msg : '<fmt:message key="message.select.one.at.least" />',
+						minWidth : 200,
+						buttons : Ext.MessageBox.OK,
+						icon : Ext.MessageBox.ERROR
+					});
+		}
+	},
+	
+	// 删除失败回调方法
+	deleteFailure : function() {
+		app.mask.hide();
+		Ext.Msg.show({
+					title : '<fmt:message key="message.title" />',
+					msg : '<fmt:message key="message.delete.failed" />',
+					minWidth : 200,
+					buttons : Ext.MessageBox.OK,
+					icon : Ext.MessageBox.ERROR
+				});
+	},
+	// 删除成功回调方法
+	deleteSuccess : function(response, options) {
+		app.mask.hide();
+		if (Ext.decode(response.responseText).success == false) {
+			var error = Ext.decode(response.responseText).error;
+			Ext.Msg
+					.show({
+						title : '<fmt:message key="message.title" />',
+						msg : '<fmt:message key="message.delete.failed" /><fmt:message key="error.code" />:'
+								+ error,
+						minWidth : 200,
+						buttons : Ext.MessageBox.OK,
+						icon : Ext.MessageBox.ERROR
+					});
+		} else if (Ext.decode(response.responseText).success == true) {
+			this.grid.getStore().reload();// 重新加载数据源
+
+			Ext.Msg.show({
+						title : '<fmt:message key="message.title" />',
+						msg : '<fmt:message key="message.delete.successful" />',
+						minWidth : 200,
+						buttons : Ext.MessageBox.OK,
+						icon : Ext.MessageBox.INFO
+					});
+		}
+	},
+	//取消-------------------------------------------------------------------------
+	doCancel :function() {
+		if (this.grid.getSelectionModel().getCount() > 0) {
+			var records = this.grid.getSelectionModel()
+					.getSelections();
+			var record_ids = new Array();
+			var dflag =true;
+			var dflag2 =true;
+			for ( var i = 0; i < records.length; i++) {
+				record_ids[i] = records[i].get('record_id');
+				if(records[i].get('current_state')!='3'){
+					dflag =false;
+				};
+				if(records[i].get('application_user')!=Loaduser2){
+					dflag2 =false;
+				};
+			}
+
+			if(dflag){
+				
+				if(dflag2){
+			Ext.Msg.show({
+						title : '<fmt:message key="message.title" />',
+						msg : '是否确定取消审批流程?',
+						buttons : Ext.MessageBox.OKCANCEL,
+						icon : Ext.MessageBox.QUESTION,
+						minWidth : 200,
+						scope : this,
+						fn : function(buttonId) {
+							if (buttonId == 'ok') {
+								app.mask.show();
+
+								Ext.Ajax.request({
+											method:'POST',
+											url : '${ctx}/${managePath}/ApplicationProcess/doCancel',
+											scope : this,
+											success : this.cancelSuccess,
+											failure : this.cancelFailure,
+											params : {
+												record_ids : record_ids
+											}
+										});
+							}
+						}
+					});
+			}else{
+				Ext.Msg.show({
+					title : '<fmt:message key="message.title" />',
+					msg : '只有申请人可以取消此流程!',
+					minWidth : 200,
+					buttons : Ext.MessageBox.OK,
+					icon : Ext.MessageBox.INFO
+				});
+			}
+			}else{
+				Ext.Msg.show({
+					title : '<fmt:message key="message.title" />',
+					msg : '只有当前状态为【审批未通过】的数据可以取消!',
+					minWidth : 200,
+					buttons : Ext.MessageBox.OK,
+					icon : Ext.MessageBox.INFO
+				});
+			}
+		} else {
+			Ext.Msg.show({
+						title : '<fmt:message key="message.title" />',
+						msg : '<fmt:message key="message.select.one.at.least" />',
+						minWidth : 200,
+						buttons : Ext.MessageBox.OK,
+						icon : Ext.MessageBox.ERROR
+					});
+		}
+	},
+	
+	// 删除失败回调方法
+	cancelFailure : function() {
+		app.mask.hide();
+		Ext.Msg.show({
+					title : '<fmt:message key="message.title" />',
+					msg : '取消流程失败!',
+					minWidth : 200,
+					buttons : Ext.MessageBox.OK,
+					icon : Ext.MessageBox.ERROR
+				});
+	},
+	// 删除成功回调方法
+	cancelSuccess : function(response, options) {
+		app.mask.hide();
+		if (Ext.decode(response.responseText).success == false) {
+			var error = Ext.decode(response.responseText).error;
+			Ext.Msg
+					.show({
+						title : '<fmt:message key="message.title" />',
+						msg : '取消失败!<fmt:message key="error.code" />:'
+								+ error,
+						minWidth : 200,
+						buttons : Ext.MessageBox.OK,
+						icon : Ext.MessageBox.ERROR
+					});
+		} else if (Ext.decode(response.responseText).success == true) {
+			this.grid.getStore().reload();// 重新加载数据源
+
+			Ext.Msg.show({
+						title : '<fmt:message key="message.title" />',
+						msg : '取消流程成功!',
+						minWidth : 200,
+						buttons : Ext.MessageBox.OK,
+						icon : Ext.MessageBox.INFO
+					});
+		}
+	},
+	
+//-------------------------------------------------------------------------------------------------
+//审批通过
+  doOk :function() {
+		if (this.grid.getSelectionModel().getCount() > 0) {
+			
+			var records = this.grid.getSelectionModel().getSelections();
+			var record_ids = new Array();
+			var flag2=true;
+			for ( var i = 0; i < records.length; i++) {
+				record_ids[i] = records[i].get('record_id');
+				if(records[i].get('current_state')!='1'){
+					flag2 =false;
+				}; 
+				
+			};
+				if(flag2){
+			Ext.Msg.show({
+						title : '<fmt:message key="message.title" />',
+						msg : '是否确认审批通过?',
+						buttons : Ext.MessageBox.OKCANCEL,
+						icon : Ext.MessageBox.QUESTION,
+						minWidth : 200,
+						scope : this,
+						fn : function(buttonId) {
+							if (buttonId == 'ok') {
+								app.mask.show();
+
+								Ext.Ajax.request({
+											url : '${ctx}/${managePath}/ApplicationProcess/doOk',
+											method:'POST',
+											scope : this,
+											success : function(response, options){
+												app.mask.hide();
+												if (Ext.decode(response.responseText).success == false) {
+													var error = Ext.decode(response.responseText).error;
+													Ext.Msg
+															.show({
+																title : '<fmt:message key="message.title" />',
+																msg : '审批通过失败<fmt:message key="error.code" />:'
+																		+ error,
+																minWidth : 200,
+																buttons : Ext.MessageBox.OK,
+																icon : Ext.MessageBox.ERROR
+															});
+												} else if (Ext.decode(response.responseText).success == true) {
+													this.grid.getStore().reload();// 重新加载数据源
+
+													Ext.Msg.show({
+																title : '<fmt:message key="message.title" />',
+																msg : '审批通过完成!',
+																minWidth : 200,
+																buttons : Ext.MessageBox.OK,
+																icon : Ext.MessageBox.INFO
+															});
+												}
+											
+											},
+											failure : function(response, options){
+												app.mask.hide();
+												Ext.Msg
+														.show({
+															title : '<fmt:message key="message.title" />',
+															msg : '审批通过失败!',
+															minWidth : 200,
+															buttons : Ext.MessageBox.OK,
+															icon : Ext.MessageBox.ERROR
+														});
+											},
+											params : {
+												record_ids : record_ids
+											}
+										});
+							};
+						}
+					});
+			
+				}else {
+			Ext.Msg.show({
+						title : '<fmt:message key="message.title" />',
+						msg : '只有当前状态为【待审批】的数据才能审批通过!',
+						minWidth : 200,
+						buttons : Ext.MessageBox.OK,
+						icon : Ext.MessageBox.ERROR
+					});
+		}; 
+		
+			
+			}else{
+				Ext.Msg.show({
+					title : '<fmt:message key="message.title" />',
+					msg : '<fmt:message key="message.select.one.at.least" />',
+					minWidth : 200,
+					buttons : Ext.MessageBox.OK,
+					icon : Ext.MessageBox.ERROR
+				});
+			}; 
+		
+	},
+	
+	
+	//退回审批----------------------------------------------------------------------------------------------------------------------------
+
+			doBack : function() {
+			if (this.grid.getSelectionModel().getCount() > 0) {
+				var records = this.grid.getSelectionModel()
+						.getSelections();
+				Back_record_ids = new Array();
+				var flag3 =true;
+				for ( var i = 0; i < records.length; i++) {
+					if(records[i].get('current_state')!="1"){
+						flag3=false;
+					}
+					Back_record_ids[i] = records[i].get('record_id');
+				}
+				if(flag3){
+					Back_Win.show();
+				}else{
+					Ext.Msg.show({
+						title : '<fmt:message key="message.title" />',
+						msg : '只有当前状态为【待审批】的数据才能退回!',
+						minWidth : 200,
+						buttons : Ext.MessageBox.OK,
+						icon : Ext.MessageBox.ERROR
+					});
+				}
+			} else {
+				Ext.Msg.show({
+							title : '<fmt:message key="message.title" />',
+							msg : '<fmt:message key="message.select.one.at.least" />',
+							minWidth : 200,
+							buttons : Ext.MessageBox.OK,
+							icon : Ext.MessageBox.ERROR
+						})
+			}
+		},
+
+		doSaveBack : function() {
+			
+			Ext.Ajax.request({
+				method : 'POST',
+				url : '${ctx}/${managePath}/ApplicationProcess/doBacked',	
+				scope : this,
+				success : applicationProcess.BackSuccess,
+				failure : applicationProcess.BackFailure,
+				params : {
+					record_ids : Back_record_ids,
+					process_Backreasons: Ext.getCmp('process_back_reasons').getValue()
+				}
+			});
+			
+			},
+		
+		BackFailure : function(form, action) {
+			var error = decodeURIComponent(action.result.error);
+			Ext.Msg.show({
+				title : '<fmt:message key="message.title" />',
+				msg : '<fmt:message key="message.save.failed" /><fmt:message key="error.code" />:'+ error,
+				buttons : Ext.MessageBox.OK,
+				icon : Ext.MessageBox.ERROR
+			});
+			
+		},
+		
+		BackSuccess : function(response, options) {
+			Ext.Msg.show({
+				title : '<fmt:message key="message.title" />',
+				msg : '<fmt:message key="message.save.successful" />',
+				buttons : Ext.MessageBox.OK,
+				icon : Ext.MessageBox.INFO,
+				minWidth : 200,
+				fn : function() {
+					Back_Win.close();
+						app.loadTab(
+								'APPLICATIONPROCESS_INDEX',
+								'审批流程列表',
+								'${ctx}/${managePath}/ApplicationProcess/index');
+					
+				}
+		   }); 
+		},
+	
+	
+		doCancelBack : function() {
+			Back_Win.close();
+			app.loadTab(
+					'APPLICATIONPROCESS_INDEX',
+					'审批流程列表',
+					'${ctx}/${managePath}/ApplicationProcess/index');
+		},	
+		
+		
+		
+		
+		
+	//新建审批流程--------------------------------------------------------------------------------------------------------
+	doCreate : function() {
+					app.loadWindow('${ctx}/${managePath}/ApplicationProcess/create');
+
+				},
+	
+/* 	
+	doExcel : function() {
+		if(this.grid.getStore().getCount()>0){
+			window.location = '${ctx}/${managePath}/serverssynchronous/servers_excel.xls';
+		}else{
+			Ext.Msg.show( {
+				title : '<fmt:message key="message.title" />',
+				msg : '没有数据,不可导出',
+				minWidth : 200,
+				buttons : Ext.MessageBox.OK,
+				icon : Ext.MessageBox.ERROR
+			});
+		}
+		
+	} */
+
+				// 查看事件
+				doView : function() {
+					var record = this.grid.getSelectionModel().getSelected();
+					
+					var params = {
+							record_id : record.get('record_id'),
+							subject_info:record.get('subject_info')
+					};
+					if(record.get('subject_info')=='3'){
+						app.loadWindow('${ctx}/${managePath}/ApplicationProcess/systemAuthView',params);
+					}else{
+						app.loadWindow('${ctx}/${managePath}/ApplicationProcess/view',params);
+					}
+					
+				},
+				
+				//完成导入
+				doImported : function() {
+					if (this.grid.getSelectionModel().getCount() == 1) {
+					var record = this.grid.getSelectionModel().getSelected();
+					if( record.get('current_state')=='2'){
+						Ext.Msg.show( {
+							title : '<fmt:message key="message.title" />',
+							msg : '确认完成?',
+							buttons : Ext.MessageBox.OKCANCEL,
+							icon : Ext.MessageBox.QUESTION,
+							minWidth : 200,
+							scope : this,
+							fn : function(btn) {
+								if(btn == 'ok'){
+									app.mask.show();
+									Ext.Ajax.request({
+										method : 'POST',
+										url : '${ctx}/${managePath}/ApplicationProcess/doImported',	
+										scope : this,
+										timeout : 300000,
+										success : applicationProcess.ImportedSuccess,
+										failure : applicationProcess.ImportedFailure,
+										params : {
+											record_id : record.get('record_id'),
+											subject_info : record.get('subject_info'),
+											handled_user : record.get('handled_user')
+										}
+									});
+								}
+							}
+						});
+					} else {
+						Ext.Msg.show({
+									title : '<fmt:message key="message.title" />',
+									msg : '只有当前状态为【审批通过】的数据才能完成!',
+									minWidth : 200,
+									buttons : Ext.MessageBox.OK,
+									icon : Ext.MessageBox.ERROR
+								});
+					}
+					} else {
+						Ext.Msg.show({
+									title : '<fmt:message key="message.title" />',
+									msg : '请只选择一条数据!',
+									minWidth : 200,
+									buttons : Ext.MessageBox.OK,
+									icon : Ext.MessageBox.ERROR
+								});
+					}
+				},
+				ImportedFailure : function(form, action) {
+					app.mask.hide();
+					var error = decodeURIComponent(action.result.error);
+					Ext.Msg.show({
+						title : '<fmt:message key="message.title" />',
+						msg : '完成导入失败<fmt:message key="error.code" />:'+ error,
+						buttons : Ext.MessageBox.OK,
+						icon : Ext.MessageBox.ERROR
+					});
+					
+				},
+				
+				ImportedSuccess : function(response, options) {
+					app.mask.hide();
+					var record = this.grid.getSelectionModel().getSelected();
+					if(record.get('subject_info')=='2'){
+						if (Ext.decode(response.responseText).success == false) {
+							var error = Ext.decode(response.responseText).error;
+							Ext.Msg.show( {
+								title : '<fmt:message key="message.title" />',
+								msg : '<fmt:message key="message.agent.failed" /><fmt:message key="error.code" />:' + error,
+								minWidth : 200,
+								buttons : Ext.MessageBox.OK,
+								icon : Ext.MessageBox.ERROR
+								
+							});
+						} else if (Ext.decode(response.responseText).success == true) {
+								var json = response.responseText;
+								var json_response = Ext.util.JSON.decode(json);
+								  if(json_response.agentInfo!=''){
+									Ext.Msg.show({
+										title:'服务器',
+										scope : this,
+										msg:json_response.agentInfo,
+										buttons : Ext.MessageBox.OK,
+										width:200,
+										icon:Ext.MessageBox.INFO,
+										fn:function(btn){
+											if(btn =='ok'){
+												this.gridStore.load();
+											}
+										}
+									});
+								  }
+						}
+					}
+					else{	
+						Ext.Msg.show({
+						title : '<fmt:message key="message.title" />',
+						scope : this,
+						msg : '完成导入成功',
+						buttons : Ext.MessageBox.OK,
+						icon : Ext.MessageBox.INFO,
+						minWidth : 200,
+						fn : function() {
+							this.gridStore.load();
+						}
+				   }); 
+						}
+				
+					
+				}
+				
+	
+});
+
+
+
+var applicationProcess = new ApplicationProcess();
+
+var Back_Win = new Ext.Window({
+	title:'申请单退回',
+	layout:'form',
+	width:450,
+	height:150,
+	plain:true,
+	modal : false,
+	closable : false,
+	resizable : false,
+	draggable : true,
+	closeAction :'close',
+	items : new Ext.form.FormPanel({
+		buttonAlign : 'center',
+		labelAlign : 'right',
+		lableWidth : 15,
+		frame : true,
+		monitorValid : true,
+		
+		items:[
+		
+		{
+			xtype : 'textarea',
+			id : 'process_back_reasons',
+			fieldLabel : '退回意见',
+			height : 60,
+			width:250,
+			maxLength:500,
+			tabIndex : this.tabIndex++
+		}],
+		buttons : [{
+				text :'退回',
+					iconCls : 'button-save',
+					tabIndex : this.tabIndex++,
+					formBind : true,
+					scope : this,
+					handler : applicationProcess.doSaveBack
+				},{
+					text : '<fmt:message key="button.cancel" />',
+					iconCls : 'button-cancel',
+					tabIndex : this.tabIndex++,
+					handler : applicationProcess.doCancelBack
+
+				} ]
+	})
+});
+
+
+
+</script>
+
+<%--  <sec:authorize access="hasRole('PROCESS_ADD')">
+<script type="text/javascript">
+applicationProcess.grid.getTopToolbar().add({
+	iconCls : 'button-add',
+	text : '<fmt:message key="button.create" />',
+	scope : applicationProcess,
+	handler : applicationProcess.doCreate
+	},'-');
+</script>
+</sec:authorize> --%>
+
+<%-- <sec:authorize access="hasRole('PROCESS_EDIT')">
+<script type="text/javascript">
+applicationProcess.grid.getTopToolbar().add({
+	iconCls : 'button-edit',
+	text : '<fmt:message key="button.edit" />',
+	scope : applicationProcess,
+	handler : applicationProcess.doEdit
+	},'-');
+</script>
+</sec:authorize> --%>
+
+<sec:authorize access="hasRole('PROCESS_DELETE')">
+<script type="text/javascript">
+applicationProcess.grid.getTopToolbar().add({
+	iconCls : 'button-delete',
+	text : '<fmt:message key="button.delete" />',
+	scope : applicationProcess,
+	handler : applicationProcess.doDelete
+	},'-');
+</script>
+</sec:authorize> 
+
+<sec:authorize access="hasRole('PROCESS_CANCLE')">
+<script type="text/javascript">
+applicationProcess.grid.getTopToolbar().add({
+	text : '<fmt:message key="button.cancel" />',
+	iconCls : 'button-cancel',
+	scope : applicationProcess,
+	handler : applicationProcess.doCancel
+	},'-');
+</script>
+</sec:authorize>
+
+<sec:authorize access="hasRole('PROCESS_IMPORTED')">
+<script type="text/javascript">
+applicationProcess.grid.getTopToolbar().add({
+	iconCls : 'button-save',
+	text : '完成',
+	scope : applicationProcess,
+	handler : applicationProcess.doImported
+	},'-');
+</script>
+</sec:authorize>
+
+<sec:authorize access="hasRole('PROCESS_OK')">
+<script type="text/javascript">
+applicationProcess.grid.getTopToolbar().add({
+	iconCls : 'button-ok',
+	text : '审批通过',
+	scope : applicationProcess,
+	handler : applicationProcess.doOk
+	},'-');
+</script>
+</sec:authorize>
+
+<sec:authorize access="hasRole('PROCESS_BACK')">
+<script type="text/javascript">
+applicationProcess.grid.getTopToolbar().add({
+	iconCls : 'button-deploy',
+	text :  '退回',
+	scope : applicationProcess,
+	handler : applicationProcess.doBack
+	},'-');
+</script>
+</sec:authorize>
+
+
+
+<script type="text/javascript">
+Ext.getCmp("APPLICATIONPROCESS_INDEX").add(applicationProcess);
+Ext.getCmp("APPLICATIONPROCESS_INDEX").doLayout();
+</script>

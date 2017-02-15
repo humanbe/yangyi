@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.dply.vo">
+	<class dynamic-insert="true" dynamic-update="true" name="DplyJobBlpackageInfoVo"
+		table="DPLY_JOB_BLPACKAGE_INFO">
+	<composite-id>
+		<key-property name="appsysCode" type="java.lang.String">
+			<column name="APPSYS_CODE">
+			</column>
+		</key-property>
+		<key-property name="scriptBlpackageName" type="java.lang.String">
+			<column name="BLPACKAGE_NAME">
+			</column>
+		</key-property>
+		<key-property name="jobParentGroup" type="java.lang.String">
+			<column name="JOB_PARENT_GROUP">
+			</column>
+		</key-property>
+		<key-property name="softlinkScriptName" type="java.lang.String">
+			<column name="SOFTLINK_SCRIPT_NAME">
+			</column>
+		</key-property>
+	</composite-id>
+		<property generated="never" lazy="false" name="scriptBlpackagePath"
+			not-null="true" type="java.lang.String">
+			<column name="BLPACKAGE_PATH">
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="softlinkScriptPath"
+			not-null="true" type="java.lang.String">
+			<column name="SOFTLINK_SCRIPT_PATH">
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.jeda.common.model">
+	<class name="SubItem" table="JEDA_SUB_ITEM" dynamic-update="true" dynamic-insert="true">
+		<comment>数据项子表</comment>
+		<id name="id" unsaved-value="null">
+			<column name="SUB_ITEM_ID">
+				<comment>主键</comment>
+			</column>
+			<generator class="org.hibernate.id.enhanced.TableGenerator">
+				<param name="table_name">JEDA_SEQUENCES</param>
+				<param name="segment_value">SUBITEM</param>
+				<param name="initial_value">1197</param>
+			</generator>
+		</id>
+		<version name="version" type="integer">
+			<column name="SUB_ITEM_VERSION">
+				<comment>数据版本</comment>
+			</column>
+		</version>
+		<property name="name">
+			<column name="SUB_ITEM_NAME" length="100">
+				<comment>名称</comment>
+			</column>
+		</property>
+		<property name="value">
+			<column name="SUB_ITEM_VALUE" length="100">
+				<comment>编码</comment>
+			</column>
+		</property>
+		<property name="cascade" type="boolean">
+			<column name="SUB_ITEM_CASCADE">
+				<comment>级联字典</comment>
+			</column>
+		</property>
+		<property name="order" type="integer">
+			<column name="SUB_ITEM_ORDER">
+				<comment>排序</comment>
+			</column>
+		</property>
+		<many-to-one name="parent" class="Item" cascade="all" fetch="join" lazy="false">
+			<column name="ITEM_ID">
+				<comment>数据项主表编码</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="creator" class="com.nantian.jeda.common.model.User" fetch="join" update="false">
+			<column name="SUB_ITEM_CREATOR">
+				<comment>创建者</comment>
+			</column>
+		</many-to-one>
+		<property name="created" type="date" update="false">
+			<column name="SUB_ITEM_CREATED">
+				<comment>创建时间</comment>
+			</column>
+		</property>
+		<many-to-one name="modifier" class="com.nantian.jeda.common.model.User" fetch="join">
+			<column name="SUB_ITEM_MODIFIER">
+				<comment>修改者</comment>
+			</column>
+		</many-to-one>
+		<property name="modified" type="date">
+			<column name="SUB_ITEM_MODIFIED">
+				<comment>修改时间</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

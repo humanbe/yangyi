@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.dply.vo">
+	<class name="AppGroupVo" table="CMN_APP_GROUP" 
+	dynamic-update="true" dynamic-insert="true">
+		<comment>table</comment>
+		<composite-id>
+		<key-property name="appsysCode" type="java.lang.String">
+			<column name="APPSYS_CODE">
+				<comment>系统代码</comment>
+			</column>
+		</key-property>
+		<key-property name="serverGroup" type="java.lang.String">
+			<column name="SERVER_GROUP">
+				<comment>服务器分组</comment>
+			</column>
+		</key-property>
+		<key-property name="environmentCode" type="java.lang.String">
+			<column name="ENVIRONMENT_CODE">
+				<comment>环境编号</comment>
+			</column>
+		</key-property>
+	</composite-id>
+		<property name="serverUse" type="java.lang.String">
+				<column name="SERVER_USE">
+					<comment>应用模式</comment>
+				</column>
+			</property>
+		<property name="shareStoreFlag" type="java.lang.String">
+				<column name="SHARE_STORE_FLAG">
+					<comment>共享存储标示</comment>
+				</column>
+			</property>
+		<property name="floatIp" type="java.lang.String">
+				<column name="FLOAT_IP">
+					<comment>浮动IP</comment>
+				</column>
+			</property>
+			<property name="deleteFlage" type="java.lang.String">
+				<column name="DELETE_FLAG">
+					<comment>删除标示</comment>
+				</column>
+			</property>
+	
+		
+	</class>
+</hibernate-mapping>
+

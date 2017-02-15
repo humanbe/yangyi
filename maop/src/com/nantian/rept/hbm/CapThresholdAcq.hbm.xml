@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.rept.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="CapThresholdAcqVo" table="CAP_THRESHOLD_ACQ">
+ 	<composite-id>
+		<key-property name="aplCode" type="java.lang.String">
+			<column name="APL_CODE">
+				<comment>系统编号</comment>
+			</column>
+		</key-property>
+		<key-property name="thresholdItem" type="java.lang.String">
+			<column name="THRESHOLD_ITEM">
+				<comment>阀值科目名称</comment>
+			</column>
+		</key-property>
+	</composite-id>
+  	<property name="capacityType" type="java.lang.String">
+   		<column name="CAPATICY_TYPE">
+       		<comment>容量类型.1:应用类, 2:系统类, 3:网络类</comment>
+   		</column>
+  	</property>
+  	<property name="thresholdType" type="java.lang.String">
+   		<column name="THRESHOLD_TYPE">
+       		<comment>阀值类型.1.联机类, 2:批量类, 3:操作系统, 4:数据库, 5:中间件, 6:网络层, 7: web层, 8:其他</comment>
+   		</column>
+  	</property>
+  	<property name="busiDemand" not-null="false" type="java.lang.String">
+  		 <column name="BUSI_DEMAND">
+       		<comment>业务要求</comment>
+   		</column>
+  	</property>
+  	<property name="threshold" not-null="false" type="java.lang.String">
+   		<column name="THRESHOLD">
+       		<comment>阀值</comment>
+   		</column>
+  	</property>
+ 	<property name="thresholdDate" not-null="false" type="java.lang.String">
+   		<column name="THRESHOLD_DATE">
+       		<comment>阀值获取日期</comment>
+   		</column>
+  	</property>
+  	<property name="thresholdFrom" not-null="false" type="java.lang.String">
+   		<column name="THRESHOLD_FROM">
+       		<comment>阀值来源</comment>
+   		</column>
+  	</property>
+  	<property name="thresholdCheckFlag" not-null="false" type="java.lang.String">
+   		<column name="THRESHOLD_CHECK_FALG">
+       		<comment>阀值是否可检测</comment>
+   		</column>
+  	</property>
+  	<property name="thresholdExplain" not-null="false" type="java.lang.String">
+   		<column name="THRESHOLD_EXPLAIN">
+       		<comment>阀值简要说明</comment>
+   		</column>
+  	</property>
+  	<property name="additionalExplain" not-null="false" type="java.lang.String">
+   		<column name="ADDITIONAL_EXPLAIN">
+       		<comment>补充说明</comment>
+   		</column>
+  	</property>
+  	<property name="thresholdCreator" not-null="false" type="java.lang.String">
+   		<column name="THRESHOLD_CREATOR">
+       		<comment>阀值创建者</comment>
+   		</column>
+  	</property>
+  	<property name="thresholdCreated" not-null="false" type="java.sql.Timestamp">
+   		<column name="THRESHOLD_CREATED">
+       		<comment>阀值创建时间</comment>
+   		</column>
+  	</property>
+  	<property name="thresholdModifier" not-null="false" type="java.lang.String">
+   		<column name="THRESHOLD_MODIFIER">
+       		<comment>阀值修改者</comment>
+   		</column>
+  	</property>
+  	<property name="thresholdModified" not-null="false" type="java.sql.Timestamp">
+   		<column name="THRESHOLD_MODIFIED">
+       		<comment>阀值修改时间</comment>
+   		</column>
+  	</property>
+  </class>
+</hibernate-mapping>

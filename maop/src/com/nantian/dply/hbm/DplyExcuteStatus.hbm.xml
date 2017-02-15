@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.dply.vo">
+ <class dynamic-insert="true" dynamic-update="true"
+  name="DplyExcuteStatusVo" table="DPLY_EXECUTE_STATUS">
+ 	<id name="entryId" type="java.lang.String">
+		<column name="ENTRY_ID">
+			<comment>ID</comment>
+		</column>
+	</id>
+  <property generated="never" lazy="false" name="appsysCode"
+   not-null="true" type="java.lang.String">
+   <column name="APPSYS_CODE">
+   <comment>应用系统</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="userId"
+   not-null="true" type="java.lang.String">
+   <column name="USER_ID">
+   <comment>用户ID</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="excuteStartTime"
+   not-null="true" type="java.sql.Timestamp">
+   <column name="EXECUTE_START_TIME">
+   <comment>执行开始时间</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="excuteEndTime"
+   type="java.sql.Timestamp">
+   <column name="EXECUTE_END_TIME">
+   <comment>执行结束时间</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="moveStatus"
+   not-null="true" type="java.lang.String">
+   <column name="MOVE_STATUS">
+   <comment>迁移状态</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="operateType"
+   not-null="true" type="java.lang.String">
+   <column name="OPERATE_TYPE">
+   <comment>操作类型</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="operateSource"
+   not-null="true" type="java.lang.String">
+   <column name="OPERATE_SOURCE">
+   <comment>操作资源</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="operateLog"
+   type="java.lang.String">
+   <column name="OPERATE_LOG">
+   <comment>操作异常日志</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="environment"
+   type="java.lang.String">
+   <column name="ENVIRONMENT">
+   <comment>环境</comment>
+   </column>
+  </property>
+ </class>
+</hibernate-mapping>

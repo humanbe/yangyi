@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.common.system.vo">
+	<class name="RoleProductVo" table="CMN_ROLE_PRODUCT" dynamic-update="true" dynamic-insert="true">
+		<comment>应用系统信息</comment>
+		<id name="proRoleId" type="java.lang.String">
+			<column name="PRO_ROLE_ID">
+				<comment>产品角色ID</comment>
+			</column>
+		</id>
+		<property name="proRoleName" type="java.lang.String">
+			<column name="PRO_ROLE_NAME">
+				<comment>产品角色名称</comment>
+			</column>
+		</property>
+		<property name="proRoleDesc" type="java.lang.String">
+			<column name="PRO_ROLE_DESC">
+				<comment>产品角色描述</comment>
+			</column>
+		</property>
+		<property name="proRoleType" type="java.lang.String">
+			<column name="PRO_ROLE_TYPE">
+				<comment>产品角色类型</comment>
+			</column>
+		</property>
+		<property name="proRoleIsrelationApp" type="java.lang.Integer">
+			<column name="PRO_ROLE_ISRELATION_APP">
+				<comment>产品角色类型</comment>
+			</column>
+		</property>
+		
+		<property name="proRoleAction" type="java.lang.String">
+			<column name="PRO_ROLE_ACTION">
+				<comment>产品角色操作</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>
+
+

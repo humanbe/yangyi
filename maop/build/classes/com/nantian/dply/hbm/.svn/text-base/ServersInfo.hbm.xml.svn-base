@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.dply.vo">
+	<class name="ServersInfoVo" table="CMN_SERVERS_INFO" dynamic-update="true"
+		dynamic-insert="true">
+		<comment>table</comment>
+	<composite-id>
+		<key-property name="serverIp" type="java.lang.String">
+			<column name="SERVER_IP">
+			</column>
+		</key-property>
+		<key-property name="appsysCode" type="java.lang.String">
+			<column name="APPSYS_CODE">
+			</column>
+		</key-property>
+	</composite-id>
+		
+		<property name="serverName" type="java.lang.String">
+			<column name="SERVER_NAME">
+				<comment>服务器名称</comment>
+			</column>
+		</property>
+		<property name="bsaAgentFlag" type="java.lang.String">
+		<column name="BSA_AGENT_FLAG">
+				<comment>BSA代理安装标示</comment>
+			</column>
+		</property>
+		<property name="floatingIp" type="java.lang.String">
+			<column name="FLOATING_IP">
+				<comment>浮动IP</comment>
+			</column>
+		</property>
+		<property name="osType" type="java.lang.String">
+			<column name="OS_TYPE">
+				<comment>操作系统类型</comment>
+			</column>
+		</property>
+		<property name="mwType" type="java.lang.String">
+			<column name="MW_TYPE">
+				<comment>中间件类型</comment>
+			</column>
+		</property>
+		<property name="dbType" type="java.lang.String">
+			<column name="DB_TYPE">
+				<comment>数据库类型</comment>
+			</column>
+		</property>
+		<property name="collectionState" type="java.lang.String">
+			<column name="COLLECTION_STATE">
+				<comment>采集状态</comment>
+			</column>
+		</property>
+		<property name="deleteFlag" type="java.lang.String">
+			<column name="DELETE_FLAG">
+				<comment>删除标示</comment>
+			</column>
+		</property>
+		<property name="environmentType" type="java.lang.String">
+			<column name="ENVIRONMENT_TYPE">
+				<comment>环境类型</comment>
+			</column>
+		</property>
+		<property name="machineroomPosition" type="java.lang.String">
+			<column name="MACHINEROOM_POSITION">
+				<comment>机房位置</comment>
+			</column>
+		</property>
+		<property name="serverRole" type="java.lang.String">
+			<column name="SERVER_ROLE">
+				<comment>服务器角色</comment>
+			</column>
+		</property>
+		<property name="serverUse" type="java.lang.String">
+			<column name="SERVER_USE">
+				<comment>服务器用途</comment>
+			</column>
+		</property>
+		<property name="updateTime" type="java.sql.Timestamp">
+			<column name="UPDATE_TIME">
+				<comment>更新时间</comment>
+			</column>
+		</property>
+		<property name="updateBeforeRecord" type="java.lang.String">
+			<column name="UPDATE_BEFORE_RECORD">
+				<comment>更新前纪录</comment>
+			</column>
+		</property>
+		<property name="dataType" type="java.lang.String">
+			<column name="DATA_TYPE">
+				<comment>数据来源</comment>
+			</column>
+		</property>
+		<property name="attrFlag" type="java.lang.String">
+			<column name="ATTR_FLAG">
+				<comment>标示</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>
+
+

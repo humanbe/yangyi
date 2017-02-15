@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.jeda.common.model">
+	<class name="Property" table="JEDA_PROPERTY" dynamic-update="true" dynamic-insert="true">
+		<comment>参数表</comment>
+		<id name="id" type="integer">
+			<column name="PROPERTY_ID">
+				<comment>主键</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<version name="version" type="integer">
+			<column name="PROPERTY_VERSION">
+				<comment>数据版本</comment>
+			</column>
+		</version>
+		<property name="tabSize" type="integer">
+			<column name="PROPERTY_TAB_SIZE">
+				<comment>首页最大允许打开的标签数量</comment>
+			</column>
+		</property>
+		<property name="fileRoot">
+			<column name="PROPERTY_FILE_ROOT" length="100">
+				<comment>文件存放根路径</comment>
+			</column>
+		</property>
+		<property name="copyright">
+			<column name="PROPERTY_COPYRIGHT" length="1000">
+				<comment>版权信息</comment>
+			</column>
+		</property>
+		<property name="appTitle">
+			<column name="PROPERTY_APP_TITLE" length="1000">
+				<comment>应用名称</comment>
+			</column>
+		</property>
+		<property name="treeMenu" type="boolean">
+			<column name="PROPERTY_TREE_MENU">
+				<comment>树型菜单</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

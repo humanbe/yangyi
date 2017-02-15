@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.dply.vo">
+	<class name="ServerInfoVo" table="DPLY_SERVER_INFO" dynamic-update="true"
+		dynamic-insert="true">
+		<comment>table</comment>
+		<id name="hostIp" unsaved-value="null" type="java.lang.String">
+			<column name="HOST_IP">
+				<comment>IP地址</comment>
+			</column>
+		</id>
+		<property name="hostName" type="java.lang.String">
+			<column name="HOST_NAME">
+				<comment>主机名</comment>
+			</column>
+		</property>
+		<property name="osType" type="java.lang.String">
+			<column name="OS_TYPE">
+				<comment>操作系统类型</comment>
+			</column>
+		</property>
+		<property name="osVersion" type="java.lang.String">
+			<column name="OS_VERSION">
+				<comment>操作系统版本</comment>
+			</column>
+		</property>
+		<property name="environType" type="java.lang.String">
+			<column name="ENVIRON_TYPE">
+				<comment>环境类型</comment>
+			</column>
+		</property>
+		<property name="fileTransferType" type="java.lang.String">
+			<column name="FILE_TRANSFER_TYPE">
+				<comment>文件传输类型</comment>
+			</column>
+		</property>
+		<property name="fileTransferUser" type="java.lang.String">
+			<column name="FILE_TRANSFER_USER">
+				<comment>文件传输用户名</comment>
+			</column>
+		</property>
+		<property name="fileTransferPswd" type="java.lang.String">
+			<column name="FILE_TRANSFER_PSWD">
+				<comment>文件传输密码</comment>
+			</column>
+		</property>
+		<property name="deleteFlag" type="java.lang.String">
+			<column name="DELETE_FLAG">
+				<comment>删除标示</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>
+
+

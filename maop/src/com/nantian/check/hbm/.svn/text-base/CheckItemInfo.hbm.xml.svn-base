@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.check.vo">
+	<class name="CheckItemInfoVo" table="CHECK_ITEM_INFO" dynamic-update="true"
+		dynamic-insert="true">
+    <composite-id>
+		<key-property name="checkItemCode" type="java.lang.String">
+			<column name="CHECK_ITEM_CODE">
+				<comment>系统代码</comment>
+			</column>
+		</key-property>
+	</composite-id>
+		<property name="checkItemName" type="java.lang.String">
+			<column name="CHECK_ITEM_NAME">
+			</column>
+		</property>
+		<property name="osType" type="java.lang.String">
+			<column name="OS_TYPE">
+			</column>
+		</property>
+		<property name="fieldType" type="java.lang.String">
+			<column name="FIELD_TYPE">
+			</column>
+		</property>
+		<property name="checkObject" type="java.lang.String">
+			<column name="CHECK_OBJECT">
+			</column>
+		</property>
+		<property name="allinitNshScriptName" type="java.lang.String">
+			<column name="ALLINIT_NSH_SCRIPT_NAME">
+			</column>
+		</property>
+		<property name="allinitNshScriptPath" type="java.lang.String">
+			<column name="ALLINIT_NSH_SCRIPT_PATH">
+			</column>
+		</property>
+		<property name="scriptCreator" type="java.lang.String">
+			<column name="SCRIPT_CREATOR">
+			</column>
+		</property>
+		<property name="scriptCreated" type="java.sql.Timestamp">
+			<column name="SCRIPT_CREATED">
+			</column>
+		</property>
+		<property name="scriptModifier" type="java.lang.String">
+			<column name="SCRIPT_MODIFIER">
+			</column>
+		</property>
+		<property name="scriptModified" type="java.sql.Timestamp">
+			<column name="SCRIPT_MODIFIED">
+			</column>
+		</property>
+		<property name="checkItemDesc" type="java.lang.String">
+			<column name="CHECK_ITEM_DESC">
+			</column>
+		</property>		
+	</class>
+</hibernate-mapping>
+
+

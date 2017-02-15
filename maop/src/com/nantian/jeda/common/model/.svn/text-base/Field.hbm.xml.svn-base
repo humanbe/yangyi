@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.nantian.jeda.common.model">
+	<class name="Field" table="JEDA_FIELD">
+		<comment>字段表</comment>
+		<id name="id" unsaved-value="null">
+			<column name="FIELD_ID">
+				<comment>字段主健</comment>
+			</column>
+			<generator class="org.hibernate.id.enhanced.TableGenerator">
+				<param name="table_name">JEDA_SEQUENCES</param>
+				<param name="segment_value">FIELD</param>
+				<param name="initial_value">1002</param>
+			</generator>
+		</id>
+		<version name="version" type="integer">
+			<column name="FIELD_VERSION">
+				<comment>字段数据版本</comment>
+			</column>
+		</version>
+		<property name="code">
+			<column name="FIELD_CODE" length="50">
+				<comment>字段编码</comment>
+			</column>
+		</property>
+		<property name="name">
+			<column name="FIELD_NAME" length="100">
+				<comment>字段名称</comment>
+			</column>
+		</property>
+		<property name="type">
+			<column name="FIELD_TYPE" length="100">
+				<comment>字段类型</comment>
+			</column>
+		</property>
+		<many-to-one name="function" class="Function" lazy="false" fetch="join" update="false">
+			<column name="FUNCTION_ID">
+				<comment>所属功能</comment>
+			</column>
+		</many-to-one>
+		<property name="order" type="integer">
+			<column name="FIELD_ORDER">
+				<comment>字段排序</comment>
+			</column>
+		</property>
+		<many-to-one name="creator" class="User" fetch="join" update="false">
+			<column name="FIELD_CREATOR">
+				<comment>字段创建者</comment>
+			</column>
+		</many-to-one>
+		<property name="created" type="date" update="false">
+			<column name="FIELD_CREATED">
+				<comment>字段创建时间</comment>
+			</column>
+		</property>
+		<many-to-one name="modifier" class="User" fetch="join">
+			<column name="FIELD_MODIFIER">
+				<comment>字段修改者</comment>
+			</column>
+		</many-to-one>
+		<property name="modified" type="date">
+			<column name="FIELD_MODIFIED">
+				<comment>字段修改时间</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>
